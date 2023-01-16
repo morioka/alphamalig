@@ -17,6 +17,7 @@
 #include "malloc.h"
 #include "ent_seq.h"
 #include "multiple.h"
+#include "sort_seq.h"
 
 // Fitxers temporals
 FILE *fitxer_clusters;
@@ -595,7 +596,7 @@ void reconstruir_nou_cluster(char *linia_orig, char *linia_desti, char *resultat
     n++;
     k++;
   }
-  fprintf(fitxer_clusters, "\n", linia_desti);
+  fprintf(fitxer_clusters, "%s\n", linia_desti);
 
   seqs[i] = (int *)malloc(clusters[i]->num_seqs * sizeof(int) + 1);
   n = 0;

@@ -21,7 +21,7 @@ void escriure_alineament_fitxer_sortida(int output_format)
     output_format = 1;      // tallem sequencies
     if (output_format == 0) /* No tallem les sequencies */
     {
-        printf("Number of sequnces=%d  Alignment length=%d  Alignment score=%d\n", clusters[0]->num_seqs,
+        printf("Number of sequnces=%d  Alignment length=%ld  Alignment score=%ld\n", clusters[0]->num_seqs,
               clusters[0]->long_seqs, clusters[0]->puntuacio);
         i = 0;
         while (i < clusters[0]->long_seqs)
@@ -60,7 +60,7 @@ void escriure_alineament_fitxer_sortida(int output_format)
     }
     else /* Tallem les sequencies */
     {
-        printf("\nNumber of sequnces=%d  Alignment length=%d  Alignment score=%d\n", clusters[0]->num_seqs,
+        printf("\nNumber of sequnces=%d  Alignment length=%ld  Alignment score=%ld\n", clusters[0]->num_seqs,
               clusters[0]->long_seqs, clusters[0]->puntuacio);
         l = 0;
         while (l < clusters[0]->long_seqs)
