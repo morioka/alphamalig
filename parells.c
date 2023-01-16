@@ -1,7 +1,7 @@
 /*************************************************************************/
 // Fitxer: parells.c
-// Autor: Xavier Sol� Acha
-// Descripci�: Aqu� estan les funcions per alinear parells de seq��ncies
+// Autor: Xavier Sol Acha
+// Descripci: Aqu estan les funcions per alinear parells de seqncies
 /*************************************************************************/
 
 #include <stdio.h>
@@ -15,8 +15,8 @@
 #include "malloc.h"
 
 /* similitud *************************************************************/
-// Calcula la similitud entre les seq��ncies "seq1" i "seq2". A la matriu
-//"matriu" hi ha les similituds entre tot prefix de les dues seq��ncies.
+// Calcula la similitud entre les seqncies "seq1" i "seq2". A la matriu
+//"matriu" hi ha les similituds entre tot prefix de les dues seqncies.
 float similitud(float **a, char *seq1, char *seq2, long longseq1, long longseq2)
 {
     // usa les variables globals matpenal,alfabet,numsimb
@@ -56,6 +56,6 @@ float similitud(float **a, char *seq1, char *seq2, long longseq1, long longseq2)
 }
 
 /* alineament_optim
-Retorna l'alineament �ptim entre les seq��ncies "seq1" i "seq2". �s la
-que reserva l'espai a mem�ria per fer lalineament i la que fa la crida
-inicial a la funci� recursiva.*/
+Retorna l'alineament ptim entre les seqncies "seq1" i "seq2". s la
+que reserva l'espai a memria per fer lalineament i la que fa la crida
+inicial a la funci recursiva.*/

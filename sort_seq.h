@@ -1,7 +1,7 @@
 /*************************************************************************/
 // Fitxer: sort_seq.c
-// Autor: Xavier Sol� Acha
-// Descripci�: Aqu� estan les capsaleres de les funcions per escriure la
+// Autor: Xavier Sol Acha
+// Descripci: Aqu estan les capsaleres de les funcions per escriure la
 // sortida del programa en un fitxer.
 /*************************************************************************/
 

@@ -1,11 +1,11 @@
 /*************************************************************************/
 // Fitxer: auxiliar.h
-// Autor: Xavier Sol� Acha
-// Descripci�: Fitxer de capsalera per les funcions d'utilitat per
-// l'aplicaci�.
+// Autor: Xavier Sol Acha
+// Descripci: Fitxer de capsalera per les funcions d'utilitat per
+// l'aplicaci.
 /*************************************************************************/
 
-// Definici� dels prototips
+// Definici dels prototips
 
 #ifndef _AUXILIAR_H_
 #define _AUXILIAR_H_

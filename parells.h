@@ -1,11 +1,11 @@
 /*************************************************************************/
 // Fitxer: parells.h
-// Autor: Xavier Sol� Acha
-// Descripci�: Aqu� estan les capsaleres de les funcions per alinear parells
-// de seq��ncies
+// Autor: Xavier Sol Acha
+// Descripci: Aqu estan les capsaleres de les funcions per alinear parells
+// de seqncies
 /*************************************************************************/
 
-// Variables que intervenen en el proc�s
+// Variables que intervenen en el procs
 
 #ifndef _PARELIS_H_
 #define _PARELIS_H_

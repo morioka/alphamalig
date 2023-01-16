@@ -1,12 +1,12 @@
 /*************************************************************************/
 // Fitxer: ent_seq.h
-// Autor: Xavier Sol� Acha
-// Descripci�: Fitxer de capsalera per les funcions que llegiran i
+// Autor: Xavier Sol Acha
+// Descripci: Fitxer de capsalera per les funcions que llegiran i
 // processaran les cadenes d'ADN que es trobin al fitxer d'entrada o al
 // temporal
 /*************************************************************************/
 
-// Definici� dels prototips
+// Definici dels prototips
 
 #ifndef _ENT_SEQ_H_
 #define _ENT_SEQ_H_
