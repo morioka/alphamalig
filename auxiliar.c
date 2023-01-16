@@ -22,9 +22,11 @@ int indexsimbol(char c)
 {
         int i = 1;
         //  printf("Miro simbol %c\n",c);
-        while ((alfabet[i] != toupper(c)) && (i < numsimb))
+//        while ((alfabet[i] != toupper(c)) && (i < numsimb))
+        while ((alfabet[i] != c) && (i < numsimb))
                 i++;
-        if (alfabet[i] == toupper(c))
+//        if (alfabet[i] == toupper(c))
+        if (alfabet[i] == c)
         {
                 /*    printf("\nResposta: index %d\n",i);*/
                 return i;
@@ -43,7 +45,7 @@ int pertany_alfabet(char c)
 {
         int i = 1;
 
-        c = toupper(c);
+//        c = toupper(c);
         while ((i < numsimb) && (alfabet[i] != c))
                 i++;
         return (alfabet[i] == c);

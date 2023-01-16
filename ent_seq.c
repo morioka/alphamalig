@@ -67,10 +67,12 @@ int escriure_sequencia_tmp(int num_seq)
                 c = linia[i];
                 while ((i <= MAXLINIA) && (c != '\n') && (c != EOS) && (c != '>'))
                 {
-                        c = toupper(linia[i]);
+//                        c = toupper(linia[i]);
+                        c = linia[i];
                         if (pertany_alfabet(c))
                         {
-                                seq_nucl[long_seq] = toupper(c);
+//                                seq_nucl[long_seq] = toupper(c);
+                                seq_nucl[long_seq] = c;
                                 long_seq++;
                         }
                         i++;

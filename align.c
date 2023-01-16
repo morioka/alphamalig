@@ -68,10 +68,10 @@ void leer_alfabeto(FILE *fd)
     {
         fscanf(fd, "%c ", &alfabet[i]);
     }
-    for (i = 1; i < numsimb; i++)
-    {
-        alfabet[i] = toupper(alfabet[i]);
-    }
+    //for (i = 1; i < numsimb; i++)
+    //{
+    //    alfabet[i] = toupper(alfabet[i]);
+    //}
     for (i = 1; i <= numsimb; i++)
     {
         for (j = 1; j <= i; j++)

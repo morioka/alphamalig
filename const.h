@@ -12,7 +12,7 @@
 #define MAXSEQ 200       // Maximum number of sequences
 #define MAXLINIA 512     // Size of the buffer with which we read the seqs
 #define MAXLONGNOM 100   // Maximum length of the name
-#define MAXLONGALF 50    // Maximum number of alphabet symbols
+#define MAXLONGALF 52    // Maximum number of alphabet symbols
 #define EOS '\0'         // End of sequence
 #define MAXLONGALIN 2000 // like MAXLONGSEQ
 // Constants booleanes
