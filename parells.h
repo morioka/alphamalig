@@ -10,7 +10,7 @@
 #ifndef _PARELIS_H_
 #define _PARELIS_H_
 
-// Definicio dels prototips
+// Definition of prototypes
 float similitud(float **matriu, char *seq1, char *seq2, long long_seq1, long long_seq2);
 
 #endif

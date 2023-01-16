@@ -8,13 +8,13 @@
 #ifndef _CONST_H_
 #define _CONST_H_
 
-#define MAXLONGSEQ 2000  // Mxima longitud d'una seqncia
-#define MAXSEQ 200       // Nombre mxim de seqncies
-#define MAXLINIA 512     // Tamany del buffer amb el que llegim les seqs
-#define MAXLONGNOM 100   // Longitud mxima del nom.
-#define MAXLONGALF 50    // Maxim nombre de simbols de l'alfabet
-#define EOS '\0'         // Fi de seqncia
-#define MAXLONGALIN 2000 // igual que MAXLONGSEQ
+#define MAXLONGSEQ 2000  // Maximum length of a sequence
+#define MAXSEQ 200       // Maximum number of sequences
+#define MAXLINIA 512     // Size of the buffer with which we read the seqs
+#define MAXLONGNOM 100   // Maximum length of the name
+#define MAXLONGALF 50    // Maximum number of alphabet symbols
+#define EOS '\0'         // End of sequence
+#define MAXLONGALIN 2000 // like MAXLONGSEQ
 // Constants booleanes
 #define FALSE 0
 #define TRUE 1

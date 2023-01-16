@@ -8,7 +8,7 @@
 #ifndef _MULTIPLE_H_
 #define _MULTIPLE_H_
 
-// Fitxers temporals
+// Temporary Files
 extern FILE *fitxer_clusters;
 extern FILE *fitxer_cluster_1;
 extern FILE *fitxer_cluster_2;
@@ -17,16 +17,16 @@ extern char nom_fitxer_clusters[13];
 extern char nom_fitxer_cluster_1[13];
 extern char nom_fitxer_cluster_2[13];
 
-extern int **seqs; // Modificaci per arreglar el bug
+extern int **seqs; // Modify to fix the bug
 
 typedef struct
 {
-        int num_seqs;   // Nombre de seqncies del cluster
-        long long_seqs; // Longitud de les seqncies del cluster
-        long puntuacio; // Puntuacio del cluster
+        int num_seqs;   // Number of cluster sequences
+        long long_seqs; // Length of cluster sequences
+        long puntuacio; // Score of cluster
 } cluster;
 
-extern cluster **clusters;            // Vector de clusters
+extern cluster **clusters;            // Cluster vector
 extern long *pos_seq;                 // Cont la posici de la seqencia al fitxer on guardem les seqncies semialiniades
 extern long *pos_seq_fitxer_clusters; // Cont la posici de la seqncia al fitxer del cluster que ser utilitzat per aliniar
 extern int *seq_cluster;              // Cont a quin cluster pertany cada seqncia
@@ -37,7 +37,7 @@ float calcul_simil(float *freq1, float *freq2);
 float intracluster(float *freq);
 float intercluster(float *freq1, float *freq2);
 
-// Definicio dels prototips
+// Definition of prototypes
 void alineament_multiple(float **matriu, int output_format);
 void trobar_clusters_propers(int *i, int *j);
 void alineament_clusters(float **matriu, int i, int j, float **info1, float **info2, char *linia_orig, char *linia_desti, char *resultat_cluster1, char *resultat_cluster2, long *puntuacio);

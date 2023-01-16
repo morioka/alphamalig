@@ -14,13 +14,13 @@
 #include "parells.h"
 #include "malloc.h"
 
-/* similitud *************************************************************/
-// Calcula la similitud entre les seqncies "seq1" i "seq2". A la matriu
-//"matriu" hi ha les similituds entre tot prefix de les dues seqncies.
+/* similarity *************************************************************/
+// It calculates the similarity between the sequencies "seq1" and "seq2". 
+// In the matrix "matrix" there are the similarities between every prefix of the two sequences.
 float similitud(float **a, char *seq1, char *seq2, long longseq1, long longseq2)
 {
-    // usa les variables globals matpenal,alfabet,numsimb
-    // seq1 i seq2 van de 0 a longseq-1
+    // use the global variables matpenal,alphabet,numsimb
+    // SEQ1 and SEQ2 go from 0 to longseq-1
 
     float sum1, sum2, sum3, sum;
     int i, j;
@@ -56,6 +56,6 @@ float similitud(float **a, char *seq1, char *seq2, long longseq1, long longseq2)
 }
 
 /* alineament_optim
-Retorna l'alineament ptim entre les seqncies "seq1" i "seq2". s la
-que reserva l'espai a memria per fer lalineament i la que fa la crida
-inicial a la funci recursiva.*/
+It returns the optimal alignment between the sequencies "seq1" and "seq2". 
+It reserves the space in memory to make the alignment and the one that makes the call 
+initial to recursive function.*/

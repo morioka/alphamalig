@@ -168,7 +168,7 @@ void carregar_sequencia_posicio_exacte(char *seq)
 }
 
 /* carregar_nom_sequencia ******************************************************/
-// Retorna els 10 primers caracters del nom de la sequencia "num_seq" a l'array "nom"
+// Return the first 10 characters of the name "num_seq" to the array "nom(name)"
 void carregar_nom_sequencia(char *nom, int num_seq)
 {
         static char linia[MAXLINIA + 1];
