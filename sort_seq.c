@@ -44,14 +44,14 @@ void escriure_alineament_fitxer_sortida(int output_format)
         k = 0;
         while (k < clusters[0]->long_seqs)
         {
-            if ((asteriscs[k] == 'A') || (asteriscs[k] == 'C') || (asteriscs[k] == 'G') || (asteriscs[k] == 'T'))
-            {
-                seq_out[i] = '*';
-            }
-            else
-            {
+            //if ((asteriscs[k] == 'A') || (asteriscs[k] == 'C') || (asteriscs[k] == 'G') || (asteriscs[k] == 'T'))
+            //{
+            //    seq_out[i] = '*';
+            //}
+            //else
+            //{
                 seq_out[i] = ' ';
-            }
+            //}
             i++;
             k++;
         }
@@ -89,14 +89,14 @@ void escriure_alineament_fitxer_sortida(int output_format)
             // printf("\n 2.2.2");
             while (k < 58)
             {
-                if ((asteriscs[k] == 'A') || (asteriscs[k] == 'C') || (asteriscs[k] == 'G') || (asteriscs[k] == 'T'))
-                {
-                  seq_out[i] = '*';
-                }
-                else
-                {
+                //if ((asteriscs[k] == 'A') || (asteriscs[k] == 'C') || (asteriscs[k] == 'G') || (asteriscs[k] == 'T'))
+                //{
+                //  seq_out[i] = '*';
+                //}
+                //else
+                //{
                   seq_out[i] = ' ';
-                }
+                //}
                 i++;
                 k++;
             }
