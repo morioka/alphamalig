@@ -107,7 +107,7 @@ void escriure_alineament_fitxer_sortida(int output_format)
         }
     }
 
-    printf("\n 2.2.4");
+    // printf("\n 2.2.4");
 }
 
 void escriure_sequencia_cluster_tallada(int num_seq, char *asteriscs, int pos)
