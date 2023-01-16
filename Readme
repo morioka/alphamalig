@@ -1,0 +1,10 @@
+Here you can find the source files of alphamalig, a program that
+aligns sequences in a given alphabet. The call is
+
+> alfm alphabet sequences
+
+There are the compiled files for linux and the Makefile to recompile them.
+
+
+ 
+
