@@ -6,7 +6,7 @@
 void comprovarlecturaalfabet()
 {
     int i, j;
-    printf("\nNum simbols =%d\n", numsimb);
+    printf("\nNum of symbols =%d\n", numsimb);
 
     for (i = 1; i <= numsimb; i++)
     printf("%c ", alfabet[i]);
@@ -85,7 +85,7 @@ void comprovar_similitud(char *seq1, char *seq2, long longseq1, long longseq2)
 void comprovar_carregar_sequencia(char *seq, long longseq)
 {
     int i;
-    printf("\n comprovacio carrega sequencia");
+    printf("\n check load sequence");
     for (i = 0; i < longseq; i++)
         printf("%c", seq[i]);
     printf("\n");
@@ -107,7 +107,7 @@ void comprovar_fitxer_temporal()
 void comprovar_matriu_similaritats(float **matriu)
 {
     int i, j;
-    printf("\n Similaritat entre les sequencies \n");
+    printf("\n Similarity between the sequences \n");
     for (i = 0; i < num_seqs - 1; i++)
     {
         for (j = i + 1; j < num_seqs; j++)
@@ -119,7 +119,7 @@ void comprovar_matriu_similaritats(float **matriu)
 void comprovar_info_cluster(float **info)
 {
     int i, j;
-    printf("\n Comprova info cluster\n");
+    printf("\n Check info cluster\n");
     for (i = 0; i < 10; i++)
     {
         for (j = 0; j < numsimb; j++)

@@ -607,7 +607,7 @@ void reconstruir_nou_cluster(char *linia_orig, char *linia_desti, char *resultat
     n++;
   }
 
-  /*Actualitzem els clusters equivalent d'alineaments anteriors*/
+  /* update the equivalent clusters of previous alignments */
   n = 0;
   while (n < num_seqs)
   {
@@ -622,8 +622,8 @@ void reconstruir_nou_cluster(char *linia_orig, char *linia_desti, char *resultat
   fclose(fitxer_clusters);
 }
 /**********************************************/
-// a partir de matriu_cami retorna res1,res2 que son tires de {1,2}
-// on 1 indica simbol i 2 gap
+// from matriu_cami returns res1,res2 which are strips of {1,2}
+//  where 1 indicates symbol and 2 gap
 
 void alinea_clusters(int i, int j, char *res1, char *res2, int *len)
 {
@@ -638,8 +638,8 @@ void alinea_clusters(int i, int j, char *res1, char *res2, int *len)
     case 'a':
       alinea_clusters(i - 1, j, res1, res2, len);
       (*len)++;
-      res1[(*len) - 1] = '1'; // 1: hi ha un nucleotid en aquella posici
-      res2[(*len) - 1] = '2'; // 2: hi ha un gap en aquella posici
+      res1[(*len) - 1] = '1'; // 1: there is a nucleotide in that position
+      res2[(*len) - 1] = '2'; // 2: there is a gap in that position
       break;
     case 'd':
       alinea_clusters(i - 1, j - 1, res1, res2, len);
@@ -678,7 +678,7 @@ long afegir_sequencia_cluster(FILE *fitxer, int num_seq)
   }
   else
   {
-    // vol dir que estava inclosa en un altre cluster
+    // it means it was included in another cluster
     fseek(fitxer_clusters, pos_seq[num_seq], SEEK_SET);
     fgets(seq, MAXLONGSEQ, fitxer_clusters);
     pos_fitxer = ftell(fitxer);
@@ -688,7 +688,7 @@ long afegir_sequencia_cluster(FILE *fitxer, int num_seq)
 }
 
 // recalcular_matriu ****************************************/
-// Arregla la matriu, sabent que hem alineat els clusters "i" i "j"
+// Fix the matrix, knowing that we have aligned clusters "i" and "j"
 void recalcular_matriu(int i, int j)
 {
   int aux = 0, n = 0;

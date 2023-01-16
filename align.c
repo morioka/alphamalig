@@ -16,38 +16,38 @@
 #include <ctype.h>
 #include "comprobacions.h"
 
-FILE *fitxer_entrada;  // Fitxer d'entrada de les seqncies
-FILE *fitxer_temporal; // Fitxer temporal que emmagatzema les seqncies
-FILE *fitxer_alfabet;  // Fitxer que emmagatzema l'alfabet en el formata adequat
+FILE *fitxer_entrada;  // file of entry of the sequencies
+FILE *fitxer_temporal; // temporary file that stores the sequencies
+FILE *fitxer_alfabet;  // File that stores the alphabet in the appropriate format
 
-char nom_fitxer_temporal[13]; // Nom del fitxer temporal
+char nom_fitxer_temporal[13]; // Temporary file name
 
-int numsimb;              // nombre de simbols de l'alfabet
-char alfabet[MAXLONGALF]; // alfabet en posicions 1,2,..,numsimb
-int num_seqs;             // Nombre de seqncies que hi ha al fitxer
+int numsimb;              // number of alphabet symbols
+char alfabet[MAXLONGALF]; // alphabet in positions 1,2,..,numsimb
+int num_seqs;             // Number of sequences in the file
 
-float matpenal[MAXLONGALF][MAXLONGALF]; // PUNTUACIO match,mismatch i gap...
-float **matriu_puntuacions;             // Matriu que contindr la puntuaci de l'alineament ptim entre totes les seqncies
-char **matriu_cami;                     // Cont per on s'ha omplert cada posicio de la matriu ('e': esquerra, 'a':amunt, 'd': diagonal)
+float matpenal[MAXLONGALF][MAXLONGALF]; // SCORE match,mismatch and gap...
+float **matriu_puntuacions;             // Matrix containing the score of the ptim alignment between all the sequences
+char **matriu_cami;                     // Count where each position of the matrix has been filled ('e': left, 'a':up, 'd': diagonal)
 
 int args(int argc, char **argv)
 {
-    // comprueba los argumentos
+    // check the arguments
     int i;
     if (argc < 3)
     {
-        fprintf(stderr, "Sintaxis: %s fitxeralfabet fitxersequenciesformatfasta \n", argv[0]);
-        printf("El format del fitxer alfabet ha de ser:\n");
-        printf("    Numero de simbols\n");
-        printf("    Simbols de l'alfabet separats per un caracter blanc\n");
-        printf("    Penalitzacio del gap(nomes n'hi ha d'un tipus)\n");
-        printf("i les seguents linies 1,2,...,i, contenen 1 numero, 2 numeros,...\n");
-        printf("que son les puntuacions del simbol i el gap amb els simbols anteriors");
-        printf("EXEMPLE de 6 simbols (inclos el gap)\n");
+        fprintf(stderr, "Syntax: %s filealphabet filessequencesformatfasta \n", argv[0]);
+        printf("The file format should be alphabet:\n");
+        printf("    Number of symbols\n");
+        printf("    Alphabet symbols separated by a white character\n");
+        printf("    Gap penalty (there is only one type)\n");
+        printf("and the following lines 1,2,...,i, contain 1 number, 2 numbers,...\n");
+        printf("which are the scores of the symbol and the gap with the previous symbols");
+        printf("EXAMPLE of 6 symbols (including the gap)\n");
         printf("6\n");
         printf("o p s n c -\n");
-        printf(" 2     Puntuacio primer simbol amb ell matex\n");
-        printf("-1  2    Puntuacio segon simbol amb primer i ell mateix\n");
+        printf(" 2     Score first symbol with same\n");
+        printf("-1  2    Score second symbol with first and itself\n");
         printf("-2 -2  1   ...\n");
         printf("-2 -2  0  1\n");
         printf("-2 -2 -1 -1 1\n");
@@ -58,7 +58,7 @@ int args(int argc, char **argv)
         return (0);
 }
 
-// funcio que llegeix l'alfabet,la matriu de puntuacio i el gap
+// function that reads the alphabet, the score matrix and the gap
 void leer_alfabeto(FILE *fd)
 {
     int i, j;
@@ -95,19 +95,19 @@ int main(int argc, char *argv[])
         exit(-1);
     if ((fitxer_alfabet = fopen(argv[1], "r")) == NULL)
     {
-        printf("Error en lectura del fichero alfabeto\n");
+        printf("Error reading the alphabet file\n");
         exit(1);
     }
     leer_alfabeto(fitxer_alfabet);
     comprovarlecturaalfabet();
-    // inicialitza les variables globals alfabet,matpenal,numsimb
+    // initialize the global variables alphabet, matpenal, numsimb
     if ((fitxer_entrada = fopen(argv[2], "r")) == NULL)
     {
-        printf("Error en lectura del fichero de secuencias\n");
+        printf("Error reading the sequence file\n");
         exit(1);
     }
 
-    // Esborrem els fitxers temporals. Tanquem els que no necessitem en aquest moment
+    // We delete temporary files. We close the ones we don't need at the moment
     num_pref = generar_prefix_fitxers(argv[1]);
     omplir_string_prefix(pref, num_pref);
     sprintf(nom_fitxer_temporal, "%s1.tmp", pref);
@@ -122,8 +122,8 @@ int main(int argc, char *argv[])
     fclose(fitxer_temporal);
     fitxer_temporal = fopen(nom_fitxer_temporal, "w");
     if (llegir_sequencies_fitxer() == -1)
-    // te les sequencies en el fitxer temporal en un format especial
-    // numeroseq,nom,longitud,sequencia
+    // have the sequences in the temporary file in a special format
+    // number, name, length, sequence (numeroseq,nom,longitud,sequencia)
     {
         printf("Too many (>%d) or too few (<2) input sequences\n", MAXSEQ);
         remove(nom_fitxer_clusters);
@@ -132,7 +132,7 @@ int main(int argc, char *argv[])
         remove(nom_fitxer_temporal);
         exit(-1);
     }
-    else // nombre de sequencies correcte
+    else // correct number of sequences
     {
 
         fclose(fitxer_temporal);
@@ -151,7 +151,7 @@ int main(int argc, char *argv[])
           remove(nom_fitxer_temporal);
           exit(-1);
         }
-        // hi ha prou memoria per a 2000 elements
+        // there is enough memory for 2000 items
         i = 0;
         estat = 0;
         while ((i < MAXLONGALIN) && (estat == 0))
@@ -169,7 +169,7 @@ int main(int argc, char *argv[])
           }
           i++;
         }
-        // hi ha prou memoria per a una matriu de 2000x2000
+        // there is enough memory for a 2000x2000 matrix
 
         estat = 0;
         matriu_cami = (char **)malloc(MAXLONGALIN * sizeof(char *));
@@ -228,7 +228,7 @@ int main(int argc, char *argv[])
         seq = (char *)malloc(MAXLONGSEQ * sizeof(char));
         seq2 = (char *)malloc(MAXLONGSEQ * sizeof(char));
 
-        // hi ha prou memoria per a totes les variables
+        // there is enough memory for all variables
         // printf("\n 1");
         while (j < (num_seqs - 1))
         {
@@ -257,7 +257,7 @@ int main(int argc, char *argv[])
         free(seq2);
         // printf("\n 2");
         alineament_multiple(matriu, atoi(argv[2]));
-        // segon argument es el format de sortida
+        // second argument is the output format
         // printf("\n 3");
         i = 0;
         while (i < num_seqs)

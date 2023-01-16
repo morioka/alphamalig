@@ -18,8 +18,8 @@ void escriure_alineament_fitxer_sortida(int output_format)
     int k = 0, i, j, l;
     char asteriscs[MAXLONGSEQ];
     char seq_out[MAXLONGSEQ];
-    output_format = 1;      // tallem sequencies
-    if (output_format == 0) /* No tallem les sequencies */
+    output_format = 1;      // cut sequences
+    if (output_format == 0) /* do not cut sequences */
     {
         printf("Number of sequnces=%d  Alignment length=%ld  Alignment score=%ld\n", clusters[0]->num_seqs,
               clusters[0]->long_seqs, clusters[0]->puntuacio);
@@ -58,7 +58,7 @@ void escriure_alineament_fitxer_sortida(int output_format)
         seq_out[i] = EOS;
         printf("%s\n", seq_out);
     }
-    else /* Tallem les sequencies */
+    else /* cut the sequences */
     {
         printf("\nNumber of sequnces=%d  Alignment length=%ld  Alignment score=%ld\n", clusters[0]->num_seqs,
               clusters[0]->long_seqs, clusters[0]->puntuacio);
@@ -115,7 +115,7 @@ void escriure_sequencia_cluster_tallada(int num_seq, char *asteriscs, int pos)
     char seq[MAXLONGSEQ + 1], nom[15], seq_out[MAXLONGSEQ + 1];
     int i = 0, j = 0, k = 0, trobat_fi = 0;
 
-    // Primer copiem el nom
+    // First we copy the name
     fseek(fitxer_clusters, pos_seq[num_seq], SEEK_SET);
     carregar_nom_sequencia(nom, num_seq);
     i = 0;

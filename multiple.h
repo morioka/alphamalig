@@ -27,10 +27,10 @@ typedef struct
 } cluster;
 
 extern cluster **clusters;            // Cluster vector
-extern long *pos_seq;                 // Cont la posici de la seqencia al fitxer on guardem les seqncies semialiniades
-extern long *pos_seq_fitxer_clusters; // Cont la posici de la seqncia al fitxer del cluster que ser utilitzat per aliniar
-extern int *seq_cluster;              // Cont a quin cluster pertany cada seqncia
-extern int *cluster_equivalent;       // Cont equivalncies entre clusters
+extern long *pos_seq;                 // position of the sequence in the file where we save the semi-aligned sequences
+extern long *pos_seq_fitxer_clusters; // position of the sequence in the cluster file to be used for alignment
+extern int *seq_cluster;              // which cluster each sequence belongs
+extern int *cluster_equivalent;       // equivalences between clusters
 
 float calcul_simil_ini(float *freq, int n);
 float calcul_simil(float *freq1, float *freq2);

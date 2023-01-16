@@ -15,9 +15,9 @@
 #include "auxiliar.h"
 #include "parells.h"
 
-// Implementaci de les funcions
+// Implementation of functions
 
-// mira a quina posicio de la matriu de penal. hi va el simbol
+// look at which position in the penalty matrix. there goes the symbol
 int indexsimbol(char c)
 {
         int i = 1;
@@ -33,14 +33,14 @@ int indexsimbol(char c)
         }
         else
         {
-                printf("Resposta: el simbol %c no es a l'alfabet", c);
+                printf("Answer: The symbol %c is not in the alphabet", c);
+//                printf("Resposta: el simbol %c no es a l'alfabet", c);
                 exit(1);
         }
 }
 
 /* pertany_alfabet **********************************************************/
-// Ens diu si el carcter que li passem com a parmetre correspon a alguns
-// dels simbols de l'alfabet
+// It tells us if the character we pass to it as a parameter corresponds to some of the symbols of the alphabet
 int pertany_alfabet(char c)
 {
         int i = 1;
@@ -52,7 +52,7 @@ int pertany_alfabet(char c)
 }
 
 /* maxim_real *****************************************************************/
-// Retorna el mxim de tres nombres reals.
+// Returns at most three real numbers.
 float maxim_real(float x, float y, float z, char *c)
 {
         float num_max;
@@ -76,7 +76,7 @@ float maxim_real(float x, float y, float z, char *c)
 }
 
 /* compta_sequencies ******************************************************/
-// Compta el nombre de seqncies que hi ha al fitxer.
+// Counts the number of sequences in the file.
 int compta_sequencies(void)
 {
         char linia[MAXLINIA + 1];
