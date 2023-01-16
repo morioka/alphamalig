@@ -37,3 +37,32 @@ apt install libgd-dev libjpeg-dev
 make
 ./alfm alphabetexample.txt sequencesexample
 ```
+
+## 参考
+
+- [Publications Section.](https://www.cs.upc.edu/~nlp/papers.html) 
+- [SemEval-2007 - UPC Universitat Politècnica de Catalunya](https://www.cs.upc.edu/~nlp/semeval/msacs_home.html)
+- [SemEval-2007 - UPC Universitat Politècnica de Catalunya](https://www.cs.upc.edu/~nlp/semeval/msacs_download.html)
+
+- [Multiple sequence alignment as a sequence-to-sequence learning problem | OpenReview](https://openreview.net/forum?id=8efJYMBrNb)
+
+- [Using deep reinforcement learning approach for solving the multiple sequence alignment problem | SpringerLink](https://link.springer.com/article/10.1007/s42452-019-0611-4)
+- [End-to-end learning of multiple sequence alignments with differentiable Smith–Waterman | Bioinformatics | Oxford Academic](https://academic.oup.com/bioinformatics/article/39/1/btac724/6820925?login=false)
+- [DeepMSA: constructing deep multiple sequence alignment to improve contact prediction and fold-recognition for distant-homology proteins - PubMed](https://pubmed.ncbi.nlm.nih.gov/31738385/)
+
+- [Multiple Sequence Alignment | Papers With Code](https://paperswithcode.com/task/multiple-sequence-alignment)
+- [MSA Transformer | Papers With Code](https://paperswithcode.com/paper/msa-transformer)
+- [MSA Transformer | bioRxiv](https://www.biorxiv.org/content/10.1101/2021.02.12.430858v3)
+
+- [Protein language models trained on multiple sequence alignments learn phylogenetic relationships | Nature Communications](https://www.nature.com/articles/s41467-022-34032-y)
+- [[2110.07609] Application of Sequence Embedding in Protein Sequence-Based Predictions](https://arxiv.org/abs/2110.07609)
+- [nlp - Building NER using Sequence Alignment algorithms - Stack Overflow](https://stackoverflow.com/questions/34365621/building-ner-using-sequence-alignment-algorithms)
+- [sarahamick/NLP_sequence_alignment: An algorithm for calculating the minimum cost of aligning a sequence n with a sequence m given gap and mismatch penalties](https://github.com/sarahamick/NLP_sequence_alignment)
+- [The module for multiple sequence alignments, AlignIO · Biopython](https://biopython.org/wiki/AlignIO)
+- [MSA-Multiple-sequence-alignment-の作成 / スッキリわかるAlphaFold2 - どこから見てもメンダコ](https://horomary.hatenablog.com/entry/2021/10/01/194825#MSA-Multiple-sequence-alignment-%E3%81%AE%E4%BD%9C%E6%88%90)
+- [HMMER: biosequence analysis using profile hidden Markov models](http://hmmer.org/)
+- [Generative power of a protein language model trained on multiple sequence alignments | bioRxiv](https://www.biorxiv.org/content/10.1101/2022.04.14.488405v2)
+- [encounter1997/SFA: Official Implementation of "Exploring Sequence Feature Alignment for Domain Adaptive Detection Transformers"](https://github.com/encounter1997/SFA)
+- [OpenFold2](https://lupoglaz.github.io/OpenFold2/msa.html)
+
+- [シーケンスアラインメント - Wikipedia](https://ja.wikipedia.org/wiki/%E3%82%B7%E3%83%BC%E3%82%B1%E3%83%B3%E3%82%B9%E3%82%A2%E3%83%A9%E3%82%A4%E3%83%B3%E3%83%A1%E3%83%B3%E3%83%88)
