@@ -1,0 +1,174 @@
+<html>
+<body>
+
+<center><font size="+2">Example application of Multiple Sequence
+Alignment (MSA) to linguistic phenomena</font></center>
+
+
+<p>Here we provide an example of how the patterns of occurrence of the Spanish verb "venir" (to come) can be modelled via MSA. 
+
+<br><br><br>
+
+<dl>
+
+<dt>First, a set of clauses whose main verb is <i>venir</i> are
+extracted from a newspaper corpus in Spanish (an <b>approximate</b> English translation is provided).
+
+<dd>
+<ul>
+<li>El malestar en la policía local se viene arrastrando desde hace meses.
+<br>&nbsp&nbsp&nbsp<font size="-1"><i>The uneasiness in the local police is unsolved (comes) since months ago.</i></font>
+<li>viene de lejos.
+<br>&nbsp&nbsp&nbsp<font size="-1"><i>it comes from long ago.</i></font>
+<li>Los niños vienen de Marruecos.
+<br>&nbsp&nbsp&nbsp<font size="-1"><i>Children come from Morocco.</i></font>
+<li>La mayor parte de los ingresos del Comité vienen de los derechos de televisión.
+<br>&nbsp&nbsp&nbsp<font size="-1"><i>Most of the income of the Committee come from television rights.</i></font>
+<li>Si en septiembre algún ministro viene a visitar la zona del Besòs,
+<br>&nbsp&nbsp&nbsp<font size="-1"><i>If any minister comes to visit the Besos zone in September,</i></font>
+<li>Los ancianos no vienen a ligar.
+<br>&nbsp&nbsp&nbsp<font size="-1"><i>The elderly do not come to flirt.</i></font>
+<li>viene
+<br>&nbsp&nbsp&nbsp<font size="-1"><i>comes</i></font>
+<li>Sólo después de la paz viene la gloria.
+<br>&nbsp&nbsp&nbsp<font size="-1"><i>Only after peace, glory comes.</i></font>
+<li>Esta costumbre viene del centro de Europa.
+<br>&nbsp&nbsp&nbsp<font size="-1"><i>This tradition comes from the center of Europe.</i></font>
+</ul>
+
+<br><br>
+<dt>Then, clauses are analyzed, so that the sequences of words are transformed into sequences of chunks, see for example the analysis of the first of the above clauses:
+
+<dd>
+<ul>
+<li>[ word=El|malestar ] [ pos=sn ] [ lema=malestar ] [ gen=s ] [ num=m ] (<i>The uneasiness</i>)
+<li>[ word=en|la|policía|local ] [ pos=grup-sp ] [ anchor=en ] [ lema=policía ] (<i>in the local police</i>)
+<li>[ word=se ] [ pos=morfema-verbal ] [ lema=se ] (<i>verbal morpheme</i>)
+<li>[ word=viene|arrastrando ] [ pos=grup-verb ] [ lema=arrastrar ] [ gen=s ] [ pers=3 ] (<i>is unsolved (comes)</i>)
+<li>[ word=desde|hace|meses ] [ pos=grup-sp ] [ anchor=desde ] [ lema=mes ] (<i>since months ago</i>)
+<li>[ word=punt ] [ pos=Fp ] [ lema=punt ] (<i>full stop</i>)
+</ul>
+
+<br><br>
+<dt>Sequences of chunks are transformed into sequences of letters, in
+the format required by <a href="http://www.lsi.upc.es/~alggen/recerca/align/alphamalig/intro-alphamalig.html">Alphamalig</a>, the MSAligner we employ.
+Each chunk is assigned a letter, but it is no necessary that there is
+a one-to-one correspondence between the kinds of chunks and the
+letters that represent them. Different modellizations useful to study
+different aspects of the same input. For example, if one wants to
+study the distribution of noun phrases, chunks can be translated to
+letters as follows:
+
+<dd>
+<ul>
+<li> V --> verb "<i>venir</i>" (to come)
+<li> N --> noun phrases with a nominal head
+<li> P --> noun phrases with a pronominal head
+<li> A --> noun phrases with a nominal head and an adjective
+<li> B --> noun phrases with a pronominal head and an adjective
+<li> X --> the rest of possible phrases
+</ul>
+
+<br>
+If, on the contrary, it is the distribution of prepositional phrases
+that is to be studied, the following equivalences could be used: 
+
+<ul>
+<li> V --> verb "<i>venir</i>" (to come)
+<li> A --> prepositional phrases beginning by the prepositions <i>a</i> or <i>hacia</i> (to)
+<li> D --> prepositional phrases beginning by the prepositions <i>de</i> or <i>desde</i> (from)
+<li> P --> prepositional phrases beginning by the prepositions <i>por</i> or <i>para</i> (for)
+<li> L --> prepositional phrases beginning by the prepositions <i>ante</i>, <i>bajo</i>, <i>en</i>, <i>entre</i>, <i>sobre</i> or <i>tras</i> (location or temporal prepositions: before, under, in, between, over, behind/after)
+<li> C --> prepositional phrases beginning by the prepositions <i>con</i> or <i>contra</i> (with or against)
+<li> X --> the rest of possible phrases
+</ul>
+
+<br>
+In this examples, the equivalences used were the following:
+
+<ul>
+<li> V --> verb "<i>venir</i>" (to come)
+<li> A --> prepositional phrases beginning by the prepositions <i>a</i> or <i>hacia</i> (to)
+<li> D --> prepositional phrases beginning by the prepositions <i>de</i> or <i>desde</i> (from)
+<li> N --> noun phrases with a nominal head
+<li> P --> noun phrases with a pronominal head
+<li> R --> adverbial phrases
+<li> X --> the rest of possible phrases
+</ul>
+
+<br>
+Which resulted in the following transformation of the above sentences:
+
+<ul>
+<li>NXPVD
+<li>VD
+<li>NVD
+<li>NVD
+<li>CXNVAN
+<li>NVA
+<li>V
+<li>RRVN
+<li>NVD
+</ul>
+
+<br><br>
+<dt>Next, comparable sequences were grouped. The comparability
+criterion was length: two sequences were considered to be comparable
+when they had a similar length.
+
+<br><br>
+<dt>The following similarity criterion was established to determine the score
+assigned to match, mismatch and gap insertion for every symbol of the
+chosen alphabet:
+
+<table align=center>
+<tr><td>8</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>vnpadrx-</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+
+<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td></td><td>v</td><td>n</td><td>p</td><td>a</td><td>d</td><td>r</td><td>x</td><td>-</td></tr>
+<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+
+<tr><td>v</td><td>10000</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>n</td><td>-1000</td><td>1000<td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>p</td><td>-1000</td><td>1000</td><td>1000<td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>a</td><td>-1000</td><td>1</td><td>1</td><td>1000<td></td><td></td><td></td><td></td></tr>
+<tr><td>d</td><td>-1000</td><td>1</td><td>1</td><td>1000</td><td>1000<td></td><td></td><td></td></tr>
+<tr><td>r</td><td>-1000</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1<td></td><td></td></tr>
+<tr><td>x</td><td>-1000</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0<td></td></tr>
+<tr><td>-</td><td>-10000</td><td>-1000</td><td>-1000</td><td>-1000</td><td>-1000</td><td>-1000</td><td>-1000</td><td>-10000</td></tr>
+</table>
+
+<br>
+This criterion maximizes the match for the verb, so that alignments tend to be established around an axis constituted by the verb. On the ohter hand, the two kinds of noun phrases (nominal and pronominal) are considered to be more similar to each other than to prepositional phrases, and viceversa. This favours matches between the two kinds of noun phrases and disfavours matches between less similar kinds of chunks. Gap insertion, expressed in this similarity criterion as the score assigned to the match between each symbol and the gap, is assigned a very low score, in order to force correspondences between chunks. 
+
+<br><br>
+<dt>Sets of comparable sequences were aligned, and the following
+profile of the alignment was obtained:
+
+<dd> <br><b>--Vx-</b><br>
+
+<dt>This profile is little informative, because the gap is the
+predominant symbol, and it conveys no information. The other two
+predominant symbols are the verb and X, the symbol assigned to the
+categories that are not object of study. These two symbols are also
+very little informative. The verb is little informative because the
+high similarity measure assigned to it imposes a very strong bias to
+its alignment, which becomes then quite predictable. On the other
+hand, X is a very frequent symbol, so the probability that it is
+representative of a profile is very high.<br>
+
+<br><br>
+<dt>In order to obtain more informative alignments, the X symbol was
+removed from the sequences to align, and also from the similarity
+criterion. Then, comparable sequences were aligned, and the following
+profile of the alignment was obtained:
+
+<dd> <br><b>--nVd-</b><br>
+
+<dt>This profile is much more informative, as it reflects the fact that, for a given set of clauses containing the verb <i>venir</i>, a recurrent pattern is the occurrence of a noun phrase before the verb and a prepositional phrase introduced by the preposition "<i>de</i>" (from) after the verb.
+
+</dl>
+
+</body>
+</html>

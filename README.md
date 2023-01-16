@@ -20,8 +20,11 @@ This software was made by Jordi Escribano.
 
 ## 出典
 
+Universitat Politècnica de Catalunya / BarcelonaTech (UPC)のNLPグループの2002年頃の成果物から。
+
 - [Multiple Sequence Alignment for Linguistics](https://www.cs.upc.edu/~nlp/msa.html)
 - [ALPHAMALIG - Alignment of sequences of a finite alphabet](https://alggen.cs.upc.edu/recerca/align/alphamalig/intro-alphamalig.html)
+  - https://alggen.cs.upc.edu/recerca/align/alphamalig/alphamalig.tar
 - [Example application of Multiple Sequence Alignment (MSA) to linguistic phenomena](https://www.cs.upc.edu/~nlp/exampleMSA.html)
 - [Tools, demos and resources](https://www.cs.upc.edu/~nlp/tools.html)
 

@@ -1,0 +1,129 @@
+<?xml version="1.0"?>
+<!DOCTYPE html PUBLIC>
+<html xml:lang="en" lang="en">
+
+  <head>
+    <title>Multiple Sequence Alignment for Linguistics</title>
+    <meta name="keywords" content="Multiple Sequence Alignment, Text Mining" />
+    <meta name="description" content="Introduction to Multiple Sequence Alignment for Linguistics" />
+  </head>
+
+
+<body>
+<p><font size="+3"><center><b>M</b>ultiple <b>S</b>equence <b>A</b>lignment (<b>MSA</b>) <br> for Linguistics</center></font>
+
+
+<br><br><p><font size="+2">What is <b>M</b>ultiple <b>S</b>equence <b>A</b>lignment (<b>MSA</b>)?</font>
+
+<p>MSA is a data mining technique for <b>discovering patterns</b> in a set of comparable sequences.
+
+<br><br><br><p><font size="+2">What <b>kind of information</b> is it sensible to apply MSA to?</font>
+
+<p>Any kind of information can undergo MSA, as long as it can be modelled as a <b>sequence of symbols of a finite alphabet</b>. The best-known example of such modelling are DNA sequences, whose own physical constitution can be immediately translated to a 
+sequence of letters. Applying MSA techniques to these sequences has resulted in the complete description of the human genome. However, MSA is not limited to DNA sequences. Other sequences that can be successfully modelled are: proteins, timelines, many ki
+nds of linguistic sequences. 
+
+<p>Since the purpose of aligning sequences is to discover patterns, it only makes sense to align those kinds of information that can be partitioned in different, comparable sequences, and where recurrent patterns can be found.
+
+<br><br><br><p><font size="+2">What is the <b>outcome</b> of MSA?</font>
+
+<p>In general terms, an MSA process results in a set of <b>aligned sequences</b>, usally with a calculation of the relative similarity among them, and a <b>model of the alignment</b>, usually with some score of its reliability. This model conveys the recu
+rrencies found in the set of sequences, and can be expressed in many forms: as a sequence <b>profile</b> that synthesizes the major commonalities between all sequences of the set, as a <b>lattice</b> that accounts for the possible compositions of sequence
+s, etc.
+
+<br><br><br><p><font size="+2">How does it work?</font>
+
+<p>MSA is usually implemented as an extension of <b>pairwise alignment</b>. The input to pairwise alignment are two sequences and a similarity criterion or scoring function that describes the similarity between the different symbols that constitute the se
+quences. The alignment algorithm determines the highest-scoring way to perform insertions, deletions and changes to transform one of the sequences into the other. This results in a new sequence containing the initial pair.
+
+<p>Scorings are determined with respect to the similarity criterion, so that more similar sequences are assigned a higher score. More similar sequences are those that need less insertions, deletions or changes to become equal, that is to say, those with a
+ more comparable number of symbols, and whose symbols are more similar.
+
+<p>For MSA, the input is a set of sequences and also a similarity criterion. The most similar pair of sequences according to the given similarity criterion is found in the starting set, and they are aligned. The aligned sequences are removed from the set,
+ and are replaced by the sequence resulting from the alignment. The process is repeated iteratively until a single sequence is found that contains all the sequences in the original set.
+
+<br><br><br><p><font size="+2">What do I need to carry out MSA?</font>
+
+<p>To carry out MSA, the following is needed:
+
+<ul>
+<li><b>transform information to sequences</b> of symbols of a finite alphabet, which implies determining the <b>meaning of the alphabet symbols</b>, by abstracting from particular sequences. For example, if one wants to transform documents into sequences,
+ they can be modelled as:
+      <ul>
+      <li>sequences of paragraphs, where the types of paragraphs can be distinguished by length, by the semantic group of the majority of words in the paragraph, by the section where they belong, etc.</li>
+      <li>sequences of sentences, and the different types of sequences can be distinguished by the type of the main verb, by their inner structure (simple or complex), by their number of constituents, etc.</li>
+      <li>sequences of chunks, distinguished by their head, their length, etc.</li>
+      <li>sequences of a finite set of significative words, for example, proper names, referential expressions, discourse particles, some content words, etc. In this case, the words that do not belong to the set of significative words can be represented i
+n the sequence, as a default type, or they can be ignored.</li>
+      <li>many others</li>
+      </ul>
+</li>
+<li>determine a <b>similarity criterion</b> that accounts for the similarity between all the symbols in the alphabet, between each symbol and itself and between each symbol and a gap. For example, for the alignment of sentence constituents, one has to det
+ermine if similarity between a noun phrase and a pronominal phrase is equal, bigger or smaller than the similarity between a noun phrase and an adverbial phrase. It must also be determined whether all constituents can be equally substituted by a gap, that
+ is to say, if all constituents are equally relevant for comparison. For example, one must determine if a sentence with two main verbs is as similar to a sentence with one main verb as a sentence with two adverbial phrases is to a sentence with one adverb
+ial phrase.
+</li>
+<li>determine which sequences are <b>comparable</b>. Comparability is crucially determined by the kind of information that one wants to obtain from the alignment. For example, if one wants to study the patterns of sentences with causative verbs, one has t
+o align only sentences with causative verbs or even with subtypes of causative verbs. If one wants to study the patterns found in some kind of semantic field, one has to align sentences which contain words belonging to that field. In any case, comparabili
+ty is only guaranteed for sequences of similar length.
+</li>
+<li>
+set <b>significance thresholds</b> for every variable, for example, to determine the number of sequences to be aligned, or if the score assigned to an alignment is indicating that the alignment conveys a relevant pattern or not.
+</li>
+</ul>
+
+<p>And, of course, a <b>program</b> that can perform MSA! Usually, such programs have been oriented to aligning DNA sequences, so they allow very little parametrisation: the input alphabet is limited to the four symbols that form DNA sequences (A,C,G,T), 
+and the similarity criterion usually admits little changes. However, for an adequate modelling of other kinds of sequences, a more flexible tool is needed.
+
+<p><a href="http://www.lsi.upc.es/~alggen/recerca/align/alphamalig/intro-alphamalig.html"><b>Alphamalig</b></a> is a MSA tool that supports a configurable alphabet and allows determining a similarity criterion. It is accessible via web (http://www.lsi.upc.es/~gralggen
+/recerca/alialfb/alphamalig.html) and provides different possibilites for the visualization of the results. In addition, detailed instructions on usage are available, with various examples on the effects of similarity criteria.
+
+<br>
+<br>
+<br>
+
+<p><font size="+2"><a href="exampleMSA.html">An illustrative example</a></font>
+
+<br>
+<br>
+<br>
+
+<p><font size="+2">Some further work on MSA applied to linguistics</font>
+
+<p>The best known application of MSA is to discover recurrent patterns in DNA. However, the parallelism of biological sequences to other kinds of sequences has been long attested, for example, in the forums about String Processing (<a href="http://acai.pp
+gi.fua.br/spire03/">SPIRE</a>). More concretely about linguistics, there has recently been some work on MSA applied to the discovery of patterns at sentence level.
+
+<p>Geert M. Jan Kruijff aims to discover <b>linearization rules</b> by MSA of annotated sentences. He exploits the information available in the treebanks for Czech, Dutch, German and English. His target is to obtain a model of how words are realized in su
+rface structures in each of these languages, and to make comparisons between each other.
+
+<p>His invited talk at FG'02 <a href="#gj1">[3]</a> provides a very clear, interesting view about preliminary experiments on applying MSA techniques to annotated sentence structures from four different tree-banks. Kruijff adresses fundamental questions ab
+out applying MSA to linguistics, like comparability or significance.
+
+<p>Regina Barzilay and Lilian Lee apply MSA to <b>acquire knowledge for paraphrasing</b>, a subfield of Natural Language Generation recently addressed by statistical techniques. In a first experiment <a href="#regi1">[1]</a>, they aligned parallel corpora
+ with semantic annotation to acquire <b>phrase-level semantic equivalents</b>. A second experiment <a href="#regi2">[2]</a> was aimed to obtain <b>sentence level paraphrases</b> by MSA of comparable corpora (news agency stories about the same event) with 
+no annotation at all. This last experiment clearly shows the portability and the potential of this technique for data mining of linguistic sequences.
+
+<br>
+<br>
+<br>
+<br>
+<p><font size="+2">References</font>
+
+<br>
+<br>
+<br>
+
+<a name="regi1">
+</a><p>[1] Regina Barzilay, Lillian Lee, "Learning to Paraphrase: An Unsupervised Approach Using Multiple-Sequence Alignment", in Proceedings of NAACL-HLT, 2003. 
+<br><font size="-1">(available from personal web page, <a href="http://www.cs.cornell.edu/~regina/">http://www.cs.cornell.edu/~regina/</a>)</font>
+
+<a name="regi2">
+<p>[2] Regina Barzilay, Lilian Lee, "Bootstrapping Lexical Choice via Multiple-Sequence Alignment" in EMNLP'02 
+<br><font size="-1">(available from personal web page, <a href="http://www.cs.cornell.edu/~regina/">http://www.cs.cornell.edu/~regina/</a>)</font>
+
+<a name="gj1">
+<p>[3] Geert-Jan M. Kruijff, "Learning linearization rules from treebanks". Invited talk at the Formal Grammar'02/COLOGNET-ELSNET Symposium "Combining logical and data-oriented approaches in NLP"
+<br><font size="-1">(available from personal web page, <a href="http://www.coli.uni-sb.de/~gj/">http://www.coli.uni-sb.de/~gj/</a>)</font>
+
+</body>
+<html>
