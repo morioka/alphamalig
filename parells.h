@@ -1,11 +1,16 @@
 /*************************************************************************/
-                                  //Fitxer: parells.h
-                                  //Autor: Xavier Solé Acha
-                                  //Descripció: Aquí estan les capsaleres de les funcions per alinear parells
-                                  //de seqüències
-                                  /*************************************************************************/
+// Fitxer: parells.h
+// Autor: Xavier Solï¿½ Acha
+// Descripciï¿½: Aquï¿½ estan les capsaleres de les funcions per alinear parells
+// de seqï¿½ï¿½ncies
+/*************************************************************************/
 
-                                  //Variables que intervenen en el procés
+// Variables que intervenen en el procï¿½s
 
-                                  //Definicio dels prototips
-                                  float similitud(float **matriu, char *seq1, char *seq2, long long_seq1, long long_seq2);
+#ifndef _PARELIS_H_
+#define _PARELIS_H_
+
+// Definicio dels prototips
+float similitud(float **matriu, char *seq1, char *seq2, long long_seq1, long long_seq2);
+
+#endif

@@ -1,24 +1,30 @@
 /*************************************************************************/
-                                  //Fitxer: align.h
-                                  //Autor: Xavier Solé Acha
-                                  //Descripció: Aquest fitxer contindrà totes les estructures de dades del 
-                                  //programa, així com les diverses variables globals que necessitem.
-                                  /*************************************************************************/
-                                  #include <stdio.h>
-                                  #include "const.h"
-                                  FILE *fitxer_entrada; //Fitxer d'entrada de les seqüències
-                                  FILE *fitxer_temporal; //Fitxer temporal que emmagatzema les seqüències
-                                  FILE *fitxer_alfabet;//Fitxer que emmagatzema l'alfabet en el formata adequat
+// Fitxer: align.h
+// Autor: Xavier Sol Acha
+// Descripci: Aquest fitxer contindr totes les estructures de dades del
+// programa, aix com les diverses variables globals que necessitem.
+/*************************************************************************/
+#include <stdio.h>
+#include "const.h"
 
-                                  char nom_fitxer_temporal[13]; //Nom del fitxer temporal
+#ifndef _ALIGN_H_
+#define _ALIGN_H_
 
-                                  int numsimb;   //nombre de simbols de l'alfabet
-                                  char alfabet[MAXLONGALF];//alfabet en posicions 1,2,..,numsimb
-                                  int num_seqs;   //Nombre de seqüències que hi ha al fitxer
+extern FILE *fitxer_entrada;  // Fitxer d'entrada de les seqncies
+extern FILE *fitxer_temporal; // Fitxer temporal que emmagatzema les seqncies
+extern FILE *fitxer_alfabet;  // Fitxer que emmagatzema l'alfabet en el formata adequat
 
-                                  float matpenal[MAXLONGALF][MAXLONGALF];  //PUNTUACIO match,mismatch i gap...
-                                  float **matriu_puntuacions;  //Matriu que contindrà la puntuació de l'alineament òptim entre totes les seqüències
-                                  char **matriu_cami; //Conté per on s'ha omplert cada posicio de la matriu ('e': esquerra, 'a':amunt, 'd': diagonal)
+extern char nom_fitxer_temporal[13]; // Nom del fitxer temporal
 
-                                  int args(int argc, char** argv);
-                                  void leer_alfabeto(FILE *fd);                     
+extern int numsimb;              // nombre de simbols de l'alfabet
+extern char alfabet[MAXLONGALF]; // alfabet en posicions 1,2,..,numsimb
+extern int num_seqs;             // Nombre de seqncies que hi ha al fitxer
+
+extern float matpenal[MAXLONGALF][MAXLONGALF]; // PUNTUACIO match,mismatch i gap...
+extern float **matriu_puntuacions;             // Matriu que contindr la puntuaci de l'alineament ptim entre totes les seqncies
+extern char **matriu_cami;                     // Cont per on s'ha omplert cada posicio de la matriu ('e': esquerra, 'a':amunt, 'd': diagonal)
+
+extern int args(int argc, char **argv);
+extern void leer_alfabeto(FILE *fd);
+
+#endif
