@@ -4,14 +4,14 @@
 #define _COMPROBACIONS_H_
 
 void comprovar_fitxer_temporal();
-void comprovarlecturaalfabet();
+void check_reading_alphabet();
 void comprovar_alineament_optim(float res, char *seq1, char *seq2, long longseq1, int k);
-void comprovar_similitud(char *seq1, char *seq2, long longseq1, long longseq2);
+void check_similarity(char *seq1, char *seq2, long longseq1, long longseq2);
 
-void comprovar_carregar_sequencia(char *seq, long longseq);
+void check_load_sequence(char *seq, long longseq);
 void comprovar_matriu_similaritats(float **matriu);
-void comprovar_info_cluster(float **info);
+void check_cluster_info(float **info);
 
-void comprova_matriu_cami(float **, int l1, int l2);
+void check_path_matrix(float **, int l1, int l2);
 
 #endif

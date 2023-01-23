@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void comprovarlecturaalfabet()
+void check_reading_alphabet()
 {
     int i, j;
     printf("\nNum of symbols =%d\n", numsimb);
@@ -22,7 +22,7 @@ void comprovarlecturaalfabet()
     }
 }
 
-void comprovar_similitud(char *seq1, char *seq2, long longseq1, long longseq2)
+void check_similarity(char *seq1, char *seq2, long longseq1, long longseq2)
 {
 
     // char alin[2][2*MAXLONGSEQ];
@@ -82,7 +82,7 @@ void comprovar_similitud(char *seq1, char *seq2, long longseq1, long longseq2)
     free(alin1);
 }
 
-void comprovar_carregar_sequencia(char *seq, long longseq)
+void check_load_sequence(char *seq, long longseq)
 {
     int i;
     printf("\n check load sequence");
@@ -116,10 +116,10 @@ void comprovar_matriu_similaritats(float **matriu)
     }
 }
 
-void comprovar_info_cluster(float **info)
+void check_cluster_info(float **info)
 {
     int i, j;
-    printf("\n Check info cluster\n");
+    printf("\n Check cluster info\n");
     for (i = 0; i < 10; i++)
     {
         for (j = 0; j < numsimb; j++)
@@ -128,7 +128,7 @@ void comprovar_info_cluster(float **info)
     }
 }
 
-void comprova_matriu_cami(float **mat, int l1, int l2)
+void check_path_matrix(float **mat, int l1, int l2)
 {
     int i, j;
     printf("l1=%d,l2=%d\n", l1, l2);

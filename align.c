@@ -59,7 +59,7 @@ int args(int argc, char **argv)
 }
 
 // function that reads the alphabet, the score matrix and the gap
-void leer_alfabeto(FILE *fd)
+void read_alphabet(FILE *fd)
 {
     int i, j;
     fscanf(fd, "%d\n", &numsimb);
@@ -98,8 +98,9 @@ int main(int argc, char *argv[])
         printf("Error reading the alphabet file\n");
         exit(1);
     }
-    leer_alfabeto(fitxer_alfabet);
-    comprovarlecturaalfabet();
+    read_alphabet(fitxer_alfabet);
+    check_reading_alphabet();
+
     // initialize the global variables alphabet, matpenal, numsimb
     if ((fitxer_entrada = fopen(argv[2], "r")) == NULL)
     {
@@ -234,7 +235,7 @@ int main(int argc, char *argv[])
         {
             long_seq = dona_longitud_seq(j);
             carregar_sequencia(seq, j);
-            // comprovar_carregar_sequencia(seq,long_seq);
+            // check_load_sequence(seq,long_seq);
             k = j + 1;
             printf("\n");
             while (k < num_seqs)
@@ -242,10 +243,10 @@ int main(int argc, char *argv[])
                 printf(".");
                 long_seq2 = dona_longitud_seq(k);
                 carregar_sequencia(seq2, k);
-                // comprovar_carregar_sequencia(seq2,long_seq2);
+                // check_load_sequence(seq2,long_seq2);
                 res = similitud(matriu, seq, seq2, long_seq, long_seq2);
-                //      comprova_matriu_cami(matriu,long_seq,long_seq2);
-                //      comprovar_similitud(seq, seq2, long_seq, long_seq2);
+                //      check_path_matrix(matriu,long_seq,long_seq2);
+                //      check_similarity(seq, seq2, long_seq, long_seq2);
                 matriu_puntuacions[j][k] = res;
                 matriu_puntuacions[k][j] = res;
                 k++;

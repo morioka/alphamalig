@@ -209,12 +209,12 @@ void alineament_multiple(float **matriu, int output_format)
 
       construir_info_cluster(i, info1, fitxer_cluster_1);
       // printf("\n 2.1.e\n");
-      //      comprovar_info_cluster(info1);///////////////////
+      //      check_cluster_info(info1);///////////////////
       construir_info_cluster(j, info2, fitxer_cluster_2);
       // printf("\n 2.1.f\n");
-      //      comprovar_info_cluster(info2);///////////////////
+      //      check_cluster_info(info2);///////////////////
       alineament_clusters(matriu, i, j, info1, info2, linia_orig, linia_desti, resultat_cluster1, resultat_cluster2, &clusters[i]->puntuacio);
-      //     comprova_matriu_cami(matriu,clusters[i]->long_seqs,clusters[j]->long_seqs);
+      //     check_path_matrix(matriu,clusters[i]->long_seqs,clusters[j]->long_seqs);
       recalcular_matriu(i, j); // tambe s'ha fet dins aliniament_clusters
       fclose(fitxer_cluster_1);
       fclose(fitxer_cluster_2);
@@ -672,7 +672,7 @@ long afegir_sequencia_cluster(FILE *fitxer, int num_seq)
     clusters[num_seq]->long_seqs = l;
 
     carregar_sequencia(seq, num_seq);
-    //    comprovar_carregar_sequencia(seq,clusters[num_seq]->long_seqs);
+    //    check_load_sequence(seq,clusters[num_seq]->long_seqs);
     pos_fitxer = ftell(fitxer);
     fprintf(fitxer, "%s", seq);
   }

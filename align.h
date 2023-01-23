@@ -25,6 +25,6 @@ extern float **matriu_puntuacions;             // Matrix containing the score of
 extern char **matriu_cami;                     // Count where each position of the matrix has been filled ('e': left, 'a':up, 'd': diagonal)
 
 extern int args(int argc, char **argv);
-extern void leer_alfabeto(FILE *fd);
+extern void read_alphabet(FILE *fd);
 
 #endif
