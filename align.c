@@ -15,6 +15,7 @@
 #include <fcntl.h>
 #include <ctype.h>
 #include "comprobacions.h"
+#include <assert.h>
 
 FILE *input_file;  // file of entry of the sequencies
 FILE *temp_file; // temporary file that stores the sequencies
@@ -64,17 +65,52 @@ void read_alphabet(FILE *fd)
     int i, j;
     fscanf(fd, "%d\n", &num_symbols);
 
+    /* check hex_mode or not (normal_mode) */
+    int hex_mode;
+    char c1;
+    fscanf(fd, "%c", &c1);
+    fscanf(fd, "%c", &c1);
+    fseek(fd, 0, SEEK_SET);
+    fscanf(fd, "%d\n", &num_symbols);
+    hex_mode = (c1 != 0x20) ? 1 : 0;
+
     for (i = 1; i <= num_symbols; i++)
     {
-        if (num_symbols < 64)   // [A-Za-z0-9] + '-' (gap)
+        if (hex_mode)
         {
-            fscanf(fd, "%c ", &alphabet[i]);
-        } else {
             int c;
             fscanf(fd, "%x ", &c);
             alphabet[i] = (char)c;
+
+        } else {
+            fscanf(fd, "%c ", &alphabet[i]);
         }
     }
+
+    // check
+    for (i = 1; i <= num_symbols; i++)
+    {
+        assert(alphabet[i] != 0x00);    // # NUL (0x00)
+        assert(alphabet[i] != 0x3e);    // # > (0x3e)
+        assert(alphabet[i] != 0x3d);    // # = (0x3d)
+        assert(alphabet[i] != 0x3c);    // # < (0x3c)
+        assert(alphabet[i] != 0x20);    // # Space (0x20)
+        assert(alphabet[i] != 0x0d);    // # Carriage Return (0x0d) 
+        assert(alphabet[i] != 0x0a);    // # Line Feed (0x0a)
+    }
+    assert(alphabet[num_symbols] == 0x2d);    // # - (0x2d)
+
+    // check duplicates
+    int check_alphabet[256];
+    for (i = 0; i < 256; i++)
+        check_alphabet[i] = 0;
+    for (i = 1; i <= num_symbols; i++)
+        check_alphabet[alphabet[i]] += 1;
+    for (i = 0; i < 256; i++)
+    {
+        assert(check_alphabet[i] < 2);
+    }
+    
     //for (i = 1; i < num_symbols; i++)
     //{
     //    alphabet[i] = toupper(alphabet[i]);
