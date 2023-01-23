@@ -66,7 +66,14 @@ void read_alphabet(FILE *fd)
 
     for (i = 1; i <= numsimb; i++)
     {
-        fscanf(fd, "%c ", &alfabet[i]);
+        if (numsimb < 54)   // [A-Za-z] + '-' (gap)
+        {
+            fscanf(fd, "%c ", &alfabet[i]);
+        } else {
+            int c;
+            fscanf(fd, "%x ", &c);
+            alfabet[i] = (char)c;
+        }
     }
     //for (i = 1; i < numsimb; i++)
     //{
@@ -100,7 +107,7 @@ int main(int argc, char *argv[])
     }
     read_alphabet(fitxer_alfabet);
     check_reading_alphabet();
-
+    exit(0);
     // initialize the global variables alphabet, matpenal, numsimb
     if ((fitxer_entrada = fopen(argv[2], "r")) == NULL)
     {
