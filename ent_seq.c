@@ -1,8 +1,8 @@
 /*************************************************************************/
-// Fitxer: ent_seq.c
-// Autor: Xavier Sol Acha
-// Descripci: Aqu estan les funcions que llegiran i processaran les
-// cadenes d'ADN que es trobin al fitxer d'entrada
+// File: ent_seq.c
+// Author: Xavier Sol Acha
+// Description: Here are the functions that will read 
+// and process the DNA strings found in the input file
 /*************************************************************************/
 
 #include <stdlib.h>
@@ -14,23 +14,22 @@
 #include "const.h"
 #include "auxiliar.h"
 
-// Implementaci de les funcions
+// Implementation of the functions
 
-/* llegir_sequencies_fitxer **********************************************/
-// Aquesta funci fa tantes crides a carregar_sequencia com seqncies hi
-// hagi en el fitxer original.Retorna el nombre de seqncies que hi ha al
-// fitxer.
-int llegir_sequencies_fitxer(void)
+/* read_sequences_file **********************************************/
+// This function makes as many calls to load_sequence as there are 
+// sequences in the original file. Returns the number of sequences in the file.
+int read_sequences_file(void)
 {
         int i, estat = 1;
 
-        num_seqs = compta_sequencies(); // Deixa el punter a l'inici del fitxer
+        num_seqs = count_sequences(); // Leave the pointer at the beginning of the file
         if ((num_seqs <= MAXSEQ) && (num_seqs > 1))
         {
                 i = 0;
                 while ((i < num_seqs) && (estat == 1))
                 {
-                        estat = escriure_sequencia_tmp(i);
+                        estat = write_sequence_tmp(i);
 
                         i++;
                 }
@@ -42,34 +41,34 @@ int llegir_sequencies_fitxer(void)
         return (num_seqs);
 }
 
-/* escriure_sequencia_tmp ******************************************************/
-// Llegeix la segent seqncia que apareix al fitxer i l'escriu al fitxer temporal
-// en el meu format
-int escriure_sequencia_tmp(int num_seq)
+/* write_sequence_tmp ******************************************************/
+// It reads the following sequence that appears in the file 
+// and writes it to the temporary file in my format
+int write_sequence_tmp(int num_seq)
 {
-        static char linia[MAXLONGSEQ + 1];
+        static char line[MAXLONGSEQ + 1];
         static char seq_nucl[MAXLONGSEQ + 1];
         static char nom[MAXLONGNOM + 1];
         char c;
         int i, long_seq = 0, long_nom = 0, estat = 1;
 
-        while (((*linia) != '>') && !(feof(fitxer_entrada)))
+        while (((*line) != '>') && !(feof(input_file)))
         {
-                fgets(linia, MAXLINIA, fitxer_entrada);
+                fgets(line, MAXLINE, input_file);
         }
 
-        strncpy(nom, linia + 1, MAXLONGNOM);
+        strncpy(nom, line + 1, MAXLONGNOM);
         nom[MAXLONGNOM] = EOS;
 
-        while (fgets(linia, MAXLINIA + 1, fitxer_entrada) && (long_seq < MAXLONGSEQ) && (*linia != '>'))
+        while (fgets(line, MAXLINE + 1, input_file) && (long_seq < MAXLONGSEQ) && (*line != '>'))
         {
                 i = 0;
-                c = linia[i];
-                while ((i <= MAXLINIA) && (c != '\n') && (c != EOS) && (c != '>'))
+                c = line[i];
+                while ((i <= MAXLINE) && (c != '\n') && (c != EOS) && (c != '>'))
                 {
-//                        c = toupper(linia[i]);
-                        c = linia[i];
-                        if (pertany_alfabet(c))
+//                        c = toupper(line[i]);
+                        c = line[i];
+                        if (belong_alphabet(c))
                         {
 //                                seq_nucl[long_seq] = toupper(c);
                                 seq_nucl[long_seq] = c;
@@ -84,121 +83,121 @@ int escriure_sequencia_tmp(int num_seq)
         }
         seq_nucl[long_seq] = EOS;
 
-        fprintf(fitxer_temporal, ">%d\n", num_seq);
-        fprintf(fitxer_temporal, "%s\n", nom);
-        fprintf(fitxer_temporal, "@%d\n", long_seq);
-        fprintf(fitxer_temporal, "#%s\n", seq_nucl);
+        fprintf(temp_file, ">%d\n", num_seq);
+        fprintf(temp_file, "%s\n", nom);
+        fprintf(temp_file, "@%d\n", long_seq);
+        fprintf(temp_file, "#%s\n", seq_nucl);
 
         return (estat);
 }
 
 /* dona_longitud_sequencia ******************************************************/
-// Retorna la longitud de la sequencia "num_seq", llegint-la del fitxer temporal
+// Returns the length of the sequence "num_seq", reading it from the temporary file
 long dona_longitud_seq(int num_seq)
 {
-        static char linia[MAXLINIA + 1];
+        static char line[MAXLINE + 1];
         static char aux[10];
         int i = 1, trobat = FALSE;
 
-        fseek(fitxer_temporal, 0, SEEK_SET);
+        fseek(temp_file, 0, SEEK_SET);
         while (trobat == FALSE)
         {
-                while ((*linia) != '>')
+                while ((*line) != '>')
                 {
-                        fgets(linia, MAXLINIA, fitxer_temporal);
+                        fgets(line, MAXLINE, temp_file);
                 }
-                strcpy(aux, linia + 1);
+                strcpy(aux, line + 1);
                 if (atoi(aux) == num_seq)
                 {
                         trobat = TRUE;
                 }
                 else
                 {
-                        fgets(linia, MAXLINIA, fitxer_temporal);
+                        fgets(line, MAXLINE, temp_file);
                 }
         }
-        while ((*linia) != '@')
+        while ((*line) != '@')
         {
-                fgets(linia, MAXLINIA, fitxer_temporal);
+                fgets(line, MAXLINE, temp_file);
         }
-        strcpy(aux, linia + 1);
+        strcpy(aux, line + 1);
 
         return (atol(aux));
 }
 
 /* carregar_sequencia ******************************************************/
-// Retorna la codificaci de la sequencia "num_seq" a l'array "seq"
+// Returns the encoding of the sequence "num_seq" in the array "seq"
 void carregar_sequencia(char *seq, int num_seq)
 {
-        static char linia[MAXLONGSEQ + 1];
+        static char line[MAXLONGSEQ + 1];
         static char aux[10];
         int i = 1, trobat = FALSE;
 
-        fseek(fitxer_temporal, 0, SEEK_SET);
+        fseek(temp_file, 0, SEEK_SET);
         while (trobat == FALSE)
         {
-                while ((*linia) != '>')
+                while ((*line) != '>')
                 {
-                        fgets(linia, MAXLONGSEQ, fitxer_temporal);
+                        fgets(line, MAXLONGSEQ, temp_file);
                 }
-                strcpy(aux, linia + 1);
+                strcpy(aux, line + 1);
                 if (atoi(aux) == num_seq)
                 {
                         trobat = TRUE;
                 }
                 else
                 {
-                        fgets(linia, MAXLONGSEQ, fitxer_temporal);
+                        fgets(line, MAXLONGSEQ, temp_file);
                 }
         }
-        while ((*linia) != '#')
+        while ((*line) != '#')
         {
-                fgets(linia, MAXLONGSEQ, fitxer_temporal);
+                fgets(line, MAXLONGSEQ, temp_file);
         }
-        strcpy(seq, linia + 1);
+        strcpy(seq, line + 1);
 }
 
-/* carregar_sequencia_posicio_exacte ***************************************/
-// Retorna la codificaci de la sequencia on apunta el punter de lectura. Aquest
-// punter ha d'apuntar a la lnia anterior a la codificaci de la seqncia
-void carregar_sequencia_posicio_exacte(char *seq)
+/* load_sequence_exact_position ***************************************/
+// Returns the encoding of the sequence pointed to by the read pointer. 
+// This pointer must point to the line before the encoding of the sequence
+void load_sequence_exact_position(char *seq)
 {
-        static char linia[MAXLONGSEQ + 1];
+        static char line[MAXLONGSEQ + 1];
 
-        fgets(linia, MAXLINIA, fitxer_temporal);
-        strcpy(seq, linia + 1);
+        fgets(line, MAXLINE, temp_file);
+        strcpy(seq, line + 1);
 }
 
-/* carregar_nom_sequencia ******************************************************/
+/* load_sequence_name ******************************************************/
 // Return the first 10 characters of the name "num_seq" to the array "nom(name)"
-void carregar_nom_sequencia(char *nom, int num_seq)
+void load_sequence_name(char *nom, int num_seq)
 {
-        static char linia[MAXLINIA + 1];
+        static char line[MAXLINE + 1];
         static char aux[10];
         int i = 0, trobat = FALSE;
 
-        fseek(fitxer_temporal, 0, SEEK_SET);
+        fseek(temp_file, 0, SEEK_SET);
         while (trobat == FALSE)
         {
-                while ((*linia) != '>')
+                while ((*line) != '>')
                 {
-                        fgets(linia, MAXLINIA, fitxer_temporal);
+                        fgets(line, MAXLINE, temp_file);
                 }
-                strcpy(aux, linia + 1);
+                strcpy(aux, line + 1);
                 if (atoi(aux) == num_seq)
                 {
                         trobat = TRUE;
                 }
                 else
                 {
-                        fgets(linia, MAXLINIA, fitxer_temporal);
+                        fgets(line, MAXLINE, temp_file);
                 }
         }
 
-        fgets(linia, MAXLINIA, fitxer_temporal);
-        while ((i < 10) && (linia[i] != EOS))
+        fgets(line, MAXLINE, temp_file);
+        while ((i < 10) && (line[i] != EOS))
         {
-                nom[i] = linia[i];
+                nom[i] = line[i];
                 i++;
         }
         nom[i] = EOS;

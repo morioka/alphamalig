@@ -1,8 +1,8 @@
 /*************************************************************************/
-// Fitxer: auxiliar.h
-// Autor: Xavier Sol Acha
-// Descripci: Fitxer de capsalera per les funcions d'utilitat per
-// l'aplicaci.
+// File: auxiliar.h
+// Author: Xavier Sol Acha
+// Description: Header file for the utility functions for
+// the application.
 /*************************************************************************/
 
 // Definici dels prototips
@@ -10,13 +10,13 @@
 #ifndef _AUXILIAR_H_
 #define _AUXILIAR_H_
 
-int pertany_alfabet(char c);
+int belong_alphabet(char c);
 float maxim_real(float x, float y, float z, char *c);
-int compta_sequencies(void);
+int count_sequences(void);
 void mostrar_matriu(float **m, int files, int cols); // Chivato function ********************************
-int generar_prefix_fitxers(char *nom_fit);
-void omplir_string_prefix(char *pref, int num_pref);
-char a_caracter(int num);
-int indexsimbol(char c);
+int generate_prefix_files(char *nom_fit);
+void fill_string_prefix(char *pref, int num_pref);
+char to_character(int num);
+int symbol_index(char c);
 
 #endif

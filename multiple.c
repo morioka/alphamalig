@@ -1,8 +1,8 @@
 /************************************************************************/
-// Fitxer: multiple.c
-// Autor: Xavier Sol Acha
-// Descripci: Aqu est la implementaci de les funcions per fer laliniament
-// mltiple de seqncies
+// File: multiple.c
+// Author: Xavier Sol Acha
+// Description: Here is the implementation of the functions to do the alignment
+// multiple sequences
 /************************************************************************/
 
 #include <stdio.h>
@@ -20,35 +20,35 @@
 #include "sort_seq.h"
 
 // Fitxers temporals
-FILE *fitxer_clusters;
-FILE *fitxer_cluster_1;
-FILE *fitxer_cluster_2;
+FILE *clusters_file;
+FILE *cluster_file_1;
+FILE *cluster_file_2;
 
-char nom_fitxer_clusters[13];
-char nom_fitxer_cluster_1[13];
-char nom_fitxer_cluster_2[13];
+char clusters_filename[13];
+char cluster_filename_1[13];
+char cluster_filename_2[13];
 
 int **seqs; // Modificaci per arreglar el bug
 
 cluster **clusters;            // Vector de clusters
 long *pos_seq;                 // Cont la posici de la seqencia al fitxer on guardem les seqncies semialiniades
-long *pos_seq_fitxer_clusters; // Cont la posici de la seqncia al fitxer del cluster que ser utilitzat per aliniar
+long *pos_seq_clusters_file; // Cont la posici de la seqncia al fitxer del cluster que ser utilitzat per aliniar
 int *seq_cluster;              // Cont a quin cluster pertany cada seqncia
 int *cluster_equivalent;       // Cont equivalncies entre clusters
 
-/* alineament_multiple */
+/* multiple_alignment */
 /*Funci que portar a terme laliniament mltiple de les seqncies a
   //partir de la matriu de puntuacions dos a dos*/
-void alineament_multiple(float **matriu, int output_format)
+void multiple_alignment(float **matriu, int output_format)
 {
   int i = 0, j = 0, num_clusters = 0, l = 0, mem_ok = 1;
-  char *linia_orig, *linia_desti;
+  char *line_orig, *line_dest;
   char *resultat_cluster1, *resultat_cluster2;
   float **info1, **info2;
 
   // Inicialitzacions
-  linia_orig = (char *)malloc((MAXLONGSEQ + 1) * sizeof(char));
-  linia_desti = (char *)malloc((MAXLONGSEQ + 1) * sizeof(char));
+  line_orig = (char *)malloc((MAXLONGSEQ + 1) * sizeof(char));
+  line_dest = (char *)malloc((MAXLONGSEQ + 1) * sizeof(char));
 
   // Vector que cont quines seqncies pertanyen a cada cluster
   seqs = (int **)malloc(num_seqs * sizeof(int *));
@@ -97,11 +97,11 @@ void alineament_multiple(float **matriu, int output_format)
     }
   }
 
-  // Vector que cont la posic de les seqncies al fitxer_cluster_1 o fitxer_cluster_2
+  // Vector que cont la posic de les seqncies al cluster_file_1 o cluster_file_2
   if (mem_ok == 1)
   {
-    pos_seq_fitxer_clusters = (long *)calloc(num_seqs, sizeof(long));
-    if (pos_seq_fitxer_clusters == NULL)
+    pos_seq_clusters_file = (long *)calloc(num_seqs, sizeof(long));
+    if (pos_seq_clusters_file == NULL)
     {
       mem_ok = 0;
     }
@@ -160,7 +160,7 @@ void alineament_multiple(float **matriu, int output_format)
     {
       for (i = 0; i < MAXLONGSEQ; i++)
       {
-        info1[i] = (float *)malloc(numsimb * sizeof(float));
+        info1[i] = (float *)malloc(num_symbols * sizeof(float));
         if (info1[i] == NULL)
           mem_ok = 0;
       }
@@ -178,7 +178,7 @@ void alineament_multiple(float **matriu, int output_format)
     {
       for (i = 0; i < MAXLONGSEQ; i++)
       {
-        info2[i] = (float *)malloc(numsimb * sizeof(float));
+        info2[i] = (float *)malloc(num_symbols * sizeof(float));
         if (info2[i] == NULL)
           mem_ok = 0;
       }
@@ -195,114 +195,90 @@ void alineament_multiple(float **matriu, int output_format)
     {
       printf(".");
 
-      trobar_clusters_propers(&i, &j);
+      find_nearest_clusters(&i, &j);
 
       if ((clusters[i]->long_seqs >= MAXLONGSEQ) || (clusters[j]->long_seqs >= MAXLONGSEQ))
       {
         printf("Too long resulting alignment (>=2000)\n");
         exit(-1);
       }
-      crear_fitxers_clusters(i, j);
-      fitxer_cluster_1 = fopen(nom_fitxer_cluster_1, "r");
-      fitxer_cluster_2 = fopen(nom_fitxer_cluster_2, "r");
-      // printf("\n 2.1.d\n");
+      create_cluster_files(i, j);
+      cluster_file_1 = fopen(cluster_filename_1, "r");
+      cluster_file_2 = fopen(cluster_filename_2, "r");
 
-      construir_info_cluster(i, info1, fitxer_cluster_1);
-      // printf("\n 2.1.e\n");
+      build_info_cluster(i, info1, cluster_file_1);
       //      check_cluster_info(info1);///////////////////
-      construir_info_cluster(j, info2, fitxer_cluster_2);
-      // printf("\n 2.1.f\n");
+      build_info_cluster(j, info2, cluster_file_2);
       //      check_cluster_info(info2);///////////////////
-      alineament_clusters(matriu, i, j, info1, info2, linia_orig, linia_desti, resultat_cluster1, resultat_cluster2, &clusters[i]->puntuacio);
+      alignment_clusters(matriu, i, j, info1, info2, line_orig, line_dest, resultat_cluster1, resultat_cluster2, &clusters[i]->puntuacio);
       //     check_path_matrix(matriu,clusters[i]->long_seqs,clusters[j]->long_seqs);
-      recalcular_matriu(i, j); // tambe s'ha fet dins aliniament_clusters
-      fclose(fitxer_cluster_1);
-      fclose(fitxer_cluster_2);
+      recalculate_matrix(i, j); // tambe s'ha fet dins aliniament_clusters
+      fclose(cluster_file_1);
+      fclose(cluster_file_2);
       num_clusters--;
     }
-    fitxer_clusters = fopen(nom_fitxer_clusters, "r");
-    escriure_alineament_fitxer_sortida(output_format);
-    fclose(fitxer_clusters); // printf("\n 2.3.a\n");
-    /*
-    for (i=0;i<MAXLONGSEQ;i++) free(info1[i]); printf("\n 2.3.b\n");
-    free(info1); printf("\n 2.3.c\n");
-    for (i=0;i<MAXLONGSEQ;i++) free(info2[i]); printf("\n 2.3.d\n");
-    free(info2); printf("\n 2.3.e\n");
-    free(resultat_cluster1);
-    free(resultat_cluster2);
-    free(pos_seq);
-    free(seq_cluster);
-    free(clusters);
-    free(pos_seq_fitxer_clusters);
-    free(cluster_equivalent);
-    free(seqs);
-    free(linia_orig);
-    free(linia_desti);
-    */
+    clusters_file = fopen(clusters_filename, "r");
+    write_align_output_file(output_format);
+    fclose(clusters_file);
   }
   else
   {
     printf("Out of memory\n");
-    remove(nom_fitxer_clusters);
-    remove(nom_fitxer_cluster_1);
-    remove(nom_fitxer_cluster_2);
-    remove(nom_fitxer_temporal);
+    remove(clusters_filename);
+    remove(cluster_filename_1);
+    remove(cluster_filename_2);
+    remove(temp_file_name);
     exit(-1);
   }
 }
 
-/*construir_info_cluster */
-// Donat un fitxer amb un cluster, omple el nombre d'elements
-// de l'alfabet a cada columna del cluster
-void construir_info_cluster(int num_cluster, float **info, FILE *f)
+/*build_info_cluster */
+// Given a file with a cluster, populate the number of elements
+// of the alphabet in each column of the cluster
+void build_info_cluster(int num_cluster, float **info, FILE *f)
 {
-  char linia[MAXLONGSEQ + 1];
+  char line[MAXLONGSEQ + 1];
   int i, j, k;
 
-  // Inicialitzem les estructures
+  // Initialize the structures
   j = 0;
-  // printf("\n2.1.d.1\n");
 
   while (j < clusters[num_cluster]->long_seqs)
   {
-    // printf("\n%d--%d--\n",j,clusters[num_cluster]->long_seqs);
-    for (k = 0; k < numsimb; k++)
+    for (k = 0; k < num_symbols; k++)
       info[j][k] = 0;
     j++;
   }
-  // printf("\n2.1.d.2\n");
-  // I ara les omplim
   i = 0;
   fseek(f, 0, SEEK_SET);
-  // printf("\n2.1.d.3\n");
   while (i < clusters[num_cluster]->num_seqs)
   {
-    fgets(linia, MAXLONGSEQ, f);
+    fgets(line, MAXLONGSEQ, f);
     j = 0;
     while (j < clusters[num_cluster]->long_seqs)
     {
-      info[j][indexsimbol(linia[j]) - 1]++;
+      info[j][symbol_index(line[j]) - 1]++;
       j++;
     }
     i++;
   }
 }
 
-/* crear_fitxers_clusters ***********************************************/
+/* create_cluster_files ***********************************************/
 /*Donats dos indexs de clusters, crea un fitxer per cadascun, i escriu al
   fitxer les seqncies que el formen*/
-void crear_fitxers_clusters(int i, int j)
+void create_cluster_files(int i, int j)
 {
   int k = 0;
 
-  fitxer_cluster_1 = fopen(nom_fitxer_cluster_1, "w");
-  fitxer_cluster_2 = fopen(nom_fitxer_cluster_2, "w");
-  fitxer_clusters = fopen(nom_fitxer_clusters, "r");
+  cluster_file_1 = fopen(cluster_filename_1, "w");
+  cluster_file_2 = fopen(cluster_filename_2, "w");
+  clusters_file = fopen(clusters_filename, "r");
   // Cluster i
   k = 0;
   while (k < clusters[i]->num_seqs)
   {
-    pos_seq_fitxer_clusters[seqs[i][k]] = afegir_sequencia_cluster(fitxer_cluster_1, seqs[i][k]);
+    pos_seq_clusters_file[seqs[i][k]] = add_sequence_cluster(cluster_file_1, seqs[i][k]);
     k++;
   }
 
@@ -310,30 +286,30 @@ void crear_fitxers_clusters(int i, int j)
   k = 0;
   while (k < clusters[j]->num_seqs)
   {
-    pos_seq_fitxer_clusters[seqs[j][k]] = afegir_sequencia_cluster(fitxer_cluster_2, seqs[j][k]);
+    pos_seq_clusters_file[seqs[j][k]] = add_sequence_cluster(cluster_file_2, seqs[j][k]);
     k++;
   }
 
-  fclose(fitxer_clusters);
-  fclose(fitxer_cluster_1);
-  fclose(fitxer_cluster_2);
+  fclose(clusters_file);
+  fclose(cluster_file_1);
+  fclose(cluster_file_2);
 }
 
-/* trobar_clusters_propers **************************************************/
-/*Funci que busca les dues seqncies (o clusters) ms propers. Retorna el
-  resultat com una fila (i) i una columna (j). Aquesta funci noms recorre
-  la meitat de la matriu, ja que s simtrica.
+/* find_nearest_clusters **************************************************/
+/*Function that searches for the two closest sequences (or clusters). Return the
+  result as a row (i) and a column (j). This function only loops
+  half of the matrix, since it is symmetric.
 
-  Si troba un zero pot voler dir:
-  - es el valor de la similaritat
-  - pertanyen al mateix cluster
+  If it finds a zero it may mean:
+    - is the similarity value
+    - belong to the same cluster
 */
 
-void trobar_clusters_propers(int *i, int *j)
+void find_nearest_clusters(int *i, int *j)
 {
   int i_act = 0, j_act = 0, trobat = 0;
 
-  // Busquem el primer
+  // Let's look for the first one
   trobat = 0;
   for (i_act = 0; (i_act < num_seqs) && (trobat == 0); i_act++)
   {
@@ -341,7 +317,7 @@ void trobar_clusters_propers(int *i, int *j)
     {
       if (matriu_puntuacions[i_act][j_act] != 0)
       {
-        trobat = 1; // valor similaritat !=0
+        trobat = 1; // similarity value !=0
         *(i) = i_act;
         *(j) = j_act;
       }
@@ -349,10 +325,10 @@ void trobar_clusters_propers(int *i, int *j)
       {
         if (cluster_equivalent[j_act] != i_act)
         {
-          trobat = 1; // no pertanyen al mateix cluster
+          trobat = 1; // do not belong to the same cluster
           *(i) = i_act;
           *(j) = j_act;
-          matriu_puntuacions[i_act][j_act]; // no se que fa ?
+          matriu_puntuacions[i_act][j_act]; // I don't know what he's doing?
         }
       }
     }
@@ -387,10 +363,10 @@ void trobar_clusters_propers(int *i, int *j)
   }
 }
 
-/* similitud_clusters *******************************************************/
+/* similarity_clusters *******************************************************/
 // Calcula la similitud entre dos clusters. A la matriu
 //"matriu" hi ha les similituds entre tot prefix dels dos clusters.
-void similitud_clusters(float **matriu, long long_cluster1, long long_cluster2, float **info1, float **info2, long *puntuacio, int numseqs1, int numseqs2)
+void similarity_clusters(float **matriu, long long_cluster1, long long_cluster2, float **info1, float **info2, long *puntuacio, int numseqs1, int numseqs2)
 {
   int i = 0, j = 0;
   float p_diag = 0, p_esq = 0, p_amunt = 0, max = 0; // Puntuacions de les tres opcions possibles domplir una casella de la matriu
@@ -452,8 +428,8 @@ float calcul_simil_ini(float *freq, int n)
 
   sum = 0;
   // interclusters
-  for (i = 0; i < numsimb; i++)
-    sum = sum + freq[i] * matpenal[i + 1][numsimb] * n;
+  for (i = 0; i < num_symbols; i++)
+    sum = sum + freq[i] * matpenal[i + 1][num_symbols] * n;
   // freq es des de 0 i marpenal des de 1
   sum = sum + intracluster(freq);
   return sum;
@@ -477,8 +453,8 @@ float intercluster(float *freq1, float *freq2)
   float sum;
   int i, j;
   sum = 0;
-  for (i = 0; i < numsimb; i++)
-    for (j = 0; j < numsimb; j++)
+  for (i = 0; i < num_symbols; i++)
+    for (j = 0; j < num_symbols; j++)
       sum = sum + freq1[i] * freq2[j] * matpenal[i + 1][j + 1];
   return sum;
 }
@@ -490,25 +466,25 @@ float intracluster(float *freq)
   int i, j;
   sum = 0;
   // intracluster simbols diferents
-  for (i = 0; i < numsimb; i++)
-    for (j = i + 1; j < numsimb; j++)
+  for (i = 0; i < num_symbols; i++)
+    for (j = i + 1; j < num_symbols; j++)
       sum = sum + freq[i] * freq[j] * matpenal[i + 1][j + 1];
   // intracluster simbols iguals
-  for (i = 0; i < numsimb; i++)
+  for (i = 0; i < num_symbols; i++)
     if (freq[i] > 1)
       sum = sum + freq[i] * (freq[i] - 1) * matpenal[i + 1][i + 1] / 2;
   return sum;
 }
 
-/*alineament_clusters ***********************************************/
-/*Alinea els clusters i, j*/
-void alineament_clusters(float **matriu, int i, int j, float **info1, float **info2, char *linia_orig, char *linia_desti, char *resultat_cluster1, char *resultat_cluster2, long *puntuacio)
+/*alignment_clusters ***********************************************/
+/*Align clusters i, j*/
+void alignment_clusters(float **matriu, int i, int j, float **info1, float **info2, char *line_orig, char *line_dest, char *resultat_cluster1, char *resultat_cluster2, long *puntuacio)
 {
   int k = 0, mem_ok = 1;
   long res = 0;
   int len = 0, aux = 0;
 
-  similitud_clusters(matriu, clusters[i]->long_seqs, clusters[j]->long_seqs, info1, info2,
+  similarity_clusters(matriu, clusters[i]->long_seqs, clusters[j]->long_seqs, info1, info2,
                      puntuacio, clusters[i]->num_seqs, clusters[j]->num_seqs);
   // tenim la matriu de puntuacio i camins dels dos clusters ja calculada
 
@@ -516,49 +492,49 @@ void alineament_clusters(float **matriu, int i, int j, float **info1, float **in
   // mostrar_matriu(matriu, clusters[i]->long_seqs + 1, clusters[j]->long_seqs + 1);
   // mostrar_matriu_cars(matriu_cami, clusters[i]->long_seqs + 1, clusters[j]->long_seqs + 1);
 
-  alinea_clusters(clusters[i]->long_seqs, clusters[j]->long_seqs, resultat_cluster1, resultat_cluster2, &len);
-  reconstruir_nou_cluster(linia_orig, linia_desti, resultat_cluster1, resultat_cluster2, i, j, len);
-  recalcular_matriu(i, j);
+  align_clusters(clusters[i]->long_seqs, clusters[j]->long_seqs, resultat_cluster1, resultat_cluster2, &len);
+  rebuild_new_cluster(line_orig, line_dest, resultat_cluster1, resultat_cluster2, i, j, len);
+  recalculate_matrix(i, j);
 }
 
-// reconstruir_nou_cluster ***********************************************/
-// Amb un vector duns i dosos, i donades les seqncies anteriors, dona el
-// cluster resultant
-void reconstruir_nou_cluster(char *linia_orig, char *linia_desti, char *resultat_cluster1, char *resultat_cluster2, int i, int j,
+// rebuild_new_cluster ***********************************************/
+// With a vector of ones and twos, and given the previous sequences, it gives the
+// resulting cluster
+void rebuild_new_cluster(char *line_orig, char *line_dest, char *resultat_cluster1, char *resultat_cluster2, int i, int j,
                              int len)
 {
-  // char *linia_orig, *linia_desti;
+  // char *line_orig, *line_dest;
   int k = 0, l = 0, m = 0, n = 0;
-  int seqs_nou_cluster[300];
+  int seqs_new_cluster[300];
 
-  fitxer_clusters = fopen(nom_fitxer_clusters, "a+");
-  fseek(fitxer_clusters, 0, SEEK_END); /*NO SE SI CAL ***************************************/
+  clusters_file = fopen(clusters_filename, "a+");
+  fseek(clusters_file, 0, SEEK_END); /*I DON'T KNOW IF IT IS NECESSARY ***************************************/
   /*cluster i*/
   k = 0;
   while (k < clusters[i]->num_seqs)
   {
-    fseek(fitxer_cluster_1, pos_seq_fitxer_clusters[seqs[i][k]], SEEK_SET);
-    fgets(linia_orig, MAXLONGSEQ, fitxer_cluster_1);
-    l = 0; // punter lectura array
-    m = 0; // punter escriptura array desti
+    fseek(cluster_file_1, pos_seq_clusters_file[seqs[i][k]], SEEK_SET);
+    fgets(line_orig, MAXLONGSEQ, cluster_file_1);
+    l = 0; // pointer read array
+    m = 0; // pointer writing array dest
     while (l < len)
     {
       if (resultat_cluster1[l] == '1') /*nucleotid*/
       {
-        linia_desti[l] = linia_orig[m];
-        linia_desti[l + 1] = EOS;
+        line_dest[l] = line_orig[m];
+        line_dest[l + 1] = EOS;
         m++;
       }
       else
       { // gap
-        linia_desti[l] = '-';
-        linia_desti[l + 1] = EOS;
+        line_dest[l] = '-';
+        line_dest[l + 1] = EOS;
       }
       l++;
     }
-    pos_seq[seqs[i][k]] = ftell(fitxer_clusters);
-    fprintf(fitxer_clusters, "%s\n", linia_desti);
-    seqs_nou_cluster[k] = seqs[i][k];
+    pos_seq[seqs[i][k]] = ftell(clusters_file);
+    fprintf(clusters_file, "%s\n", line_dest);
+    seqs_new_cluster[k] = seqs[i][k];
     k++;
   }
   n = clusters[i]->num_seqs;
@@ -569,40 +545,40 @@ void reconstruir_nou_cluster(char *linia_orig, char *linia_desti, char *resultat
   k = 0;
   while (k < clusters[j]->num_seqs)
   {
-    fseek(fitxer_cluster_2, pos_seq_fitxer_clusters[seqs[j][k]], SEEK_SET);
-    fgets(linia_orig, MAXLONGSEQ, fitxer_cluster_2);
-    l = 0; // punter lectura array
-    m = 0; // punter escriptura array desti
+    fseek(cluster_file_2, pos_seq_clusters_file[seqs[j][k]], SEEK_SET);
+    fgets(line_orig, MAXLONGSEQ, cluster_file_2);
+    l = 0; // pointer read array
+    m = 0; // pointer writing array dest
     while (l < len)
     {
       if (resultat_cluster2[l] == '1') // nucleotid
       {
-        linia_desti[l] = linia_orig[m];
-        linia_desti[l + 1] = EOS;
+        line_dest[l] = line_orig[m];
+        line_dest[l + 1] = EOS;
         m++;
       }
       else
       { // gap
-        linia_desti[l] = '-';
-        linia_desti[l + 1] = EOS;
+        line_dest[l] = '-';
+        line_dest[l + 1] = EOS;
       }
       l++;
     }
-    pos_seq[seqs[j][k]] = ftell(fitxer_clusters);
-    fprintf(fitxer_clusters, "%s\n", linia_desti);
+    pos_seq[seqs[j][k]] = ftell(clusters_file);
+    fprintf(clusters_file, "%s\n", line_dest);
     seq_cluster[seqs[j][k]] = i;
-    seqs_nou_cluster[n] = seqs[j][k];
-    seqs_nou_cluster[n + 1] = EOS;
+    seqs_new_cluster[n] = seqs[j][k];
+    seqs_new_cluster[n + 1] = EOS;
     n++;
     k++;
   }
-  fprintf(fitxer_clusters, "%s\n", linia_desti);
+  fprintf(clusters_file, "%s\n", line_dest);
 
   seqs[i] = (int *)malloc(clusters[i]->num_seqs * sizeof(int) + 1);
   n = 0;
   while (n < clusters[i]->num_seqs)
   {
-    seqs[i][n] = seqs_nou_cluster[n];
+    seqs[i][n] = seqs_new_cluster[n];
     seqs[i][n + 1] = EOS;
     n++;
   }
@@ -611,7 +587,7 @@ void reconstruir_nou_cluster(char *linia_orig, char *linia_desti, char *resultat
   n = 0;
   while (n < num_seqs)
   {
-    if ((cluster_equivalent[n] == j) || ((cluster_equivalent[n] == i) && (n != i))) // Noms mirem la "j". La "i" no canvia
+    if ((cluster_equivalent[n] == j) || ((cluster_equivalent[n] == i) && (n != i))) // Just look at the "j". The "i" does not change
     {
       clusters[n] = clusters[i];
       seqs[n] = seqs[i];
@@ -619,13 +595,13 @@ void reconstruir_nou_cluster(char *linia_orig, char *linia_desti, char *resultat
     }
     n++;
   }
-  fclose(fitxer_clusters);
+  fclose(clusters_file);
 }
 /**********************************************/
 // from matriu_cami returns res1,res2 which are strips of {1,2}
 //  where 1 indicates symbol and 2 gap
 
-void alinea_clusters(int i, int j, char *res1, char *res2, int *len)
+void align_clusters(int i, int j, char *res1, char *res2, int *len)
 {
   if ((i == 0) && (j == 0))
   {
@@ -636,19 +612,19 @@ void alinea_clusters(int i, int j, char *res1, char *res2, int *len)
     switch (matriu_cami[i][j])
     {
     case 'a':
-      alinea_clusters(i - 1, j, res1, res2, len);
+      align_clusters(i - 1, j, res1, res2, len);
       (*len)++;
       res1[(*len) - 1] = '1'; // 1: there is a nucleotide in that position
       res2[(*len) - 1] = '2'; // 2: there is a gap in that position
       break;
     case 'd':
-      alinea_clusters(i - 1, j - 1, res1, res2, len);
+      align_clusters(i - 1, j - 1, res1, res2, len);
       (*len)++;
       res1[(*len) - 1] = '1';
       res2[(*len) - 1] = '1';
       break;
     case 'e':
-      alinea_clusters(i, j - 1, res1, res2, len);
+      align_clusters(i, j - 1, res1, res2, len);
       (*len)++;
       res1[(*len) - 1] = '2';
       res2[(*len) - 1] = '1';
@@ -659,8 +635,8 @@ void alinea_clusters(int i, int j, char *res1, char *res2, int *len)
   }
 }
 
-// afegir_sequencia_cluster ******************************************/
-long afegir_sequencia_cluster(FILE *fitxer, int num_seq)
+// add_sequence_cluster ******************************************/
+long add_sequence_cluster(FILE *fitxer, int num_seq)
 {
   long l = 0, pos_fitxer = 0;
   char seq[MAXLONGSEQ];
@@ -679,17 +655,17 @@ long afegir_sequencia_cluster(FILE *fitxer, int num_seq)
   else
   {
     // it means it was included in another cluster
-    fseek(fitxer_clusters, pos_seq[num_seq], SEEK_SET);
-    fgets(seq, MAXLONGSEQ, fitxer_clusters);
+    fseek(clusters_file, pos_seq[num_seq], SEEK_SET);
+    fgets(seq, MAXLONGSEQ, clusters_file);
     pos_fitxer = ftell(fitxer);
     fprintf(fitxer, "%s", seq);
   }
   return (pos_fitxer);
 }
 
-// recalcular_matriu ****************************************/
+// recalculate_matrix ****************************************/
 // Fix the matrix, knowing that we have aligned clusters "i" and "j"
-void recalcular_matriu(int i, int j)
+void recalculate_matrix(int i, int j)
 {
   int aux = 0, n = 0;
 

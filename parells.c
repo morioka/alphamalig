@@ -1,7 +1,7 @@
 /*************************************************************************/
-// Fitxer: parells.c
-// Autor: Xavier Sol Acha
-// Descripci: Aqu estan les funcions per alinear parells de seqncies
+// File: parells.c
+// Author: Xavier Sol Acha
+// Description: Here are the functions to align pairs of sequences
 /*************************************************************************/
 
 #include <stdio.h>
@@ -17,9 +17,9 @@
 /* similarity *************************************************************/
 // It calculates the similarity between the sequencies "seq1" and "seq2". 
 // In the matrix "matrix" there are the similarities between every prefix of the two sequences.
-float similitud(float **a, char *seq1, char *seq2, long longseq1, long longseq2)
+float similarity(float **a, char *seq1, char *seq2, long longseq1, long longseq2)
 {
-    // use the global variables matpenal,alphabet,numsimb
+    // use the global variables matpenal,alphabet,num_symbols
     // SEQ1 and SEQ2 go from 0 to longseq-1
 
     float sum1, sum2, sum3, sum;
@@ -30,13 +30,13 @@ float similitud(float **a, char *seq1, char *seq2, long longseq1, long longseq2)
 
     for (i = 1; i <= longseq1; i++)
     {
-        a[i][0] = a[i - 1][0] + matpenal[indexsimbol(seq1[i - 1])][numsimb];
+        a[i][0] = a[i - 1][0] + matpenal[symbol_index(seq1[i - 1])][num_symbols];
         matriu_cami[i][0] = 'a';
     }
 
     for (j = 1; j <= longseq2; j++)
     {
-        a[0][j] = a[0][j - 1] + matpenal[indexsimbol(seq2[j - 1])][numsimb];
+        a[0][j] = a[0][j - 1] + matpenal[symbol_index(seq2[j - 1])][num_symbols];
         matriu_cami[0][j] = 'e';
     }
 
@@ -44,10 +44,10 @@ float similitud(float **a, char *seq1, char *seq2, long longseq1, long longseq2)
     {
         for (j = 1; j <= longseq2; j++)
         {
-            // ve de dalt
-            sum1 = a[i - 1][j] + matpenal[indexsimbol(seq1[i - 1])][numsimb];
-            sum2 = a[i - 1][j - 1] + matpenal[indexsimbol(seq1[i - 1])][indexsimbol(seq2[j - 1])];
-            sum3 = a[i][j - 1] + matpenal[indexsimbol(seq2[j - 1])][numsimb];
+            // it comes from above
+            sum1 = a[i - 1][j] + matpenal[symbol_index(seq1[i - 1])][num_symbols];
+            sum2 = a[i - 1][j - 1] + matpenal[symbol_index(seq1[i - 1])][symbol_index(seq2[j - 1])];
+            sum3 = a[i][j - 1] + matpenal[symbol_index(seq2[j - 1])][num_symbols];
             a[i][j] = maxim_real(sum1, sum2, sum3, &c);
             matriu_cami[i][j] = c;
         }

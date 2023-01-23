@@ -1,8 +1,8 @@
 /*************************************************************************/
-// Fitxer: sort_seq.c
-// Autor: Xavier Sol Acha
-// Descripci: Aqu estan les capsaleres de les funcions per escriure la
-// sortida del programa en un fitxer.
+// File: sort_seq.c
+// Author: Xavier Sol Acha
+// Description: Here are the headers of the functions to write the
+// program output to a file.
 /*************************************************************************/
 
 #include "parells.h"
@@ -10,8 +10,8 @@
 #ifndef _SORT_SEQ_H_
 #define _SORT_SEQ_H_
 
-void escriure_alineament_fitxer_sortida(int output_format);
-void escriure_sequencia_cluster(int num_seq, char *asteriscs);
-void escriure_sequencia_cluster_tallada(int num_seq, char *asteriscs, int pos);
+void write_align_output_file(int output_format);
+void write_sequence_cluster(int num_seq, char *asteriscs);
+void write_cut_cluster_sequence(int num_seq, char *asteriscs, int pos);
 
 #endif

@@ -6,18 +6,18 @@
 void check_reading_alphabet()
 {
     int i, j;
-    printf("\nNum of symbols =%d\n", numsimb);
+    printf("\nNum of symbols =%d\n", num_symbols);
 
-    for (i = 1; i <= numsimb; i++)
-        if (numsimb < 64)   // [A-Za-z0-9] + '-' (gap)
+    for (i = 1; i <= num_symbols; i++)
+        if (num_symbols < 64)   // [A-Za-z0-9] + '-' (gap)
         {
-            printf("%c ", alfabet[i]);
+            printf("%c ", alphabet[i]);
         } else {
-            printf("%02x ", alfabet[i]);
+            printf("%02x ", alphabet[i]);
         }
     printf("\n");
 
-    for (i = 1; i <= numsimb; i++)
+    for (i = 1; i <= num_symbols; i++)
     {
         for (j = 1; j <= i; j++)
         {
@@ -30,7 +30,6 @@ void check_reading_alphabet()
 void check_similarity(char *seq1, char *seq2, long longseq1, long longseq2)
 {
 
-    // char alin[2][2*MAXLONGSEQ];
     int i = longseq1;
     int j = longseq2;
     int pos = 0;
@@ -40,7 +39,6 @@ void check_similarity(char *seq1, char *seq2, long longseq1, long longseq2)
 
     while ((i > 0) || (j > 0))
     {
-        //    printf("cami[%d,%d]=%c,",i,j,matriu_cami[i][j]);
         if (matriu_cami[i][j] == 'a')
         {
             alin1[pos] = '-';
@@ -60,7 +58,6 @@ void check_similarity(char *seq1, char *seq2, long longseq1, long longseq2)
             alin0[pos] = '-';
             j--;
         }
-        //    printf("aparallem %c,%c", alin0[pos],alin1[pos]);
         pos++;
     }
     i = pos - 1;
@@ -79,9 +76,7 @@ void check_similarity(char *seq1, char *seq2, long longseq1, long longseq2)
     printf("\n");
     for (j = i; j >= 0; j--)
         printf("%c", alin1[j]);
-    // for (i=pos-1;i>=0;i--) printf("%c",alin0[i]);
     printf("\n");
-    // for(i=pos-1;i>=0;i--) printf("%c",alin1[i]);
 
     free(alin0);
     free(alin1);
@@ -96,20 +91,20 @@ void check_load_sequence(char *seq, long longseq)
     printf("\n");
 }
 
-void comprovar_fitxer_temporal()
+void check_temp_file()
 {
     char c;
-    fitxer_temporal = fopen(nom_fitxer_temporal, "r");
-    c = getc(fitxer_temporal);
-    while (!feof(fitxer_temporal))
+    temp_file = fopen(temp_file_name, "r");
+    c = getc(temp_file);
+    while (!feof(temp_file))
     {
         printf("%c", c);
-        c = getc(fitxer_temporal);
+        c = getc(temp_file);
     }
-    fclose(fitxer_temporal);
+    fclose(temp_file);
 }
 
-void comprovar_matriu_similaritats(float **matriu)
+void check_similarity_matrix(float **matriu)
 {
     int i, j;
     printf("\n Similarity between the sequences \n");
@@ -127,7 +122,7 @@ void check_cluster_info(float **info)
     printf("\n Check cluster info\n");
     for (i = 0; i < 10; i++)
     {
-        for (j = 0; j < numsimb; j++)
+        for (j = 0; j < num_symbols; j++)
             printf("%f  ", info[i][j]);
         printf("\n");
     }

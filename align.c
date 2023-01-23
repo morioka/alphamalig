@@ -1,7 +1,7 @@
 /*************************************************************************/
-// Fitxer: align.c
-// Autor: Xavier Sol Acha
-// Descripci: Aquest fitxer contindr el programa principal de l'aplicaci
+// File: align.c
+// Author: Xavier Sol Acha
+// Description: This file will contain the main program of the application
 /*************************************************************************/
 
 #include "align.h"
@@ -16,14 +16,14 @@
 #include <ctype.h>
 #include "comprobacions.h"
 
-FILE *fitxer_entrada;  // file of entry of the sequencies
-FILE *fitxer_temporal; // temporary file that stores the sequencies
-FILE *fitxer_alfabet;  // File that stores the alphabet in the appropriate format
+FILE *input_file;  // file of entry of the sequencies
+FILE *temp_file; // temporary file that stores the sequencies
+FILE *alphabet_file;  // File that stores the alphabet in the appropriate format
 
-char nom_fitxer_temporal[13]; // Temporary file name
+char temp_file_name[13]; // Temporary file name
 
-int numsimb;              // number of alphabet symbols
-char alfabet[MAXLONGALF]; // alphabet in positions 1,2,..,numsimb
+int num_symbols;              // number of alphabet symbols
+char alphabet[MAXLONGALF]; // alphabet in positions 1,2,..,num_symbols
 int num_seqs;             // Number of sequences in the file
 
 float matpenal[MAXLONGALF][MAXLONGALF]; // SCORE match,mismatch and gap...
@@ -62,24 +62,24 @@ int args(int argc, char **argv)
 void read_alphabet(FILE *fd)
 {
     int i, j;
-    fscanf(fd, "%d\n", &numsimb);
+    fscanf(fd, "%d\n", &num_symbols);
 
-    for (i = 1; i <= numsimb; i++)
+    for (i = 1; i <= num_symbols; i++)
     {
-        if (numsimb < 64)   // [A-Za-z0-9] + '-' (gap)
+        if (num_symbols < 64)   // [A-Za-z0-9] + '-' (gap)
         {
-            fscanf(fd, "%c ", &alfabet[i]);
+            fscanf(fd, "%c ", &alphabet[i]);
         } else {
             int c;
             fscanf(fd, "%x ", &c);
-            alfabet[i] = (char)c;
+            alphabet[i] = (char)c;
         }
     }
-    //for (i = 1; i < numsimb; i++)
+    //for (i = 1; i < num_symbols; i++)
     //{
-    //    alfabet[i] = toupper(alfabet[i]);
+    //    alphabet[i] = toupper(alphabet[i]);
     //}
-    for (i = 1; i <= numsimb; i++)
+    for (i = 1; i <= num_symbols; i++)
     {
         for (j = 1; j <= i; j++)
         {
@@ -100,51 +100,51 @@ int main(int argc, char *argv[])
 
     if (args(argc, argv) == 1)
         exit(-1);
-    if ((fitxer_alfabet = fopen(argv[1], "r")) == NULL)
+    if ((alphabet_file = fopen(argv[1], "r")) == NULL)
     {
         printf("Error reading the alphabet file\n");
         exit(1);
     }
-    read_alphabet(fitxer_alfabet);
+    read_alphabet(alphabet_file);
     check_reading_alphabet();
-    // initialize the global variables alphabet, matpenal, numsimb
-    if ((fitxer_entrada = fopen(argv[2], "r")) == NULL)
+    // initialize the global variables alphabet, matpenal, num_symbols
+    if ((input_file = fopen(argv[2], "r")) == NULL)
     {
         printf("Error reading the sequence file\n");
         exit(1);
     }
 
     // We delete temporary files. We close the ones we don't need at the moment
-    num_pref = generar_prefix_fitxers(argv[1]);
-    omplir_string_prefix(pref, num_pref);
-    sprintf(nom_fitxer_temporal, "%s1.tmp", pref);
-    sprintf(nom_fitxer_clusters, "%s2.tmp", pref);
-    sprintf(nom_fitxer_cluster_1, "%s3.tmp", pref);
-    sprintf(nom_fitxer_cluster_2, "%s4.tmp", pref);
-    fitxer_temporal = fopen(nom_fitxer_cluster_1, "w");
-    fclose(fitxer_temporal);
-    fitxer_temporal = fopen(nom_fitxer_cluster_2, "w");
-    fclose(fitxer_temporal);
-    fitxer_temporal = fopen(nom_fitxer_clusters, "w");
-    fclose(fitxer_temporal);
-    fitxer_temporal = fopen(nom_fitxer_temporal, "w");
-    if (llegir_sequencies_fitxer() == -1)
+    num_pref = generate_prefix_files(argv[1]);
+    fill_string_prefix(pref, num_pref);
+    sprintf(temp_file_name, "%s1.tmp", pref);
+    sprintf(clusters_filename, "%s2.tmp", pref);
+    sprintf(cluster_filename_1, "%s3.tmp", pref);
+    sprintf(cluster_filename_2, "%s4.tmp", pref);
+    temp_file = fopen(cluster_filename_1, "w");
+    fclose(temp_file);
+    temp_file = fopen(cluster_filename_2, "w");
+    fclose(temp_file);
+    temp_file = fopen(clusters_filename, "w");
+    fclose(temp_file);
+    temp_file = fopen(temp_file_name, "w");
+    if (read_sequences_file() == -1)
     // have the sequences in the temporary file in a special format
     // number, name, length, sequence (numeroseq,nom,longitud,sequencia)
     {
         printf("Too many (>%d) or too few (<2) input sequences\n", MAXSEQ);
-        remove(nom_fitxer_clusters);
-        remove(nom_fitxer_cluster_1);
-        remove(nom_fitxer_cluster_2);
-        remove(nom_fitxer_temporal);
+        remove(clusters_filename);
+        remove(cluster_filename_1);
+        remove(cluster_filename_2);
+        remove(temp_file_name);
         exit(-1);
     }
     else // correct number of sequences
     {
 
-        fclose(fitxer_temporal);
-        //       comprovar_fitxer_temporal();
-        fitxer_temporal = fopen(nom_fitxer_temporal, "r");
+        fclose(temp_file);
+        //       check_temp_file();
+        temp_file = fopen(temp_file_name, "r");
 
         estat = 0;
         matriu = (float **)malloc(MAXLONGALIN * sizeof(float *));
@@ -152,10 +152,10 @@ int main(int argc, char *argv[])
         {
           estat = -1;
           printf("Out of memory\n");
-          remove(nom_fitxer_clusters);
-          remove(nom_fitxer_cluster_1);
-          remove(nom_fitxer_cluster_2);
-          remove(nom_fitxer_temporal);
+          remove(clusters_filename);
+          remove(cluster_filename_1);
+          remove(cluster_filename_2);
+          remove(temp_file_name);
           exit(-1);
         }
         // there is enough memory for 2000 items
@@ -168,10 +168,10 @@ int main(int argc, char *argv[])
           {
             estat = -1;
             printf("Out of memory\n");
-            remove(nom_fitxer_clusters);
-            remove(nom_fitxer_cluster_1);
-            remove(nom_fitxer_cluster_2);
-            remove(nom_fitxer_temporal);
+            remove(clusters_filename);
+            remove(cluster_filename_1);
+            remove(cluster_filename_2);
+            remove(temp_file_name);
             exit(-1);
           }
           i++;
@@ -184,10 +184,10 @@ int main(int argc, char *argv[])
         {
           estat = -1;
           printf("Out of memory\n");
-          remove(nom_fitxer_clusters);
-          remove(nom_fitxer_cluster_1);
-          remove(nom_fitxer_cluster_2);
-          remove(nom_fitxer_temporal);
+          remove(clusters_filename);
+          remove(cluster_filename_1);
+          remove(cluster_filename_2);
+          remove(temp_file_name);
           exit(-1);
         }
         i = 0;
@@ -199,10 +199,10 @@ int main(int argc, char *argv[])
           {
             estat = -1;
             printf("Out of memory\n");
-            remove(nom_fitxer_clusters);
-            remove(nom_fitxer_cluster_1);
-            remove(nom_fitxer_cluster_2);
-            remove(nom_fitxer_temporal);
+            remove(clusters_filename);
+            remove(cluster_filename_1);
+            remove(cluster_filename_2);
+            remove(temp_file_name);
             exit(-1);
           }
           i++;
@@ -222,10 +222,10 @@ int main(int argc, char *argv[])
             {
               estat = -1;
               printf("Out of memory\n");
-              remove(nom_fitxer_clusters);
-              remove(nom_fitxer_cluster_1);
-              remove(nom_fitxer_cluster_2);
-              remove(nom_fitxer_temporal);
+              remove(clusters_filename);
+              remove(cluster_filename_1);
+              remove(cluster_filename_2);
+              remove(temp_file_name);
               exit(-1);
             }
             i++;
@@ -250,7 +250,7 @@ int main(int argc, char *argv[])
                 long_seq2 = dona_longitud_seq(k);
                 carregar_sequencia(seq2, k);
                 // check_load_sequence(seq2,long_seq2);
-                res = similitud(matriu, seq, seq2, long_seq, long_seq2);
+                res = similarity(matriu, seq, seq2, long_seq, long_seq2);
                 //      check_path_matrix(matriu,long_seq,long_seq2);
                 //      check_similarity(seq, seq2, long_seq, long_seq2);
                 matriu_puntuacions[j][k] = res;
@@ -259,11 +259,11 @@ int main(int argc, char *argv[])
             }
             j++;
         }
-        comprovar_matriu_similaritats(matriu_puntuacions);
+        check_similarity_matrix(matriu_puntuacions);
         free(seq);
         free(seq2);
         // printf("\n 2");
-        alineament_multiple(matriu, atoi(argv[2]));
+        multiple_alignment(matriu, atoi(argv[2]));
         // second argument is the output format
         // printf("\n 3");
         i = 0;
@@ -289,10 +289,10 @@ int main(int argc, char *argv[])
             i++;
         }
         free(matriu_cami);
-        fclose(fitxer_temporal);
-        remove(nom_fitxer_clusters);
-        remove(nom_fitxer_temporal);
-        remove(nom_fitxer_cluster_1);
-        remove(nom_fitxer_cluster_2);
+        fclose(temp_file);
+        remove(clusters_filename);
+        remove(temp_file_name);
+        remove(cluster_filename_1);
+        remove(cluster_filename_2);
     }
 }

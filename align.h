@@ -10,14 +10,14 @@
 #ifndef _ALIGN_H_
 #define _ALIGN_H_
 
-extern FILE *fitxer_entrada;  // file of entry of the sequencies
-extern FILE *fitxer_temporal; // temporary file that stores the sequencies
-extern FILE *fitxer_alfabet;  // File that stores the alphabet in the appropriate format
+extern FILE *input_file;  // file of entry of the sequencies
+extern FILE *temp_file; // temporary file that stores the sequencies
+extern FILE *alphabet_file;  // File that stores the alphabet in the appropriate format
 
-extern char nom_fitxer_temporal[13]; // Temporary file name
+extern char temp_file_name[13]; // Temporary file name
 
-extern int numsimb;              // number of alphabet symbols
-extern char alfabet[MAXLONGALF]; // alphabet in positions 1,2,..,numsimb
+extern int num_symbols;              // number of alphabet symbols
+extern char alphabet[MAXLONGALF]; // alphabet in positions 1,2,..,num_symbols
 extern int num_seqs;             // Number of sequences in the file
 
 extern float matpenal[MAXLONGALF][MAXLONGALF]; // SCORE match,mismatch and gap...

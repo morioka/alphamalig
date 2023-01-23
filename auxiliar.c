@@ -1,8 +1,8 @@
 /*************************************************************************/
-// Fitxer: auxiliar.c
-// Autor: Xavier Sol Acha
-// Modificat: Xavier Messeguer  07-01-03
-// Descripci: Funcions d'utilitat per l'aplicaci
+// File: auxiliar.c
+// Author: Xavier Sol Acha
+// Modified: Xavier Messeguer  07-01-03
+// Description: Utility functions for the application
 /*************************************************************************/
 
 #include <stdio.h>
@@ -18,37 +18,34 @@
 // Implementation of functions
 
 // look at which position in the penalty matrix. there goes the symbol
-int indexsimbol(char c)
+int symbol_index(char c)
 {
         int i = 1;
-        //  printf("Miro simbol %c\n",c);
-//        while ((alfabet[i] != toupper(c)) && (i < numsimb))
-        while ((alfabet[i] != c) && (i < numsimb))
+//        while ((alphabet[i] != toupper(c)) && (i < num_symbols))
+        while ((alphabet[i] != c) && (i < num_symbols))
                 i++;
-//        if (alfabet[i] == toupper(c))
-        if (alfabet[i] == c)
+//        if (alphabet[i] == toupper(c))
+        if (alphabet[i] == c)
         {
-                /*    printf("\nResposta: index %d\n",i);*/
                 return i;
         }
         else
         {
                 printf("Answer: The symbol %c is not in the alphabet", c);
-//                printf("Resposta: el simbol %c no es a l'alfabet", c);
                 exit(1);
         }
 }
 
-/* pertany_alfabet **********************************************************/
+/* belong_alphabet **********************************************************/
 // It tells us if the character we pass to it as a parameter corresponds to some of the symbols of the alphabet
-int pertany_alfabet(char c)
+int belong_alphabet(char c)
 {
         int i = 1;
 
 //        c = toupper(c);
-        while ((i < numsimb) && (alfabet[i] != c))
+        while ((i < num_symbols) && (alphabet[i] != c))
                 i++;
-        return (alfabet[i] == c);
+        return (alphabet[i] == c);
 }
 
 /* maxim_real *****************************************************************/
@@ -75,21 +72,21 @@ float maxim_real(float x, float y, float z, char *c)
         return (num_max);
 }
 
-/* compta_sequencies ******************************************************/
+/* count_sequences ******************************************************/
 // Counts the number of sequences in the file.
-int compta_sequencies(void)
+int count_sequences(void)
 {
-        char linia[MAXLINIA + 1];
+        char line[MAXLINE + 1];
         int n_seqs = 0;
 
-        while (fgets(linia, MAXLINIA + 1, fitxer_entrada) != NULL)
+        while (fgets(line, MAXLINE + 1, input_file) != NULL)
         {
-                if (linia[0] == '>')
+                if (line[0] == '>')
                 {
                         n_seqs++;
                 }
         }
-        fseek(fitxer_entrada, 0, SEEK_SET);
+        fseek(input_file, 0, SEEK_SET);
         return (n_seqs);
 }
 
@@ -107,7 +104,7 @@ void mostrar_matriu(float **m, int files, int cols)
         }
 }
 
-int generar_prefix_fitxers(char *nom_fit)
+int generate_prefix_files(char *nom_fit)
 {
         int val, i;
         time_t t;
@@ -126,32 +123,32 @@ int generar_prefix_fitxers(char *nom_fit)
         return (modul);
 }
 
-void omplir_string_prefix(char *pref, int num_pref)
+void fill_string_prefix(char *pref, int num_pref)
 {
         int aux;
 
         aux = num_pref / 10000;
-        pref[0] = a_caracter(aux);
+        pref[0] = to_character(aux);
 
         aux = num_pref / 1000;
         aux = aux % 10;
-        pref[1] = a_caracter(aux);
+        pref[1] = to_character(aux);
 
         aux = num_pref / 100;
         aux = aux % 10;
-        pref[2] = a_caracter(aux);
+        pref[2] = to_character(aux);
 
         aux = num_pref / 10;
         aux = aux % 10;
-        pref[3] = a_caracter(aux);
+        pref[3] = to_character(aux);
 
         aux = num_pref;
         aux = aux % 10;
-        pref[4] = a_caracter(aux);
+        pref[4] = to_character(aux);
         pref[5] = '\0';
 }
 
-char a_caracter(int num)
+char to_character(int num)
 {
         char val;
 

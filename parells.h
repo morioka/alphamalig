@@ -1,16 +1,15 @@
 /*************************************************************************/
-// Fitxer: parells.h
-// Autor: Xavier Sol Acha
-// Descripci: Aqu estan les capsaleres de les funcions per alinear parells
-// de seqncies
+// File: parells.h
+// Author: Xavier Sol Acha
+// Description: Here are the function headers to align pairs of sequences
 /*************************************************************************/
 
-// Variables que intervenen en el procs
+// Variables involved in the process
 
 #ifndef _PARELIS_H_
 #define _PARELIS_H_
 
 // Definition of prototypes
-float similitud(float **matriu, char *seq1, char *seq2, long long_seq1, long long_seq2);
+float similarity(float **matrix, char *seq1, char *seq2, long long_seq1, long long_seq2);
 
 #endif

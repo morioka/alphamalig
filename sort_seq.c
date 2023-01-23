@@ -1,8 +1,8 @@
 /*************************************************************************/
-// Fitxer: sort_seq.c
-// Autor: Xavier Sol Acha
-// Descripci: Aqu estan les funcions per escriure la sortida del programa
-// en un fitxer.
+// File: sort_seq.c
+// Author: Xavier Sol Acha
+// Description: Here are the functions to write the output of the program
+// in a file.
 /*************************************************************************/
 
 #include <stdio.h>
@@ -13,7 +13,7 @@
 #include "const.h"
 #include "multiple.h"
 
-void escriure_alineament_fitxer_sortida(int output_format)
+void write_align_output_file(int output_format)
 {
     int k = 0, i, j, l;
     char asteriscs[MAXLONGSEQ];
@@ -32,7 +32,7 @@ void escriure_alineament_fitxer_sortida(int output_format)
         asteriscs[i] = EOS;
         while (k < clusters[0]->num_seqs)
         {
-            escriure_sequencia_cluster(seqs[0][k], asteriscs);
+            write_sequence_cluster(seqs[0][k], asteriscs);
             k++;
         }
         i = 0;
@@ -73,10 +73,9 @@ void escriure_alineament_fitxer_sortida(int output_format)
             }
             asteriscs[i] = EOS;
             k = 0;
-            // printf("\n 2.2.1\n");
             while (k < clusters[0]->num_seqs)
             {
-                escriure_sequencia_cluster_tallada(seqs[0][k], asteriscs, l);
+                write_cut_cluster_sequence(seqs[0][k], asteriscs, l);
                 k++;
             }
             i = 0;
@@ -86,7 +85,6 @@ void escriure_alineament_fitxer_sortida(int output_format)
                 i++;
             }
             k = 0;
-            // printf("\n 2.2.2");
             while (k < 58)
             {
                 //if ((asteriscs[k] == 'A') || (asteriscs[k] == 'C') || (asteriscs[k] == 'G') || (asteriscs[k] == 'T'))
@@ -100,24 +98,21 @@ void escriure_alineament_fitxer_sortida(int output_format)
                 i++;
                 k++;
             }
-            // printf("\n 2.2.3");
             seq_out[i] = EOS;
             printf("%s\n\n", seq_out);
             l = l + 58;
         }
     }
-
-    // printf("\n 2.2.4");
 }
 
-void escriure_sequencia_cluster_tallada(int num_seq, char *asteriscs, int pos)
+void write_cut_cluster_sequence(int num_seq, char *asteriscs, int pos)
 {
     char seq[MAXLONGSEQ + 1], nom[15], seq_out[MAXLONGSEQ + 1];
     int i = 0, j = 0, k = 0, trobat_fi = 0;
 
     // First we copy the name
-    fseek(fitxer_clusters, pos_seq[num_seq], SEEK_SET);
-    carregar_nom_sequencia(nom, num_seq);
+    fseek(clusters_file, pos_seq[num_seq], SEEK_SET);
+    load_sequence_name(nom, num_seq);
     i = 0;
     trobat_fi = 0;
     while (i <= 10)
@@ -136,7 +131,7 @@ void escriure_sequencia_cluster_tallada(int num_seq, char *asteriscs, int pos)
 
     j = pos;
     k = 0;
-    fgets(seq, MAXLONGSEQ, fitxer_clusters);
+    fgets(seq, MAXLONGSEQ, clusters_file);
     while ((seq[j] != EOS) && (seq[j] != '\n') && (i <= MAXLONGSEQ) && ((j - pos) < 58))
     {
         seq_out[i] = seq[j];
@@ -163,14 +158,14 @@ void escriure_sequencia_cluster_tallada(int num_seq, char *asteriscs, int pos)
     printf("%s\n", seq_out);
 }
 
-void escriure_sequencia_cluster(int num_seq, char *asteriscs)
+void write_sequence_cluster(int num_seq, char *asteriscs)
 {
     char seq[MAXLONGSEQ + 1], nom[15], seq_out[MAXLONGSEQ + 1];
     int i = 0, j = 0, trobat_fi = 0;
 
     // Primer copiem el nom
-    fseek(fitxer_clusters, pos_seq[num_seq], SEEK_SET);
-    carregar_nom_sequencia(nom, num_seq);
+    fseek(clusters_file, pos_seq[num_seq], SEEK_SET);
+    load_sequence_name(nom, num_seq);
     i = 0;
     trobat_fi = 0;
     while (i <= 10)
@@ -188,7 +183,7 @@ void escriure_sequencia_cluster(int num_seq, char *asteriscs)
     }
 
     j = 0;
-    fgets(seq, MAXLONGSEQ, fitxer_clusters);
+    fgets(seq, MAXLONGSEQ, clusters_file);
     while ((seq[j] != EOS) && (seq[j] != '\n') && (i <= MAXLONGSEQ))
     {
         seq_out[i] = seq[j];
