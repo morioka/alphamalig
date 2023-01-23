@@ -14,3 +14,7 @@ align.o : align.c
 
 .c.o : $(SOURCES)
 	gcc $(CFLAGS) $?
+
+.PHONY: clean
+clean :
+	-rm $(PROGNAME) $(OBJECTS)
