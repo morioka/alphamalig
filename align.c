@@ -107,7 +107,6 @@ int main(int argc, char *argv[])
     }
     read_alphabet(fitxer_alfabet);
     check_reading_alphabet();
-    exit(0);
     // initialize the global variables alphabet, matpenal, numsimb
     if ((fitxer_entrada = fopen(argv[2], "r")) == NULL)
     {
