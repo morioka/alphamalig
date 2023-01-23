@@ -59,6 +59,38 @@ int args(int argc, char **argv)
         return (0);
 }
 
+void check_alphabet()
+{
+    int i;
+
+    // prohibited character
+    for (i = 1; i <= num_symbols; i++)
+    {
+        assert(alphabet[i] != 0x00);    // # NUL (0x00)
+        assert(alphabet[i] != 0x3e);    // # > (0x3e)
+        assert(alphabet[i] != 0x3d);    // # = (0x3d)
+        assert(alphabet[i] != 0x3c);    // # < (0x3c)
+        assert(alphabet[i] != 0x20);    // # Space (0x20)
+        assert(alphabet[i] != 0x0d);    // # Carriage Return (0x0d) 
+        assert(alphabet[i] != 0x0a);    // # Line Feed (0x0a)
+    }
+
+    // must-have-at-tail character (Gap)
+    assert(alphabet[num_symbols] == 0x2d);    // # - (0x2d)
+
+    // check duplicates
+    int check_alphabet[256];
+    for (i = 0; i < 256; i++)
+        check_alphabet[i] = 0;
+    for (i = 1; i <= num_symbols; i++)
+        check_alphabet[alphabet[i]] += 1;
+    for (i = 0; i < 256; i++)
+    {
+        assert(check_alphabet[i] < 2);
+    }
+}
+
+
 // function that reads the alphabet, the score matrix and the gap
 void read_alphabet(FILE *fd)
 {
@@ -68,10 +100,10 @@ void read_alphabet(FILE *fd)
     /* check hex_mode or not (normal_mode) */
     int hex_mode;
     char c1;
-    fscanf(fd, "%c", &c1);
+    fscanf(fd, "%c", &c1);          /* dummy read */
     fscanf(fd, "%c", &c1);
     fseek(fd, 0, SEEK_SET);
-    fscanf(fd, "%d\n", &num_symbols);
+    fscanf(fd, "%d\n", &hex_mode);  /* dummy read */
     hex_mode = (c1 != 0x20) ? 1 : 0;
 
     for (i = 1; i <= num_symbols; i++)
@@ -86,31 +118,8 @@ void read_alphabet(FILE *fd)
             fscanf(fd, "%c ", &alphabet[i]);
         }
     }
+    check_alphabet();
 
-    // check
-    for (i = 1; i <= num_symbols; i++)
-    {
-        assert(alphabet[i] != 0x00);    // # NUL (0x00)
-        assert(alphabet[i] != 0x3e);    // # > (0x3e)
-        assert(alphabet[i] != 0x3d);    // # = (0x3d)
-        assert(alphabet[i] != 0x3c);    // # < (0x3c)
-        assert(alphabet[i] != 0x20);    // # Space (0x20)
-        assert(alphabet[i] != 0x0d);    // # Carriage Return (0x0d) 
-        assert(alphabet[i] != 0x0a);    // # Line Feed (0x0a)
-    }
-    assert(alphabet[num_symbols] == 0x2d);    // # - (0x2d)
-
-    // check duplicates
-    int check_alphabet[256];
-    for (i = 0; i < 256; i++)
-        check_alphabet[i] = 0;
-    for (i = 1; i <= num_symbols; i++)
-        check_alphabet[alphabet[i]] += 1;
-    for (i = 0; i < 256; i++)
-    {
-        assert(check_alphabet[i] < 2);
-    }
-    
     //for (i = 1; i < num_symbols; i++)
     //{
     //    alphabet[i] = toupper(alphabet[i]);
