@@ -9,7 +9,7 @@ void check_reading_alphabet()
     printf("\nNum of symbols =%d\n", numsimb);
 
     for (i = 1; i <= numsimb; i++)
-        if (numsimb < 54)   // [A-Za-z] + '-' (gap)
+        if (numsimb < 64)   // [A-Za-z0-9] + '-' (gap)
         {
             printf("%c ", alfabet[i]);
         } else {

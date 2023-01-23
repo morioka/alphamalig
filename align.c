@@ -66,7 +66,7 @@ void read_alphabet(FILE *fd)
 
     for (i = 1; i <= numsimb; i++)
     {
-        if (numsimb < 54)   // [A-Za-z] + '-' (gap)
+        if (numsimb < 64)   // [A-Za-z0-9] + '-' (gap)
         {
             fscanf(fd, "%c ", &alfabet[i]);
         } else {
