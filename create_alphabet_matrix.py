@@ -14,6 +14,18 @@ def print_alphabet_matrix(alphabets, costs):
 
     alphabets_ = [chr(a) if type(a) == int else a for a in alphabets]
 
+    # 以下の文字は含まないこと
+    assert chr(0x00) not in alphabets_  # NUL (0x00)
+    assert chr(0x3e) not in alphabets_  # > (0x3e)
+    assert chr(0x3d) not in alphabets_  # = (0x3d)
+    assert chr(0x3c) not in alphabets_  # < (0x3c)
+    assert chr(0x20) not in alphabets_  # Space (0x20)
+    assert chr(0x0d) not in alphabets_  # Carriage Return (0x0d) 
+    assert chr(0x0a) not in alphabets_  # Line Feed (0x0a)
+
+    # Gap文字は必ず含むこと
+    assert chr(0x2d) in alphabets_  # - (0x2d)
+
     # 以下 出力
     print(len(alphabets_))
 
