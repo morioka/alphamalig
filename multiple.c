@@ -19,7 +19,7 @@
 #include "multiple.h"
 #include "sort_seq.h"
 
-// Fitxers temporals
+// Temporary files
 FILE *clusters_file;
 FILE *cluster_file_1;
 FILE *cluster_file_2;
@@ -28,17 +28,17 @@ char clusters_filename[13];
 char cluster_filename_1[13];
 char cluster_filename_2[13];
 
-int **seqs; // Modificaci per arreglar el bug
+int **seqs; // Modification to fix the bug
 
-cluster **clusters;            // Vector de clusters
-long *pos_seq;                 // Cont la posici de la seqencia al fitxer on guardem les seqncies semialiniades
-long *pos_seq_clusters_file; // Cont la posici de la seqncia al fitxer del cluster que ser utilitzat per aliniar
-int *seq_cluster;              // Cont a quin cluster pertany cada seqncia
-int *cluster_equivalent;       // Cont equivalncies entre clusters
+cluster **clusters;            // Vector of clusters
+long *pos_seq;                 // With the position of the sequence in the file where we save the semi-aligned sequences
+long *pos_seq_clusters_file; // With the position of the sequence in the cluster file to be used for alignment
+int *seq_cluster;              // Count to which cluster each sequence belongs
+int *cluster_equivalent;       // With equivalences between clusters
 
 /* multiple_alignment */
-/*Funci que portar a terme laliniament mltiple de les seqncies a
-  //partir de la matriu de puntuacions dos a dos*/
+/*Function to carry out the multiple alignment of the sequences a
+  //start from score array two by two*/
 void multiple_alignment(float **matriu, int output_format)
 {
   int i = 0, j = 0, num_clusters = 0, l = 0, mem_ok = 1;
@@ -46,14 +46,14 @@ void multiple_alignment(float **matriu, int output_format)
   char *resultat_cluster1, *resultat_cluster2;
   float **info1, **info2;
 
-  // Inicialitzacions
+  // Initializations
   line_orig = (char *)malloc((MAXLONGSEQ + 1) * sizeof(char));
   line_dest = (char *)malloc((MAXLONGSEQ + 1) * sizeof(char));
 
-  // Vector que cont quines seqncies pertanyen a cada cluster
+  // Vector that contains which sequences belong to each cluster
   seqs = (int **)malloc(num_seqs * sizeof(int *));
 
-  // Vector de clusters
+  // Vector of clusters
   clusters = (cluster **)malloc(num_seqs * sizeof(cluster *));
   if (clusters == NULL)
     mem_ok = 0;
@@ -69,7 +69,7 @@ void multiple_alignment(float **matriu, int output_format)
     {
       clusters[i]->puntuacio = 0;
       clusters[i]->num_seqs = 1;
-      clusters[i]->long_seqs = 0; // De moment no ho posem
+      clusters[i]->long_seqs = 0; // We don't put it at the moment
       seqs[i] = (int *)malloc(1 * sizeof(int));
       if (seqs[i] == NULL)
       {
@@ -82,7 +82,7 @@ void multiple_alignment(float **matriu, int output_format)
     }
   }
 
-  // Vector que cont la posicio de les seqencies semi-aliniades
+  // Vector containing the position of the semi-aligned sequences
   if (mem_ok == 1)
   {
     pos_seq = (long *)malloc(num_seqs * sizeof(long));
@@ -97,7 +97,7 @@ void multiple_alignment(float **matriu, int output_format)
     }
   }
 
-  // Vector que cont la posic de les seqncies al cluster_file_1 o cluster_file_2
+  // Vector containing the position of the sequences in cluster_file_1 or cluster_file_2
   if (mem_ok == 1)
   {
     pos_seq_clusters_file = (long *)calloc(num_seqs, sizeof(long));
@@ -107,7 +107,7 @@ void multiple_alignment(float **matriu, int output_format)
     }
   }
 
-  // Vector que cont a quin cluster pertany cada seqencia
+  // Vector that counts which cluster each sequence belongs to
   if (mem_ok == 1)
   {
     seq_cluster = (int *)malloc(num_seqs * sizeof(int));
@@ -122,10 +122,10 @@ void multiple_alignment(float **matriu, int output_format)
     }
   }
 
-  // Vector que cont les equivalncies entre clusters
+  // Vector containing the equivalences between clusters
   if (mem_ok == 1)
   {
-    // el cluster te el numero de la sequencia mes petita que conte
+    // the cluster has the number of the smallest sequence it counts
     cluster_equivalent = (int *)malloc(num_seqs * sizeof(int));
     if (cluster_equivalent == NULL)
     {
@@ -187,8 +187,7 @@ void multiple_alignment(float **matriu, int output_format)
 
   num_clusters = num_seqs;
 
-  // Comencem lalineament
-  // printf("\n 2.1\n");
+  // Let's start the alignment
   if (mem_ok == 1)
   {
     while (num_clusters > 1)
@@ -265,8 +264,8 @@ void build_info_cluster(int num_cluster, float **info, FILE *f)
 }
 
 /* create_cluster_files ***********************************************/
-/*Donats dos indexs de clusters, crea un fitxer per cadascun, i escriu al
-  fitxer les seqncies que el formen*/
+/*Given two cluster indexes, create a file for each, and write to the
+  file the sequences that make it up*/
 void create_cluster_files(int i, int j)
 {
   int k = 0;
@@ -364,8 +363,8 @@ void find_nearest_clusters(int *i, int *j)
 }
 
 /* similarity_clusters *******************************************************/
-// Calcula la similitud entre dos clusters. A la matriu
-//"matriu" hi ha les similituds entre tot prefix dels dos clusters.
+// Calculate the similarity between two clusters. In the matrix
+//"matrix" contains the similarities between all prefixes of the two clusters.
 void similarity_clusters(float **matriu, long long_cluster1, long long_cluster2, float **info1, float **info2, long *puntuacio, int numseqs1, int numseqs2)
 {
   int i = 0, j = 0;
@@ -404,7 +403,7 @@ void similarity_clusters(float **matriu, long long_cluster1, long long_cluster2,
   *puntuacio = max; // guarda la puntuacio del cluster
 }
 
-void mostrar_matriu_cars(char **m, int files, int cols)
+void show_cars_matrix(char **m, int files, int cols)
 {
   int i, j;
 
@@ -421,8 +420,8 @@ void mostrar_matriu_cars(char **m, int files, int cols)
 
 float calcul_simil_ini(float *freq, int n)
 {
-  // rep una frequencia de simbols i un enter simbolitzant gaps
-  // es per inicialitzar la matriu del calcul de similituds entre clusters
+  // receives a frequency of symbols and an integer symbolizing gaps
+  // is to initialize the matrix of the calculation of similarities between clusters
   float sum;
   int i;
 
@@ -430,7 +429,7 @@ float calcul_simil_ini(float *freq, int n)
   // interclusters
   for (i = 0; i < num_symbols; i++)
     sum = sum + freq[i] * matpenal[i + 1][num_symbols] * n;
-  // freq es des de 0 i marpenal des de 1
+  // freq is from 0 and matpenal from 1
   sum = sum + intracluster(freq);
   return sum;
 }
@@ -438,8 +437,8 @@ float calcul_simil_ini(float *freq, int n)
 
 float calcul_simil(float *freq1, float *freq2)
 {
-  // rep dues frequencies de simbols
-  // es per inicialitzar la matriu del calcul de similituds entre clusters
+  // get two symbol frequencies
+  // is to initialize the matrix of the calculation of similarities between clusters
   float sum;
   sum = 0;
   sum = sum + intracluster(freq1);
@@ -465,11 +464,11 @@ float intracluster(float *freq)
   float sum;
   int i, j;
   sum = 0;
-  // intracluster simbols diferents
+  // intracluster different symbols
   for (i = 0; i < num_symbols; i++)
     for (j = i + 1; j < num_symbols; j++)
       sum = sum + freq[i] * freq[j] * matpenal[i + 1][j + 1];
-  // intracluster simbols iguals
+  // intracluster equal symbols
   for (i = 0; i < num_symbols; i++)
     if (freq[i] > 1)
       sum = sum + freq[i] * (freq[i] - 1) * matpenal[i + 1][i + 1] / 2;
@@ -486,11 +485,11 @@ void alignment_clusters(float **matriu, int i, int j, float **info1, float **inf
 
   similarity_clusters(matriu, clusters[i]->long_seqs, clusters[j]->long_seqs, info1, info2,
                      puntuacio, clusters[i]->num_seqs, clusters[j]->num_seqs);
-  // tenim la matriu de puntuacio i camins dels dos clusters ja calculada
+  // we have the matrix of scores and paths of the two clusters already calculated
 
   // printf("clusters: %d - %d\n", i, j);
-  // mostrar_matriu(matriu, clusters[i]->long_seqs + 1, clusters[j]->long_seqs + 1);
-  // mostrar_matriu_cars(matriu_cami, clusters[i]->long_seqs + 1, clusters[j]->long_seqs + 1);
+  // show_matrix(matriu, clusters[i]->long_seqs + 1, clusters[j]->long_seqs + 1);
+  // show_cars_matrix(matriu_cami, clusters[i]->long_seqs + 1, clusters[j]->long_seqs + 1);
 
   align_clusters(clusters[i]->long_seqs, clusters[j]->long_seqs, resultat_cluster1, resultat_cluster2, &len);
   rebuild_new_cluster(line_orig, line_dest, resultat_cluster1, resultat_cluster2, i, j, len);
@@ -599,7 +598,7 @@ void rebuild_new_cluster(char *line_orig, char *line_dest, char *resultat_cluste
 }
 /**********************************************/
 // from matriu_cami returns res1,res2 which are strips of {1,2}
-//  where 1 indicates symbol and 2 gap
+// where 1 indicates symbol and 2 gap
 
 void align_clusters(int i, int j, char *res1, char *res2, int *len)
 {
@@ -643,7 +642,7 @@ long add_sequence_cluster(FILE *fitxer, int num_seq)
 
   if (pos_seq[num_seq] == -1)
   {
-    // vol dir que la sequencia no s'ha escollit fins ara
+    // means the sequence has not been chosen so far
     l = dona_longitud_seq(num_seq);
     clusters[num_seq]->long_seqs = l;
 
