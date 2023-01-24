@@ -18,6 +18,13 @@ Last updated: 17 June 2003
 This software was made by Jordi Escribano.
 ```
 
+[ALGEN - framealign;](https://alggen.lsi.upc.es/recerca/align/frame-align.html)のページから:
+```
+AlphaMALIG 1.1
+Alpha Multiple ALIGnment tool is a collaborative research project with Laura Alonso. The software has been designed by J. Escribano of the Universitat Politècnica de Catalunya.
+Given a set of sequences of any alphabet and the parameters of the alignment (the score of the match, mismatch, insertion and deletion) this tools builds the multialignment of sequences.
+```
+
 ## 出典
 
 Universitat Politècnica de Catalunya / BarcelonaTech (UPC)のNLPグループの2002年頃の成果物から。
@@ -27,8 +34,10 @@ Universitat Politècnica de Catalunya / BarcelonaTech (UPC)のNLPグループの
   - https://alggen.cs.upc.edu/recerca/align/alphamalig/alphamalig.tar
 - [Example application of Multiple Sequence Alignment (MSA) to linguistic phenomena](https://www.cs.upc.edu/~nlp/exampleMSA.html)
 - [Tools, demos and resources](https://www.cs.upc.edu/~nlp/tools.html)
+- [ALGGEN - RECERCA](https://alggen.lsi.upc.es/recerca/frame-recerca.html)
+- [Multiple sequence alignments in linguistics](https://dl.acm.org/doi/pdf/10.5555/1642049.1642052)
 
-古いコードなせいか、プロトタイプ宣言など修正。権利関係は不明。
+古いコードなせいか、プロトタイプ宣言など要修正。権利記載がない。
 
 ## インストール方法
 
@@ -38,6 +47,17 @@ make
 ./alfm alphabetexample.txt sequencesexample
 ```
 
+## 修正
+
+- プロトタイプ宣言
+- 関数名、変数名及びコメントの翻訳 (カタロニア語->英語)
+- 英大文字のみの対応から、英小文字を含めた対応。hex表記でのアルファベット定義対応
+  - non-printable-character のFASTAファイルについてはMAFFTのmaffttext2hex, hex2maffttext との組み合わせが前提
+    - [Systems Immunology Lab / mafft · GitLab](https://gitlab.com/sysimm/mafft)
+    - [MAFFT - a multiple sequence alignment program](https://mafft.cbrc.jp/alignment/software/)
+    - [Non-biological sequences : MAFFT - a multiple sequence alignment program](https://mafft.cbrc.jp/alignment/software/textcomparison.html)
+  - アルファベット＋コスト定義ファイルの作成補助ツール(python)
+  
 ## 参考
 
 - [Publications Section.](https://www.cs.upc.edu/~nlp/papers.html) 
