@@ -39,11 +39,11 @@ int *cluster_equivalent;       // With equivalences between clusters
 /* multiple_alignment */
 /*Function to carry out the multiple alignment of the sequences a
   //start from score array two by two*/
-void multiple_alignment(float **matriu, int output_format)
+void multiple_alignment(float **matrix, int output_format)
 {
   int i = 0, j = 0, num_clusters = 0, l = 0, mem_ok = 1;
   char *line_orig, *line_dest;
-  char *resultat_cluster1, *resultat_cluster2;
+  char *result_cluster1, *result_cluster2;
   float **info1, **info2;
 
   // Initializations
@@ -67,7 +67,7 @@ void multiple_alignment(float **matriu, int output_format)
     }
     else
     {
-      clusters[i]->puntuacio = 0;
+      clusters[i]->score = 0;
       clusters[i]->num_seqs = 1;
       clusters[i]->long_seqs = 0; // We don't put it at the moment
       seqs[i] = (int *)malloc(1 * sizeof(int));
@@ -138,13 +138,13 @@ void multiple_alignment(float **matriu, int output_format)
     }
   }
 
-  resultat_cluster1 = (char *)malloc(MAXLONGSEQ * sizeof(char));
-  if (resultat_cluster1 == NULL)
+  result_cluster1 = (char *)malloc(MAXLONGSEQ * sizeof(char));
+  if (result_cluster1 == NULL)
   {
     mem_ok = 0;
   }
-  resultat_cluster2 = (char *)malloc(MAXLONGSEQ * sizeof(char));
-  if (resultat_cluster2 == NULL)
+  result_cluster2 = (char *)malloc(MAXLONGSEQ * sizeof(char));
+  if (result_cluster2 == NULL)
   {
     mem_ok = 0;
   }
@@ -209,8 +209,8 @@ void multiple_alignment(float **matriu, int output_format)
       //      check_cluster_info(info1);///////////////////
       build_info_cluster(j, info2, cluster_file_2);
       //      check_cluster_info(info2);///////////////////
-      alignment_clusters(matriu, i, j, info1, info2, line_orig, line_dest, resultat_cluster1, resultat_cluster2, &clusters[i]->puntuacio);
-      //     check_path_matrix(matriu,clusters[i]->long_seqs,clusters[j]->long_seqs);
+      alignment_clusters(matrix, i, j, info1, info2, line_orig, line_dest, result_cluster1, result_cluster2, &clusters[i]->score);
+      //     check_path_matrix(matrix,clusters[i]->long_seqs,clusters[j]->long_seqs);
       recalculate_matrix(i, j); // tambe s'ha fet dins aliniament_clusters
       fclose(cluster_file_1);
       fclose(cluster_file_2);
@@ -314,7 +314,7 @@ void find_nearest_clusters(int *i, int *j)
   {
     for (j_act = i_act + 1; (j_act < num_seqs) && (trobat == 0); j_act++)
     {
-      if (matriu_puntuacions[i_act][j_act] != 0)
+      if (score_matrix[i_act][j_act] != 0)
       {
         trobat = 1; // similarity value !=0
         *(i) = i_act;
@@ -327,7 +327,7 @@ void find_nearest_clusters(int *i, int *j)
           trobat = 1; // do not belong to the same cluster
           *(i) = i_act;
           *(j) = j_act;
-          matriu_puntuacions[i_act][j_act]; // I don't know what he's doing?
+          score_matrix[i_act][j_act]; // I don't know what he's doing?
         }
       }
     }
@@ -340,9 +340,9 @@ void find_nearest_clusters(int *i, int *j)
     j_act = i_act + 1;
     while (j_act < num_seqs)
     {
-      if (matriu_puntuacions[i_act][j_act] > matriu_puntuacions[*(i)][*(j)])
+      if (score_matrix[i_act][j_act] > score_matrix[*(i)][*(j)])
       {
-        if (matriu_puntuacions[i_act][j_act] != 0)
+        if (score_matrix[i_act][j_act] != 0)
         {
           *(i) = i_act;
           *(j) = j_act;
@@ -365,42 +365,42 @@ void find_nearest_clusters(int *i, int *j)
 /* similarity_clusters *******************************************************/
 // Calculate the similarity between two clusters. In the matrix
 //"matrix" contains the similarities between all prefixes of the two clusters.
-void similarity_clusters(float **matriu, long long_cluster1, long long_cluster2, float **info1, float **info2, long *puntuacio, int numseqs1, int numseqs2)
+void similarity_clusters(float **matrix, long long_cluster1, long long_cluster2, float **info1, float **info2, long *score, int numseqs1, int numseqs2)
 {
   int i = 0, j = 0;
-  float p_diag = 0, p_esq = 0, p_amunt = 0, max = 0; // Puntuacions de les tres opcions possibles domplir una casella de la matriu
+  float p_diag = 0, p_esq = 0, p_amunt = 0, max = 0; // Scores for the three possible options to fill a box in the matrix
   char cami;
 
   // i->cluster1, j->cluster2
 
-  matriu[0][0] = 0;
-  matriu_cami[0][0] = 'd';
+  matrix[0][0] = 0;
+  path_matrix[0][0] = 'd';
   for (i = 1; i <= long_cluster1; i++)
   {
-    matriu[i][0] = matriu[i - 1][0] + calcul_simil_ini(info1[i - 1], numseqs2);
-    matriu_cami[i][0] = 'a';
+    matrix[i][0] = matrix[i - 1][0] + calc_simil_ini(info1[i - 1], numseqs2);
+    path_matrix[i][0] = 'a';
   }
 
   for (j = 1; j <= long_cluster2; j++)
   {
-    matriu[0][j] = matriu[0][j - 1] + calcul_simil_ini(info2[j - 1], numseqs1);
-    matriu_cami[i][0] = 'e';
+    matrix[0][j] = matrix[0][j - 1] + calc_simil_ini(info2[j - 1], numseqs1);
+    path_matrix[i][0] = 'e';
   }
 
   for (i = 1; i <= long_cluster1; i++)
   {
     for (j = 1; j <= long_cluster2; j++)
     {
-      p_diag = matriu[i - 1][j - 1] + calcul_simil(info1[i - 1], info2[j - 1]);
-      p_esq = matriu[i][j - 1] + calcul_simil_ini(info2[j - 1], numseqs1);
-      p_amunt = matriu[i - 1][j] + calcul_simil_ini(info1[i - 1], numseqs2);
+      p_diag = matrix[i - 1][j - 1] + calc_simil(info1[i - 1], info2[j - 1]);
+      p_esq = matrix[i][j - 1] + calc_simil_ini(info2[j - 1], numseqs1);
+      p_amunt = matrix[i - 1][j] + calc_simil_ini(info1[i - 1], numseqs2);
 
-      max = maxim_real(p_amunt, p_diag, p_esq, &cami);
-      matriu[i][j] = max;
-      matriu_cami[i][j] = cami;
+      max = real_max(p_amunt, p_diag, p_esq, &cami);
+      matrix[i][j] = max;
+      path_matrix[i][j] = cami;
     }
   }
-  *puntuacio = max; // guarda la puntuacio del cluster
+  *score = max; // save the cluster score
 }
 
 void show_cars_matrix(char **m, int files, int cols)
@@ -418,7 +418,7 @@ void show_cars_matrix(char **m, int files, int cols)
 }
 /*******************************/
 
-float calcul_simil_ini(float *freq, int n)
+float calc_simil_ini(float *freq, int n)
 {
   // receives a frequency of symbols and an integer symbolizing gaps
   // is to initialize the matrix of the calculation of similarities between clusters
@@ -435,7 +435,7 @@ float calcul_simil_ini(float *freq, int n)
 }
 /*******************************/
 
-float calcul_simil(float *freq1, float *freq2)
+float calc_simil(float *freq1, float *freq2)
 {
   // get two symbol frequencies
   // is to initialize the matrix of the calculation of similarities between clusters
@@ -477,29 +477,29 @@ float intracluster(float *freq)
 
 /*alignment_clusters ***********************************************/
 /*Align clusters i, j*/
-void alignment_clusters(float **matriu, int i, int j, float **info1, float **info2, char *line_orig, char *line_dest, char *resultat_cluster1, char *resultat_cluster2, long *puntuacio)
+void alignment_clusters(float **matrix, int i, int j, float **info1, float **info2, char *line_orig, char *line_dest, char *result_cluster1, char *result_cluster2, long *score)
 {
   int k = 0, mem_ok = 1;
   long res = 0;
   int len = 0, aux = 0;
 
-  similarity_clusters(matriu, clusters[i]->long_seqs, clusters[j]->long_seqs, info1, info2,
-                     puntuacio, clusters[i]->num_seqs, clusters[j]->num_seqs);
+  similarity_clusters(matrix, clusters[i]->long_seqs, clusters[j]->long_seqs, info1, info2,
+                     score, clusters[i]->num_seqs, clusters[j]->num_seqs);
   // we have the matrix of scores and paths of the two clusters already calculated
 
   // printf("clusters: %d - %d\n", i, j);
-  // show_matrix(matriu, clusters[i]->long_seqs + 1, clusters[j]->long_seqs + 1);
-  // show_cars_matrix(matriu_cami, clusters[i]->long_seqs + 1, clusters[j]->long_seqs + 1);
+  // show_matrix(matrix, clusters[i]->long_seqs + 1, clusters[j]->long_seqs + 1);
+  // show_cars_matrix(path_matrix, clusters[i]->long_seqs + 1, clusters[j]->long_seqs + 1);
 
-  align_clusters(clusters[i]->long_seqs, clusters[j]->long_seqs, resultat_cluster1, resultat_cluster2, &len);
-  rebuild_new_cluster(line_orig, line_dest, resultat_cluster1, resultat_cluster2, i, j, len);
+  align_clusters(clusters[i]->long_seqs, clusters[j]->long_seqs, result_cluster1, result_cluster2, &len);
+  rebuild_new_cluster(line_orig, line_dest, result_cluster1, result_cluster2, i, j, len);
   recalculate_matrix(i, j);
 }
 
 // rebuild_new_cluster ***********************************************/
 // With a vector of ones and twos, and given the previous sequences, it gives the
 // resulting cluster
-void rebuild_new_cluster(char *line_orig, char *line_dest, char *resultat_cluster1, char *resultat_cluster2, int i, int j,
+void rebuild_new_cluster(char *line_orig, char *line_dest, char *result_cluster1, char *result_cluster2, int i, int j,
                              int len)
 {
   // char *line_orig, *line_dest;
@@ -518,7 +518,7 @@ void rebuild_new_cluster(char *line_orig, char *line_dest, char *resultat_cluste
     m = 0; // pointer writing array dest
     while (l < len)
     {
-      if (resultat_cluster1[l] == '1') /*nucleotid*/
+      if (result_cluster1[l] == '1') /*nucleotid*/
       {
         line_dest[l] = line_orig[m];
         line_dest[l + 1] = EOS;
@@ -550,7 +550,7 @@ void rebuild_new_cluster(char *line_orig, char *line_dest, char *resultat_cluste
     m = 0; // pointer writing array dest
     while (l < len)
     {
-      if (resultat_cluster2[l] == '1') // nucleotid
+      if (result_cluster2[l] == '1') // nucleotid
       {
         line_dest[l] = line_orig[m];
         line_dest[l + 1] = EOS;
@@ -597,7 +597,7 @@ void rebuild_new_cluster(char *line_orig, char *line_dest, char *resultat_cluste
   fclose(clusters_file);
 }
 /**********************************************/
-// from matriu_cami returns res1,res2 which are strips of {1,2}
+// from path_matrix returns res1,res2 which are strips of {1,2}
 // where 1 indicates symbol and 2 gap
 
 void align_clusters(int i, int j, char *res1, char *res2, int *len)
@@ -608,7 +608,7 @@ void align_clusters(int i, int j, char *res1, char *res2, int *len)
   }
   else
   {
-    switch (matriu_cami[i][j])
+    switch (path_matrix[i][j])
     {
     case 'a':
       align_clusters(i - 1, j, res1, res2, len);
@@ -643,10 +643,10 @@ long add_sequence_cluster(FILE *fitxer, int num_seq)
   if (pos_seq[num_seq] == -1)
   {
     // means the sequence has not been chosen so far
-    l = dona_longitud_seq(num_seq);
+    l = get_sequence_length(num_seq);
     clusters[num_seq]->long_seqs = l;
 
-    carregar_sequencia(seq, num_seq);
+    load_sequence(seq, num_seq);
     //    check_load_sequence(seq,clusters[num_seq]->long_seqs);
     pos_fitxer = ftell(fitxer);
     fprintf(fitxer, "%s", seq);
@@ -675,17 +675,17 @@ void recalculate_matrix(int i, int j)
     {
       if (cluster_equivalent[aux] == i)
       {
-        matriu_puntuacions[i][aux] = 0;
-        matriu_puntuacions[aux][i] = 0;
-        matriu_puntuacions[j][aux] = 0;
-        matriu_puntuacions[aux][j] = 0;
+        score_matrix[i][aux] = 0;
+        score_matrix[aux][i] = 0;
+        score_matrix[j][aux] = 0;
+        score_matrix[aux][j] = 0;
       }
       else
       {
-        matriu_puntuacions[i][aux] = (matriu_puntuacions[i][aux] + matriu_puntuacions[j][aux]) / 2;
-        matriu_puntuacions[aux][i] = matriu_puntuacions[i][aux];
-        matriu_puntuacions[j][aux] = matriu_puntuacions[i][aux];
-        matriu_puntuacions[aux][j] = matriu_puntuacions[i][aux];
+        score_matrix[i][aux] = (score_matrix[i][aux] + score_matrix[j][aux]) / 2;
+        score_matrix[aux][i] = score_matrix[i][aux];
+        score_matrix[j][aux] = score_matrix[i][aux];
+        score_matrix[aux][j] = score_matrix[i][aux];
       }
     }
     aux++;
@@ -703,15 +703,15 @@ void recalculate_matrix(int i, int j)
         {
           if ((aux != n) && (j != n) && (cluster_equivalent[aux] != cluster_equivalent[n]))
           {
-            matriu_puntuacions[aux][n] = matriu_puntuacions[i][n];
-            matriu_puntuacions[n][aux] = matriu_puntuacions[i][n];
+            score_matrix[aux][n] = score_matrix[i][n];
+            score_matrix[n][aux] = score_matrix[i][n];
           }
           else
           {
             if (cluster_equivalent[aux] == cluster_equivalent[i])
             {
-              matriu_puntuacions[aux][n] = 0;
-              matriu_puntuacions[n][aux] = 0;
+              score_matrix[aux][n] = 0;
+              score_matrix[n][aux] = 0;
             }
           }
           n++;

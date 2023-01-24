@@ -28,8 +28,8 @@ char alphabet[MAXLONGALF]; // alphabet in positions 1,2,..,num_symbols
 int num_seqs;             // Number of sequences in the file
 
 float matpenal[MAXLONGALF][MAXLONGALF]; // SCORE match,mismatch and gap...
-float **matriu_puntuacions;             // Matrix containing the score of the ptim alignment between all the sequences
-char **matriu_cami;                     // Count where each position of the matrix has been filled ('e': left, 'a':up, 'd': diagonal)
+float **score_matrix;             // Matrix containing the score of the ptim alignment between all the sequences
+char **path_matrix;                     // Count where each position of the matrix has been filled ('e': left, 'a':up, 'd': diagonal)
 
 int args(int argc, char **argv)
 {
@@ -139,7 +139,7 @@ int main(int argc, char *argv[])
     int i = 0, j, k, l, estat;
     long long_seq, long_seq2;
     char *seq, *seq2;
-    float **matriu, res;
+    float **matrix, res;
     char pref[6];
     int num_pref;
 
@@ -192,8 +192,8 @@ int main(int argc, char *argv[])
         temp_file = fopen(temp_file_name, "r");
 
         estat = 0;
-        matriu = (float **)malloc(MAXLONGALIN * sizeof(float *));
-        if (matriu == NULL)
+        matrix = (float **)malloc(MAXLONGALIN * sizeof(float *));
+        if (matrix == NULL)
         {
           estat = -1;
           printf("Out of memory\n");
@@ -208,8 +208,8 @@ int main(int argc, char *argv[])
         estat = 0;
         while ((i < MAXLONGALIN) && (estat == 0))
         {
-          matriu[i] = (float *)malloc(MAXLONGALIN * sizeof(float));
-          if (matriu[i] == NULL)
+          matrix[i] = (float *)malloc(MAXLONGALIN * sizeof(float));
+          if (matrix[i] == NULL)
           {
             estat = -1;
             printf("Out of memory\n");
@@ -224,8 +224,8 @@ int main(int argc, char *argv[])
         // there is enough memory for a 2000x2000 matrix
 
         estat = 0;
-        matriu_cami = (char **)malloc(MAXLONGALIN * sizeof(char *));
-        if (matriu_cami == NULL)
+        path_matrix = (char **)malloc(MAXLONGALIN * sizeof(char *));
+        if (path_matrix == NULL)
         {
           estat = -1;
           printf("Out of memory\n");
@@ -239,8 +239,8 @@ int main(int argc, char *argv[])
         estat = 0;
         while ((i < MAXLONGALIN) && (estat == 0))
         {
-          matriu_cami[i] = (char *)malloc(MAXLONGALIN * sizeof(char));
-          if (matriu_cami[i] == NULL)
+          path_matrix[i] = (char *)malloc(MAXLONGALIN * sizeof(char));
+          if (path_matrix[i] == NULL)
           {
             estat = -1;
             printf("Out of memory\n");
@@ -253,8 +253,8 @@ int main(int argc, char *argv[])
           i++;
         }
 
-        matriu_puntuacions = (float **)malloc(num_seqs * sizeof(float *));
-        if (matriu_puntuacions == NULL)
+        score_matrix = (float **)malloc(num_seqs * sizeof(float *));
+        if (score_matrix == NULL)
         {
           estat = -1;
         }
@@ -262,8 +262,8 @@ int main(int argc, char *argv[])
         estat = 0;
         while ((i < num_seqs) && (estat == 0))
         {
-            matriu_puntuacions[i] = (float *)malloc(num_seqs * sizeof(float));
-            if (matriu_puntuacions[i] == NULL)
+            score_matrix[i] = (float *)malloc(num_seqs * sizeof(float));
+            if (score_matrix[i] == NULL)
             {
               estat = -1;
               printf("Out of memory\n");
@@ -284,56 +284,56 @@ int main(int argc, char *argv[])
         // printf("\n 1");
         while (j < (num_seqs - 1))
         {
-            long_seq = dona_longitud_seq(j);
-            carregar_sequencia(seq, j);
+            long_seq = get_sequence_length(j);
+            load_sequence(seq, j);
             // check_load_sequence(seq,long_seq);
             k = j + 1;
             printf("\n");
             while (k < num_seqs)
             {
                 printf(".");
-                long_seq2 = dona_longitud_seq(k);
-                carregar_sequencia(seq2, k);
+                long_seq2 = get_sequence_length(k);
+                load_sequence(seq2, k);
                 // check_load_sequence(seq2,long_seq2);
-                res = similarity(matriu, seq, seq2, long_seq, long_seq2);
-                //      check_path_matrix(matriu,long_seq,long_seq2);
+                res = similarity(matrix, seq, seq2, long_seq, long_seq2);
+                //      check_path_matrix(matrix,long_seq,long_seq2);
                 //      check_similarity(seq, seq2, long_seq, long_seq2);
-                matriu_puntuacions[j][k] = res;
-                matriu_puntuacions[k][j] = res;
+                score_matrix[j][k] = res;
+                score_matrix[k][j] = res;
                 k++;
             }
             j++;
         }
-        check_similarity_matrix(matriu_puntuacions);
+        check_similarity_matrix(score_matrix);
         free(seq);
         free(seq2);
         // printf("\n 2");
-        multiple_alignment(matriu, atoi(argv[2]));
+        multiple_alignment(matrix, atoi(argv[2]));
         // second argument is the output format
         // printf("\n 3");
         i = 0;
         while (i < num_seqs)
         {
-            free(matriu_puntuacions[i]);
+            free(score_matrix[i]);
             i++;
         }
-        free(matriu_puntuacions);
+        free(score_matrix);
 
         i = 0;
         while (i < MAXLONGALIN)
         {
-            free(matriu[i]);
+            free(matrix[i]);
             i++;
         }
-        free(matriu);
+        free(matrix);
 
         i = 0;
         while (i < MAXLONGALIN)
         {
-            free(matriu_cami[i]);
+            free(path_matrix[i]);
             i++;
         }
-        free(matriu_cami);
+        free(path_matrix);
         fclose(temp_file);
         remove(clusters_filename);
         remove(temp_file_name);

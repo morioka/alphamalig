@@ -21,8 +21,8 @@ extern char alphabet[MAXLONGALF]; // alphabet in positions 1,2,..,num_symbols
 extern int num_seqs;             // Number of sequences in the file
 
 extern float matpenal[MAXLONGALF][MAXLONGALF]; // SCORE match,mismatch and gap...
-extern float **matriu_puntuacions;             // Matrix containing the score of the ptim alignment between all the sequences
-extern char **matriu_cami;                     // Count where each position of the matrix has been filled ('e': left, 'a':up, 'd': diagonal)
+extern float **score_matrix;             // Matrix containing the score of the ptim alignment between all the sequences
+extern char **path_matrix;               // Count where each position of the matrix has been filled ('e': left, 'a':up, 'd': diagonal)
 
 extern int args(int argc, char **argv);
 extern void read_alphabet(FILE *fd);

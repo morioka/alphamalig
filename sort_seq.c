@@ -22,7 +22,7 @@ void write_align_output_file(int output_format)
     if (output_format == 0) /* do not cut sequences */
     {
         printf("Number of sequnces=%d  Alignment length=%ld  Alignment score=%ld\n", clusters[0]->num_seqs,
-              clusters[0]->long_seqs, clusters[0]->puntuacio);
+              clusters[0]->long_seqs, clusters[0]->score);
         i = 0;
         while (i < clusters[0]->long_seqs)
         {
@@ -61,7 +61,7 @@ void write_align_output_file(int output_format)
     else /* cut the sequences */
     {
         printf("\nNumber of sequnces=%d  Alignment length=%ld  Alignment score=%ld\n", clusters[0]->num_seqs,
-              clusters[0]->long_seqs, clusters[0]->puntuacio);
+              clusters[0]->long_seqs, clusters[0]->score);
         l = 0;
         while (l < clusters[0]->long_seqs)
         {

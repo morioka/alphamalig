@@ -91,9 +91,9 @@ int write_sequence_tmp(int num_seq)
         return (estat);
 }
 
-/* dona_longitud_sequencia ******************************************************/
+/* get_sequence_length ******************************************************/
 // Returns the length of the sequence "num_seq", reading it from the temporary file
-long dona_longitud_seq(int num_seq)
+long get_sequence_length(int num_seq)
 {
         static char line[MAXLINE + 1];
         static char aux[10];
@@ -125,9 +125,9 @@ long dona_longitud_seq(int num_seq)
         return (atol(aux));
 }
 
-/* carregar_sequencia ******************************************************/
+/* load_sequence ******************************************************/
 // Returns the encoding of the sequence "num_seq" in the array "seq"
-void carregar_sequencia(char *seq, int num_seq)
+void load_sequence(char *seq, int num_seq)
 {
         static char line[MAXLONGSEQ + 1];
         static char aux[10];

@@ -46,13 +46,13 @@ void check_similarity(char *seq1, char *seq2, long longseq1, long longseq2)
 
     while ((i > 0) || (j > 0))
     {
-        if (matriu_cami[i][j] == 'a')
+        if (path_matrix[i][j] == 'a')
         {
             alin1[pos] = '-';
             alin0[pos] = seq1[i - 1];
             i--;
         }
-        else if (matriu_cami[i][j] == 'd')
+        else if (path_matrix[i][j] == 'd')
         {
             alin0[pos] = seq1[i - 1];
             alin1[pos] = seq2[j - 1];
@@ -111,14 +111,14 @@ void check_temp_file()
     fclose(temp_file);
 }
 
-void check_similarity_matrix(float **matriu)
+void check_similarity_matrix(float **matrix)
 {
     int i, j;
     printf("\n Similarity between the sequences \n");
     for (i = 0; i < num_seqs - 1; i++)
     {
         for (j = i + 1; j < num_seqs; j++)
-            printf("[%d,%d]=%f,", i + 1, j + 1, matriu[i][j]);
+            printf("[%d,%d]=%f,", i + 1, j + 1, matrix[i][j]);
         printf("\n");
     }
 }
@@ -142,7 +142,7 @@ void check_path_matrix(float **mat, int l1, int l2)
     for (i = 0; i <= l1; i++)
     {
         for (j = 0; j <= l2; j++)
-            printf("%c,", matriu_cami[i][j]);
+            printf("%c,", path_matrix[i][j]);
         for (j = 0; j <= l2; j++)
             printf("%f,", mat[i][j]);
         printf("\n");

@@ -9,7 +9,7 @@ void check_optimal_alignment(float res, char *seq1, char *seq2, long longseq1, i
 void check_similarity(char *seq1, char *seq2, long longseq1, long longseq2);
 
 void check_load_sequence(char *seq, long longseq);
-void check_similarity_matrix(float **matriu);
+void check_similarity_matrix(float **matrix);
 void check_cluster_info(float **info);
 
 void check_path_matrix(float **, int l1, int l2);

@@ -48,9 +48,9 @@ int belong_alphabet(char c)
         return (alphabet[i] == c);
 }
 
-/* maxim_real *****************************************************************/
+/* real_max *****************************************************************/
 // Returns at most three real numbers.
-float maxim_real(float x, float y, float z, char *c)
+float real_max(float x, float y, float z, char *c)
 {
         float num_max;
 
@@ -90,7 +90,7 @@ int count_sequences(void)
         return (n_seqs);
 }
 
-void mostrar_matriu(float **m, int files, int cols)
+void show_matrix(float **m, int files, int cols)
 {
         int i, j;
 

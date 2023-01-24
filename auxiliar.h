@@ -11,9 +11,9 @@
 #define _AUXILIAR_H_
 
 int belong_alphabet(char c);
-float maxim_real(float x, float y, float z, char *c);
+float real_max(float x, float y, float z, char *c);
 int count_sequences(void);
-void mostrar_matriu(float **m, int files, int cols); // Chivato function ********************************
+void show_matrix(float **m, int files, int cols); // Chivato function ********************************
 int generate_prefix_files(char *nom_fit);
 void fill_string_prefix(char *pref, int num_pref);
 char to_character(int num);

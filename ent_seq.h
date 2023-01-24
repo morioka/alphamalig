@@ -13,8 +13,8 @@
 
 int read_sequences_file(void);
 int write_sequence_tmp(int num_seq);
-long dona_longitud_seq(int num_seq);
-void carregar_sequencia(char *seq, int num_seq);
+long get_sequence_length(int num_seq);
+void load_sequence(char *seq, int num_seq);
 void load_sequence_exact_position(char *seq);
 void load_sequence_name(char *nom, int num_seq);
 

@@ -31,13 +31,13 @@ float similarity(float **a, char *seq1, char *seq2, long longseq1, long longseq2
     for (i = 1; i <= longseq1; i++)
     {
         a[i][0] = a[i - 1][0] + matpenal[symbol_index(seq1[i - 1])][num_symbols];
-        matriu_cami[i][0] = 'a';
+        path_matrix[i][0] = 'a';
     }
 
     for (j = 1; j <= longseq2; j++)
     {
         a[0][j] = a[0][j - 1] + matpenal[symbol_index(seq2[j - 1])][num_symbols];
-        matriu_cami[0][j] = 'e';
+        path_matrix[0][j] = 'e';
     }
 
     for (i = 1; i <= longseq1; i++)
@@ -48,8 +48,8 @@ float similarity(float **a, char *seq1, char *seq2, long longseq1, long longseq2
             sum1 = a[i - 1][j] + matpenal[symbol_index(seq1[i - 1])][num_symbols];
             sum2 = a[i - 1][j - 1] + matpenal[symbol_index(seq1[i - 1])][symbol_index(seq2[j - 1])];
             sum3 = a[i][j - 1] + matpenal[symbol_index(seq2[j - 1])][num_symbols];
-            a[i][j] = maxim_real(sum1, sum2, sum3, &c);
-            matriu_cami[i][j] = c;
+            a[i][j] = real_max(sum1, sum2, sum3, &c);
+            path_matrix[i][j] = c;
         }
     }
     return (a[longseq1][longseq2]);
