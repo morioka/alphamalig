@@ -10,6 +10,6 @@
 #define _PARELIS_H_
 
 // Definition of prototypes
-float similarity(float **matrix, char *seq1, char *seq2, long long_seq1, long long_seq2);
+float similarity(float **matrix, char *seq1, char *seq2, long len_seq1, long len_seq2);
 
 #endif

@@ -47,8 +47,8 @@ void multiple_alignment(float **matrix, int output_format)
   float **info1, **info2;
 
   // Initializations
-  line_orig = (char *)malloc((MAXLONGSEQ + 1) * sizeof(char));
-  line_dest = (char *)malloc((MAXLONGSEQ + 1) * sizeof(char));
+  line_orig = (char *)malloc((MAXLENSEQ + 1) * sizeof(char));
+  line_dest = (char *)malloc((MAXLENSEQ + 1) * sizeof(char));
 
   // Vector that contains which sequences belong to each cluster
   seqs = (int **)malloc(num_seqs * sizeof(int *));
@@ -69,7 +69,7 @@ void multiple_alignment(float **matrix, int output_format)
     {
       clusters[i]->score = 0;
       clusters[i]->num_seqs = 1;
-      clusters[i]->long_seqs = 0; // We don't put it at the moment
+      clusters[i]->len_seqs = 0; // We don't put it at the moment
       seqs[i] = (int *)malloc(1 * sizeof(int));
       if (seqs[i] == NULL)
       {
@@ -138,12 +138,12 @@ void multiple_alignment(float **matrix, int output_format)
     }
   }
 
-  result_cluster1 = (char *)malloc(MAXLONGSEQ * sizeof(char));
+  result_cluster1 = (char *)malloc(MAXLENSEQ * sizeof(char));
   if (result_cluster1 == NULL)
   {
     mem_ok = 0;
   }
-  result_cluster2 = (char *)malloc(MAXLONGSEQ * sizeof(char));
+  result_cluster2 = (char *)malloc(MAXLENSEQ * sizeof(char));
   if (result_cluster2 == NULL)
   {
     mem_ok = 0;
@@ -151,14 +151,14 @@ void multiple_alignment(float **matrix, int output_format)
 
   if (mem_ok == 1)
   {
-    info1 = (float **)malloc(MAXLONGSEQ * sizeof(float));
+    info1 = (float **)malloc(MAXLENSEQ * sizeof(float));
     if (info1 == NULL)
     {
       mem_ok = 0;
     }
     else
     {
-      for (i = 0; i < MAXLONGSEQ; i++)
+      for (i = 0; i < MAXLENSEQ; i++)
       {
         info1[i] = (float *)malloc(num_symbols * sizeof(float));
         if (info1[i] == NULL)
@@ -169,14 +169,14 @@ void multiple_alignment(float **matrix, int output_format)
 
   if (mem_ok == 1)
   {
-    info2 = (float **)malloc(MAXLONGSEQ * sizeof(float));
+    info2 = (float **)malloc(MAXLENSEQ * sizeof(float));
     if (info2 == NULL)
     {
       mem_ok = 0;
     }
     else
     {
-      for (i = 0; i < MAXLONGSEQ; i++)
+      for (i = 0; i < MAXLENSEQ; i++)
       {
         info2[i] = (float *)malloc(num_symbols * sizeof(float));
         if (info2[i] == NULL)
@@ -196,7 +196,7 @@ void multiple_alignment(float **matrix, int output_format)
 
       find_nearest_clusters(&i, &j);
 
-      if ((clusters[i]->long_seqs >= MAXLONGSEQ) || (clusters[j]->long_seqs >= MAXLONGSEQ))
+      if ((clusters[i]->len_seqs >= MAXLENSEQ) || (clusters[j]->len_seqs >= MAXLENSEQ))
       {
         printf("Too long resulting alignment (>=2000)\n");
         exit(-1);
@@ -210,7 +210,7 @@ void multiple_alignment(float **matrix, int output_format)
       build_info_cluster(j, info2, cluster_file_2);
       //      check_cluster_info(info2);///////////////////
       alignment_clusters(matrix, i, j, info1, info2, line_orig, line_dest, result_cluster1, result_cluster2, &clusters[i]->score);
-      //     check_path_matrix(matrix,clusters[i]->long_seqs,clusters[j]->long_seqs);
+      //     check_path_matrix(matrix,clusters[i]->len_seqs,clusters[j]->len_seqs);
       recalculate_matrix(i, j); // tambe s'ha fet dins aliniament_clusters
       fclose(cluster_file_1);
       fclose(cluster_file_2);
@@ -236,13 +236,13 @@ void multiple_alignment(float **matrix, int output_format)
 // of the alphabet in each column of the cluster
 void build_info_cluster(int num_cluster, float **info, FILE *f)
 {
-  char line[MAXLONGSEQ + 1];
+  char line[MAXLENSEQ + 1];
   int i, j, k;
 
   // Initialize the structures
   j = 0;
 
-  while (j < clusters[num_cluster]->long_seqs)
+  while (j < clusters[num_cluster]->len_seqs)
   {
     for (k = 0; k < num_symbols; k++)
       info[j][k] = 0;
@@ -252,9 +252,9 @@ void build_info_cluster(int num_cluster, float **info, FILE *f)
   fseek(f, 0, SEEK_SET);
   while (i < clusters[num_cluster]->num_seqs)
   {
-    fgets(line, MAXLONGSEQ, f);
+    fgets(line, MAXLENSEQ, f);
     j = 0;
-    while (j < clusters[num_cluster]->long_seqs)
+    while (j < clusters[num_cluster]->len_seqs)
     {
       info[j][symbol_index(line[j]) - 1]++;
       j++;
@@ -365,7 +365,7 @@ void find_nearest_clusters(int *i, int *j)
 /* similarity_clusters *******************************************************/
 // Calculate the similarity between two clusters. In the matrix
 //"matrix" contains the similarities between all prefixes of the two clusters.
-void similarity_clusters(float **matrix, long long_cluster1, long long_cluster2, float **info1, float **info2, long *score, int numseqs1, int numseqs2)
+void similarity_clusters(float **matrix, long len_cluster1, long len_cluster2, float **info1, float **info2, long *score, int numseqs1, int numseqs2)
 {
   int i = 0, j = 0;
   float p_diag = 0, p_esq = 0, p_amunt = 0, max = 0; // Scores for the three possible options to fill a box in the matrix
@@ -375,21 +375,21 @@ void similarity_clusters(float **matrix, long long_cluster1, long long_cluster2,
 
   matrix[0][0] = 0;
   path_matrix[0][0] = 'd';
-  for (i = 1; i <= long_cluster1; i++)
+  for (i = 1; i <= len_cluster1; i++)
   {
     matrix[i][0] = matrix[i - 1][0] + calc_simil_ini(info1[i - 1], numseqs2);
     path_matrix[i][0] = 'a';
   }
 
-  for (j = 1; j <= long_cluster2; j++)
+  for (j = 1; j <= len_cluster2; j++)
   {
     matrix[0][j] = matrix[0][j - 1] + calc_simil_ini(info2[j - 1], numseqs1);
     path_matrix[i][0] = 'e';
   }
 
-  for (i = 1; i <= long_cluster1; i++)
+  for (i = 1; i <= len_cluster1; i++)
   {
-    for (j = 1; j <= long_cluster2; j++)
+    for (j = 1; j <= len_cluster2; j++)
     {
       p_diag = matrix[i - 1][j - 1] + calc_simil(info1[i - 1], info2[j - 1]);
       p_esq = matrix[i][j - 1] + calc_simil_ini(info2[j - 1], numseqs1);
@@ -483,15 +483,15 @@ void alignment_clusters(float **matrix, int i, int j, float **info1, float **inf
   long res = 0;
   int len = 0, aux = 0;
 
-  similarity_clusters(matrix, clusters[i]->long_seqs, clusters[j]->long_seqs, info1, info2,
+  similarity_clusters(matrix, clusters[i]->len_seqs, clusters[j]->len_seqs, info1, info2,
                      score, clusters[i]->num_seqs, clusters[j]->num_seqs);
   // we have the matrix of scores and paths of the two clusters already calculated
 
   // printf("clusters: %d - %d\n", i, j);
-  // show_matrix(matrix, clusters[i]->long_seqs + 1, clusters[j]->long_seqs + 1);
-  // show_cars_matrix(path_matrix, clusters[i]->long_seqs + 1, clusters[j]->long_seqs + 1);
+  // show_matrix(matrix, clusters[i]->len_seqs + 1, clusters[j]->len_seqs + 1);
+  // show_cars_matrix(path_matrix, clusters[i]->len_seqs + 1, clusters[j]->len_seqs + 1);
 
-  align_clusters(clusters[i]->long_seqs, clusters[j]->long_seqs, result_cluster1, result_cluster2, &len);
+  align_clusters(clusters[i]->len_seqs, clusters[j]->len_seqs, result_cluster1, result_cluster2, &len);
   rebuild_new_cluster(line_orig, line_dest, result_cluster1, result_cluster2, i, j, len);
   recalculate_matrix(i, j);
 }
@@ -513,7 +513,7 @@ void rebuild_new_cluster(char *line_orig, char *line_dest, char *result_cluster1
   while (k < clusters[i]->num_seqs)
   {
     fseek(cluster_file_1, pos_seq_clusters_file[seqs[i][k]], SEEK_SET);
-    fgets(line_orig, MAXLONGSEQ, cluster_file_1);
+    fgets(line_orig, MAXLENSEQ, cluster_file_1);
     l = 0; // pointer read array
     m = 0; // pointer writing array dest
     while (l < len)
@@ -538,14 +538,14 @@ void rebuild_new_cluster(char *line_orig, char *line_dest, char *result_cluster1
   }
   n = clusters[i]->num_seqs;
   clusters[i]->num_seqs = clusters[i]->num_seqs + clusters[j]->num_seqs;
-  clusters[i]->long_seqs = len;
+  clusters[i]->len_seqs = len;
 
   /*cluster j*/
   k = 0;
   while (k < clusters[j]->num_seqs)
   {
     fseek(cluster_file_2, pos_seq_clusters_file[seqs[j][k]], SEEK_SET);
-    fgets(line_orig, MAXLONGSEQ, cluster_file_2);
+    fgets(line_orig, MAXLENSEQ, cluster_file_2);
     l = 0; // pointer read array
     m = 0; // pointer writing array dest
     while (l < len)
@@ -638,16 +638,16 @@ void align_clusters(int i, int j, char *res1, char *res2, int *len)
 long add_sequence_cluster(FILE *fitxer, int num_seq)
 {
   long l = 0, pos_fitxer = 0;
-  char seq[MAXLONGSEQ];
+  char seq[MAXLENSEQ];
 
   if (pos_seq[num_seq] == -1)
   {
     // means the sequence has not been chosen so far
     l = get_sequence_length(num_seq);
-    clusters[num_seq]->long_seqs = l;
+    clusters[num_seq]->len_seqs = l;
 
     load_sequence(seq, num_seq);
-    //    check_load_sequence(seq,clusters[num_seq]->long_seqs);
+    //    check_load_sequence(seq,clusters[num_seq]->len_seqs);
     pos_fitxer = ftell(fitxer);
     fprintf(fitxer, "%s", seq);
   }
@@ -655,7 +655,7 @@ long add_sequence_cluster(FILE *fitxer, int num_seq)
   {
     // it means it was included in another cluster
     fseek(clusters_file, pos_seq[num_seq], SEEK_SET);
-    fgets(seq, MAXLONGSEQ, clusters_file);
+    fgets(seq, MAXLENSEQ, clusters_file);
     pos_fitxer = ftell(fitxer);
     fprintf(fitxer, "%s", seq);
   }

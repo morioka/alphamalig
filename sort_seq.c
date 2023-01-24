@@ -16,15 +16,15 @@
 void write_align_output_file(int output_format)
 {
     int k = 0, i, j, l;
-    char asteriscs[MAXLONGSEQ];
-    char seq_out[MAXLONGSEQ];
+    char asteriscs[MAXLENSEQ];
+    char seq_out[MAXLENSEQ];
     output_format = 1;      // cut sequences
     if (output_format == 0) /* do not cut sequences */
     {
         printf("Number of sequnces=%d  Alignment length=%ld  Alignment score=%ld\n", clusters[0]->num_seqs,
-              clusters[0]->long_seqs, clusters[0]->score);
+              clusters[0]->len_seqs, clusters[0]->score);
         i = 0;
-        while (i < clusters[0]->long_seqs)
+        while (i < clusters[0]->len_seqs)
         {
             asteriscs[i] = '*';
             i++;
@@ -42,7 +42,7 @@ void write_align_output_file(int output_format)
             i++;
         }
         k = 0;
-        while (k < clusters[0]->long_seqs)
+        while (k < clusters[0]->len_seqs)
         {
             //if ((asteriscs[k] == 'A') || (asteriscs[k] == 'C') || (asteriscs[k] == 'G') || (asteriscs[k] == 'T'))
             //{
@@ -61,9 +61,9 @@ void write_align_output_file(int output_format)
     else /* cut the sequences */
     {
         printf("\nNumber of sequnces=%d  Alignment length=%ld  Alignment score=%ld\n", clusters[0]->num_seqs,
-              clusters[0]->long_seqs, clusters[0]->score);
+              clusters[0]->len_seqs, clusters[0]->score);
         l = 0;
-        while (l < clusters[0]->long_seqs)
+        while (l < clusters[0]->len_seqs)
         {
             i = 0;
             while (i < 58)
@@ -107,32 +107,32 @@ void write_align_output_file(int output_format)
 
 void write_cut_cluster_sequence(int num_seq, char *asteriscs, int pos)
 {
-    char seq[MAXLONGSEQ + 1], nom[15], seq_out[MAXLONGSEQ + 1];
+    char seq[MAXLENSEQ + 1], name[15], seq_out[MAXLENSEQ + 1];
     int i = 0, j = 0, k = 0, trobat_fi = 0;
 
     // First we copy the name
     fseek(clusters_file, pos_seq[num_seq], SEEK_SET);
-    load_sequence_name(nom, num_seq);
+    load_sequence_name(name, num_seq);
     i = 0;
     trobat_fi = 0;
     while (i <= 10)
     {
-        if ((nom[i] == EOS) || (nom[i] == '\n') || (trobat_fi == 1))
+        if ((name[i] == EOS) || (name[i] == '\n') || (trobat_fi == 1))
         {
             seq_out[i] = ' ';
             trobat_fi = 1;
         }
         else
         {
-            seq_out[i] = nom[i];
+            seq_out[i] = name[i];
         }
         i++;
     }
 
     j = pos;
     k = 0;
-    fgets(seq, MAXLONGSEQ, clusters_file);
-    while ((seq[j] != EOS) && (seq[j] != '\n') && (i <= MAXLONGSEQ) && ((j - pos) < 58))
+    fgets(seq, MAXLENSEQ, clusters_file);
+    while ((seq[j] != EOS) && (seq[j] != '\n') && (i <= MAXLENSEQ) && ((j - pos) < 58))
     {
         seq_out[i] = seq[j];
         if (asteriscs[k] == '*')
@@ -160,31 +160,31 @@ void write_cut_cluster_sequence(int num_seq, char *asteriscs, int pos)
 
 void write_sequence_cluster(int num_seq, char *asteriscs)
 {
-    char seq[MAXLONGSEQ + 1], nom[15], seq_out[MAXLONGSEQ + 1];
+    char seq[MAXLENSEQ + 1], name[15], seq_out[MAXLENSEQ + 1];
     int i = 0, j = 0, trobat_fi = 0;
 
-    // Primer copiem el nom
+    // Primer copiem el name
     fseek(clusters_file, pos_seq[num_seq], SEEK_SET);
-    load_sequence_name(nom, num_seq);
+    load_sequence_name(name, num_seq);
     i = 0;
     trobat_fi = 0;
     while (i <= 10)
     {
-        if ((nom[i] == EOS) || (nom[i] == '\n') || (trobat_fi == 1))
+        if ((name[i] == EOS) || (name[i] == '\n') || (trobat_fi == 1))
         {
             seq_out[i] = ' ';
             trobat_fi = 1;
         }
         else
         {
-            seq_out[i] = nom[i];
+            seq_out[i] = name[i];
         }
         i++;
     }
 
     j = 0;
-    fgets(seq, MAXLONGSEQ, clusters_file);
-    while ((seq[j] != EOS) && (seq[j] != '\n') && (i <= MAXLONGSEQ))
+    fgets(seq, MAXLENSEQ, clusters_file);
+    while ((seq[j] != EOS) && (seq[j] != '\n') && (i <= MAXLENSEQ))
     {
         seq_out[i] = seq[j];
         if (asteriscs[j] == '*')

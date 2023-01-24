@@ -104,7 +104,7 @@ void show_matrix(float **m, int files, int cols)
         }
 }
 
-int generate_prefix_files(char *nom_fit)
+int generate_prefix_files(char *fit_name)
 {
         int val, i;
         time_t t;
@@ -112,9 +112,9 @@ int generate_prefix_files(char *nom_fit)
 
         i = 0;
         val = 0;
-        while ((i < 13) && (nom_fit[i] != '\n') && (nom_fit[i] != '\0'))
+        while ((i < 13) && (fit_name[i] != '\n') && (fit_name[i] != '\0'))
         {
-                val = val + toascii(nom_fit[i]);
+                val = val + toascii(fit_name[i]);
                 i++;
         }
         val = val + time(&t);

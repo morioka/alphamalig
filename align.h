@@ -17,10 +17,10 @@ extern FILE *alphabet_file;  // File that stores the alphabet in the appropriate
 extern char temp_file_name[13]; // Temporary file name
 
 extern int num_symbols;              // number of alphabet symbols
-extern char alphabet[MAXLONGALF]; // alphabet in positions 1,2,..,num_symbols
+extern char alphabet[MAXLENALPHABET]; // alphabet in positions 1,2,..,num_symbols
 extern int num_seqs;             // Number of sequences in the file
 
-extern float matpenal[MAXLONGALF][MAXLONGALF]; // SCORE match,mismatch and gap...
+extern float matpenal[MAXLENALPHABET][MAXLENALPHABET]; // SCORE match,mismatch and gap...
 extern float **score_matrix;             // Matrix containing the score of the ptim alignment between all the sequences
 extern char **path_matrix;               // Count where each position of the matrix has been filled ('e': left, 'a':up, 'd': diagonal)
 

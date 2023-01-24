@@ -16,6 +16,6 @@ int write_sequence_tmp(int num_seq);
 long get_sequence_length(int num_seq);
 void load_sequence(char *seq, int num_seq);
 void load_sequence_exact_position(char *seq);
-void load_sequence_name(char *nom, int num_seq);
+void load_sequence_name(char *name, int num_seq);
 
 #endif

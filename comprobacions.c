@@ -34,15 +34,15 @@ void check_reading_alphabet()
     }
 }
 
-void check_similarity(char *seq1, char *seq2, long longseq1, long longseq2)
+void check_similarity(char *seq1, char *seq2, long lenseq1, long lenseq2)
 {
 
-    int i = longseq1;
-    int j = longseq2;
+    int i = lenseq1;
+    int j = lenseq2;
     int pos = 0;
     char *alin0, *alin1;
-    alin0 = (char *)malloc(2 * MAXLONGSEQ * sizeof(char));
-    alin1 = (char *)malloc(2 * MAXLONGSEQ * sizeof(char));
+    alin0 = (char *)malloc(2 * MAXLENSEQ * sizeof(char));
+    alin1 = (char *)malloc(2 * MAXLENSEQ * sizeof(char));
 
     while ((i > 0) || (j > 0))
     {
@@ -89,11 +89,11 @@ void check_similarity(char *seq1, char *seq2, long longseq1, long longseq2)
     free(alin1);
 }
 
-void check_load_sequence(char *seq, long longseq)
+void check_load_sequence(char *seq, long lenseq)
 {
     int i;
     printf("\n check load sequence");
-    for (i = 0; i < longseq; i++)
+    for (i = 0; i < lenseq; i++)
         printf("%c", seq[i]);
     printf("\n");
 }

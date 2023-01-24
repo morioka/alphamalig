@@ -24,10 +24,10 @@ FILE *alphabet_file;  // File that stores the alphabet in the appropriate format
 char temp_file_name[13]; // Temporary file name
 
 int num_symbols;              // number of alphabet symbols
-char alphabet[MAXLONGALF]; // alphabet in positions 1,2,..,num_symbols
+char alphabet[MAXLENALPHABET]; // alphabet in positions 1,2,..,num_symbols
 int num_seqs;             // Number of sequences in the file
 
-float matpenal[MAXLONGALF][MAXLONGALF]; // SCORE match,mismatch and gap...
+float matpenal[MAXLENALPHABET][MAXLENALPHABET]; // SCORE match,mismatch and gap...
 float **score_matrix;             // Matrix containing the score of the ptim alignment between all the sequences
 char **path_matrix;                     // Count where each position of the matrix has been filled ('e': left, 'a':up, 'd': diagonal)
 
@@ -137,7 +137,7 @@ void read_alphabet(FILE *fd)
 int main(int argc, char *argv[])
 {
     int i = 0, j, k, l, estat;
-    long long_seq, long_seq2;
+    long len_seq, len_seq2;
     char *seq, *seq2;
     float **matrix, res;
     char pref[6];
@@ -175,7 +175,7 @@ int main(int argc, char *argv[])
     temp_file = fopen(temp_file_name, "w");
     if (read_sequences_file() == -1)
     // have the sequences in the temporary file in a special format
-    // number, name, length, sequence (numeroseq,nom,longitud,sequencia)
+    // number, name, length, sequence (numeroseq,name,longitud,sequencia)
     {
         printf("Too many (>%d) or too few (<2) input sequences\n", MAXSEQ);
         remove(clusters_filename);
@@ -192,7 +192,7 @@ int main(int argc, char *argv[])
         temp_file = fopen(temp_file_name, "r");
 
         estat = 0;
-        matrix = (float **)malloc(MAXLONGALIN * sizeof(float *));
+        matrix = (float **)malloc(MAXLENALIGN * sizeof(float *));
         if (matrix == NULL)
         {
           estat = -1;
@@ -206,9 +206,9 @@ int main(int argc, char *argv[])
         // there is enough memory for 2000 items
         i = 0;
         estat = 0;
-        while ((i < MAXLONGALIN) && (estat == 0))
+        while ((i < MAXLENALIGN) && (estat == 0))
         {
-          matrix[i] = (float *)malloc(MAXLONGALIN * sizeof(float));
+          matrix[i] = (float *)malloc(MAXLENALIGN * sizeof(float));
           if (matrix[i] == NULL)
           {
             estat = -1;
@@ -224,7 +224,7 @@ int main(int argc, char *argv[])
         // there is enough memory for a 2000x2000 matrix
 
         estat = 0;
-        path_matrix = (char **)malloc(MAXLONGALIN * sizeof(char *));
+        path_matrix = (char **)malloc(MAXLENALIGN * sizeof(char *));
         if (path_matrix == NULL)
         {
           estat = -1;
@@ -237,9 +237,9 @@ int main(int argc, char *argv[])
         }
         i = 0;
         estat = 0;
-        while ((i < MAXLONGALIN) && (estat == 0))
+        while ((i < MAXLENALIGN) && (estat == 0))
         {
-          path_matrix[i] = (char *)malloc(MAXLONGALIN * sizeof(char));
+          path_matrix[i] = (char *)malloc(MAXLENALIGN * sizeof(char));
           if (path_matrix[i] == NULL)
           {
             estat = -1;
@@ -277,27 +277,27 @@ int main(int argc, char *argv[])
         }
 
         j = 0;
-        seq = (char *)malloc(MAXLONGSEQ * sizeof(char));
-        seq2 = (char *)malloc(MAXLONGSEQ * sizeof(char));
+        seq = (char *)malloc(MAXLENSEQ * sizeof(char));
+        seq2 = (char *)malloc(MAXLENSEQ * sizeof(char));
 
         // there is enough memory for all variables
         // printf("\n 1");
         while (j < (num_seqs - 1))
         {
-            long_seq = get_sequence_length(j);
+            len_seq = get_sequence_length(j);
             load_sequence(seq, j);
-            // check_load_sequence(seq,long_seq);
+            // check_load_sequence(seq,len_seq);
             k = j + 1;
             printf("\n");
             while (k < num_seqs)
             {
                 printf(".");
-                long_seq2 = get_sequence_length(k);
+                len_seq2 = get_sequence_length(k);
                 load_sequence(seq2, k);
-                // check_load_sequence(seq2,long_seq2);
-                res = similarity(matrix, seq, seq2, long_seq, long_seq2);
-                //      check_path_matrix(matrix,long_seq,long_seq2);
-                //      check_similarity(seq, seq2, long_seq, long_seq2);
+                // check_load_sequence(seq2,len_seq2);
+                res = similarity(matrix, seq, seq2, len_seq, len_seq2);
+                //      check_path_matrix(matrix,len_seq,len_seq2);
+                //      check_similarity(seq, seq2, len_seq, len_seq2);
                 score_matrix[j][k] = res;
                 score_matrix[k][j] = res;
                 k++;
@@ -320,7 +320,7 @@ int main(int argc, char *argv[])
         free(score_matrix);
 
         i = 0;
-        while (i < MAXLONGALIN)
+        while (i < MAXLENALIGN)
         {
             free(matrix[i]);
             i++;
@@ -328,7 +328,7 @@ int main(int argc, char *argv[])
         free(matrix);
 
         i = 0;
-        while (i < MAXLONGALIN)
+        while (i < MAXLENALIGN)
         {
             free(path_matrix[i]);
             i++;

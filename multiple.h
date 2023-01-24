@@ -22,7 +22,7 @@ extern int **seqs; // Modify to fix the bug
 typedef struct
 {
         int num_seqs;   // Number of cluster sequences
-        long long_seqs; // Length of cluster sequences
+        long len_seqs; // Length of cluster sequences
         long score; // Score of cluster
 } cluster;
 
