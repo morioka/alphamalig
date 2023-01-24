@@ -9,7 +9,7 @@ void check_reading_alphabet()
     printf("\nNum of symbols =%d\n", num_symbols);
 
     for (i = 1; i <= num_symbols; i++)
-        if (num_symbols < 64)   // [A-Za-z0-9] + '-' (gap)
+        if ((alphabet[i] > 0x20) && (alphabet[i] < 0xff))   // printable?
         {
             printf("%c ", alphabet[i]);
         } else {
