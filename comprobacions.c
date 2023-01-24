@@ -8,8 +8,15 @@ void check_reading_alphabet()
     int i, j;
     printf("\nNum of symbols =%d\n", num_symbols);
 
+    int printable = 1;                  // printable-only alphabet?
     for (i = 1; i <= num_symbols; i++)
-        if ((alphabet[i] > 0x20) && (alphabet[i] < 0xff))   // printable?
+        if (alphabet[i] < 0x21)
+            printable = 0;
+        if (alphabet[i] == 0xff)
+            printable = 0;
+
+    for (i = 1; i <= num_symbols; i++)
+        if (printable == 1) // printable?
         {
             printf("%c ", alphabet[i]);
         } else {
