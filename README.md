@@ -49,14 +49,14 @@ Universitat Politècnica de Catalunya / BarcelonaTech (UPC)のNLPグループと
 - アルファベット定義の拡張
   - 英大文字のみから、英小文字を含めた対応
   - あわせて hex表記での non-printable アルファベット定義対応
-    - non-printable-character のFASTAファイルの取り扱いは、`MAFFT` の `maffttext2hex`, `hex2maffttext` との組み合わせが前提 (*未確認。おそらく要修正*)
+    - non-printable-character のFASTAファイルの取り扱いは、`MAFFT` の `maffttext2hex`, `hex2maffttext` と組み合わせて実施する前提
       - [Systems Immunology Lab / mafft · GitLab](https://gitlab.com/sysimm/mafft)
       - [MAFFT - a multiple sequence alignment program](https://mafft.cbrc.jp/alignment/software/)
       - [Non-biological sequences : MAFFT - a multiple sequence alignment program](https://mafft.cbrc.jp/alignment/software/textcomparison.html)
-  - アルファベット＋コスト定義ファイルの作成補助ツール `create_alphabet_matrix.py`
+  - アルファベット＋コスト定義ファイルの作成補助ツール `create_alphabet_matrix.py` の作成
 
 
-## インストール方法
+## インストール
 
 ```bash
 apt install libgd-dev libjpeg-dev
@@ -87,7 +87,7 @@ o p s c n -
 -2 -2 0 0 0 0
 ```
 
-non-printable-characterを含む場合は hex 表記とすること。
+non-printable-characterを含む場合は hex 表記とすること。(下記の内容は上記と同じ)
 
 ```text
 6 
@@ -112,8 +112,13 @@ non-printable-characterを含む場合は hex 表記とすること。
 以下の文字をGap文字として、アルファベット定義の末尾に含めること。
 - '-' (0x2d)
 
+上記以外の 248文字を有効なアルファベットとして利用できる。
 
-典型例は以下のとおり。文字ごとの一致コストは文字によらず同じ。文字ごとの不一致コストは文字の組み合わせによらず同じ。Gap挿入コストは0。
+
+典型例は以下のとおり。
+- 文字ごとの一致コストは文字によらず同じ 100
+- 文字ごとの不一致コストは文字の組み合わせによらず同じ -10
+- Gap挿入コストは 0
 
 ```
 6 
@@ -125,6 +130,20 @@ a b c d e -
 -10 -10 -10 -10 100
 0 0 0 0 0 0
 ```
+
+non-printable-characterとして alphabets = [0x18, 0x19, 0x1a, 0x1b, 0x1c, 0x2d] を定義した場合(末尾は Gap '-' (0x2d))。
+
+```
+6 
+18 19 1a 1b 1c 2d
+100 
+-10 100
+-10 -10 100
+-10 -10 -10 100
+-10 -10 -10 -10 100
+0 0 0 0 0 0
+```
+
 
 アルファベットとコスト定義ファイルを作成する補助ツールとして `create_alphabet_matrix.py` を用意している。
 コストとアルファベット定義を修正して実行すると、上記の形式でアルファベットとコスト定義を出力する。
@@ -145,6 +164,14 @@ a b c d e -
 python3 create_alphabet_matrix.py > alphabet_matrix
 ```
 
+```text
+4
+a b c -
+100.0
+-10.0 100.0
+-10.0 -10.0 100.0
+0.0 0.0 0.0 0.0
+```
 
 ### テキストシーケンス列のファイル
 
@@ -164,7 +191,7 @@ ooosposonospposoononopocososoponocsnop (以降、略)
  (以降、略)
 ```
 
-アルファベットを拡張した際にnon-printable-characterを含む場合の扱いは、[MAFFT の Non-biological sequences の扱い](https://mafft.cbrc.jp/alignment/software/textcomparison.html)にならう。未確認。
+アルファベットを拡張した際にnon-printable-characterを含む場合の扱いは、"[MAFFT の Non-biological sequences の扱い](https://mafft.cbrc.jp/alignment/software/textcomparison.html)" にならう。
 
 ```text
 >sequence1
@@ -178,21 +205,22 @@ a3 6f 5f 47 6f 6d 65 73 ... (以降、略)
  (以降、略)
 ```
 
+non-printable-characterを含むアルファベットとシーケンスに対する作業パイプラインは次のとおり。
 ```bash
 $ /usr/local/libexec/mafft/hex2maffttext input.hex > input.ASCII
-$ alfm alphabet_matrix input.ASCII > ouput.ASCII
-$ (出力成形がおそらく必要... おそらく下記のように)
+$ alfm alphabet_matrix input.ASCII | grep -A 2000 "Number of sequnces=" | tail -n +2 | sort -g | sed '/^[[:blank:]]*$/d' > output.ASCII
 $ /usr/local/libexec/mafft/maffttext2hex output.ASCII > output.hex
 ```
 
-
 ### 出力
 
-出力のうち、アライメント部分はCLUSTALフォーマットか。後処理のためにこの部分だけ抽出するには、次のようにするとよい。
+出力のうち、アライメント部分はCLUSTALフォーマットか。後処理のために当該部分を抽出するには、次のようにするとよい。
 
 ```bash
 alfm alphabetexample.txt sequencesexample | grep -A 2000 "Number of sequnces=" | tail -n +2 | sort -g | sed '/^[[:blank:]]*$/d'
 ```
+
+(出力のうちCLUSTALフォーマットのアライメント部分を切り出して、シーケンス番号順に並べ替え、空行を削除。クラスタの維持を優先するならば、シーケンス番号順の並び替えは不要だろう)
 
 結果: 
 ```
