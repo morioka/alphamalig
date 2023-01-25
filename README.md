@@ -2,7 +2,9 @@
 
 ※これは、自分で新たに作成したコードではない
 
-## 何であるか
+## 概要
+
+ALPHAMALIGは、テキスト列に対するマルチプルアライメントツールである。
 
 [ALPHAMALIG - Alignment of sequences of a finite alphabet](https://alggen.cs.upc.edu/recerca/align/alphamalig/intro-alphamalig.html)のページから:
 ```
@@ -25,19 +27,34 @@ Alpha Multiple ALIGnment tool is a collaborative research project with Laura Alo
 Given a set of sequences of any alphabet and the parameters of the alignment (the score of the match, mismatch, insertion and deletion) this tools builds the multialignment of sequences.
 ```
 
-## 出典
+## 出所と修正内容
 
-Universitat Politècnica de Catalunya / BarcelonaTech (UPC)のNLPグループの2002年頃の成果物から。
+Universitat Politècnica de Catalunya / BarcelonaTech (UPC)のNLPグループとゲノム系グループの2002年頃の成果物に基づく。
 
-- [Multiple Sequence Alignment for Linguistics](https://www.cs.upc.edu/~nlp/msa.html)
 - [ALPHAMALIG - Alignment of sequences of a finite alphabet](https://alggen.cs.upc.edu/recerca/align/alphamalig/intro-alphamalig.html)
   - https://alggen.cs.upc.edu/recerca/align/alphamalig/alphamalig.tar
-- [Example application of Multiple Sequence Alignment (MSA) to linguistic phenomena](https://www.cs.upc.edu/~nlp/exampleMSA.html)
-- [Tools, demos and resources](https://www.cs.upc.edu/~nlp/tools.html)
+  - [Multiple Sequence Alignment for Linguistics](https://www.cs.upc.edu/~nlp/msa.html)
+  - [Example application of Multiple Sequence Alignment (MSA) to linguistic phenomena](https://www.cs.upc.edu/~nlp/exampleMSA.html)
+  - [Tools, demos and resources](https://www.cs.upc.edu/~nlp/tools.html)
 - [ALGGEN - RECERCA](https://alggen.lsi.upc.es/recerca/frame-recerca.html)
-- [Multiple sequence alignments in linguistics](https://dl.acm.org/doi/pdf/10.5555/1642049.1642052)
+- paper: [Multiple sequence alignments in linguistics](https://dl.acm.org/doi/pdf/10.5555/1642049.1642052) (LaTeCH - SHELT&R@EACL 2009)
 
-古いコードなせいか、プロトタイプ宣言など要修正。権利記載がない。
+
+古いコードのせいかプロトタイプ宣言の修正が必要で、また権利記載がない。
+
+以下の修正を行った。
+
+- プロトタイプ宣言
+- 関数名、変数名及びコメントの翻訳 (カタロニア語->英語)
+- アルファベット定義の拡張
+  - 英大文字のみから、英小文字を含めた対応
+  - あわせて hex表記での non-printable アルファベット定義対応
+    - non-printable-character のFASTAファイルの取り扱いは、`MAFFT` の `maffttext2hex`, `hex2maffttext` との組み合わせが前提 (*未確認。おそらく要修正*)
+      - [Systems Immunology Lab / mafft · GitLab](https://gitlab.com/sysimm/mafft)
+      - [MAFFT - a multiple sequence alignment program](https://mafft.cbrc.jp/alignment/software/)
+      - [Non-biological sequences : MAFFT - a multiple sequence alignment program](https://mafft.cbrc.jp/alignment/software/textcomparison.html)
+  - アルファベット＋コスト定義ファイルの作成補助ツール `create_alphabet_matrix.py`
+
 
 ## インストール方法
 
@@ -47,17 +64,125 @@ make
 ./alfm alphabetexample.txt sequencesexample
 ```
 
-## 修正
+## 利用方法
 
-- プロトタイプ宣言
-- 関数名、変数名及びコメントの翻訳 (カタロニア語->英語)
-- 英大文字のみの対応から、英小文字を含めた対応。hex表記でのアルファベット定義対応
-  - non-printable-character のFASTAファイルについてはMAFFTのmaffttext2hex, hex2maffttext との組み合わせが前提
-    - [Systems Immunology Lab / mafft · GitLab](https://gitlab.com/sysimm/mafft)
-    - [MAFFT - a multiple sequence alignment program](https://mafft.cbrc.jp/alignment/software/)
-    - [Non-biological sequences : MAFFT - a multiple sequence alignment program](https://mafft.cbrc.jp/alignment/software/textcomparison.html)
-  - アルファベット＋コスト定義ファイルの作成補助ツール(python)
-  
+```bash
+alfm alphabetexample.txt sequencesexample
+```
+
+### アルファベットとコスト定義ファイル
+
+- アルファベット文字数( Gap文字を含む)
+- アルファベット文字の羅列。空白区切り。末尾はGap ('-')文字。
+- コスト行列。一致コスト。不一致コスト(文字間で対称)。最終行はGap挿入コスト
+
+```text
+6 
+o p s c n -
+2 
+-1 15
+-2 -2 1
+-2 -2 0 1
+-2 -2 -1 -1 1
+-2 -2 0 0 0 0
+```
+
+non-printable-characterを含む場合は hex 表記とすること。
+
+```text
+6 
+6f 70 73 63 6e 2d
+2 
+-1 15
+-2 -2 1
+-2 -2 0 1
+-2 -2 -1 -1 1
+-2 -2 0 0 0 0
+```
+
+次の文字は含まないこと。
+- NUL (0x00)
+- '>' (0x3e)
+- '=' (0x3d)
+- '<' (0x3c)
+- Space (0x20)
+- Carriage Return (0x0d) 
+- Line Feed (0x0a)
+
+以下の文字をGap文字として、アルファベット定義の末尾に含めること。
+- '-' (0x2d)
+
+
+典型例は以下のとおり。文字ごとの一致コストは文字によらず同じ。文字ごとの不一致コストは文字の組み合わせによらず同じ。Gap挿入コストは0。
+
+```
+6 
+a b c d e -
+100 
+-10 100
+-10 -10 100
+-10 -10 -10 100
+-10 -10 -10 -10 100
+0 0 0 0 0 0
+```
+
+アルファベットとコスト定義ファイルを作成する補助ツールとして `create_alphabet_matrix.py` を用意している。
+コストとアルファベット定義を修正して実行すると、上記の形式でアルファベットとコスト定義を出力する。
+
+```python
+# create_alphabet_matrix.py
+
+    costs = {
+        'match': 100.0,     # match はアルファベットによらず固定値。
+        'mismatch': -10.0,  # mismatch はアルファベットによらず固定値。かつ対称
+        'gap_penalty': 0.0, # gap_penalty は前後のアルファベットや継続長によらず固定値。
+    }
+
+    alphabets =  [ 'a', 'b', 'c', '-']
+```
+
+```bash
+python3 create_alphabet_matrix.py > alphabet_matrix
+```
+
+
+### テキストシーケンス列のファイル
+
+入力はFASTA形式のファイル。
+
+```text
+>1
+ppposnonoccsnopoosoononoscs
+>2
+osspoooosososoposopop
+>3
+nospococooospoosposnopossososososooponos
+>4
+spopoopopocpocnpocopsossonpo
+>5
+ooosposonospposoononopocososoponocsnop
+```
+
+アルファベットを拡張した際にnon-printable-characterを含む場合の扱いは、[MAFFT の Non-biological sequences の扱い](https://mafft.cbrc.jp/alignment/software/textcomparison.html)にならう。未確認。
+
+```text
+>sequence1
+01 02 03 4e 6f 72 74 68 65 72 6e 5f 70 61 ...
+>sequence2
+01 02 03 4e 6f 72 74 68 65 72 6e 5f 70 61 ...
+>sequence3
+a3 6f 5f 47 6f 6d 65 73 ...
+>sequence4
+01 02 03 46 c3 b3 67 6f 3a 5f 6e 6f 72 74 68 65 72 6e 5f 70 61 ...
+```
+
+```bash
+$ /usr/local/libexec/mafft/hex2maffttext input.hex > input.ASCII
+$ alfm alphabet_matrix input.ASCII > ouput.ASCII
+$ (出力成形がおそらく必要... 場合によってはalfmの出力オプションを付与)
+$ /usr/local/libexec/mafft/maffttext2hex output.ASCII > output.hex
+```
+
 ## 参考
 
 - [Publications Section.](https://www.cs.upc.edu/~nlp/papers.html) 
