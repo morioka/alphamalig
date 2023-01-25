@@ -15,7 +15,6 @@
 #include "auxiliary.h"
 #include "pairs.h"
 #include "malloc.h"
-#include "ent_seq.h"
 #include "multiple.h"
 #include "sort_seq.h"
 
