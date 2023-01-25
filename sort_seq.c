@@ -18,7 +18,8 @@ void write_align_output_file(int output_format)
     int k = 0, i, j, l;
     char asteriscs[MAXLENSEQ];
     char seq_out[MAXLENSEQ];
-    output_format = 1;      // cut sequences
+//    output_format = 1;      // cut sequences
+    output_format = 0;      // do not cut sequences
     if (output_format == 0) /* do not cut sequences */
     {
         printf("Number of sequnces=%d  Alignment length=%ld  Alignment score=%ld\n", clusters[0]->num_seqs,
