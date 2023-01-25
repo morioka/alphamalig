@@ -152,36 +152,58 @@ python3 create_alphabet_matrix.py > alphabet_matrix
 
 ```text
 >1
-ppposnonoccsnopoosoononoscs
+ppposnonoccsnopoosoononoscs (以降、略)
 >2
-osspoooosososoposopop
+osspoooosososoposopop (以降、略)
 >3
-nospococooospoosposnopossososososooponos
+nospococooospoosposnopossososososooponos (以降、略)
 >4
-spopoopopocpocnpocopsossonpo
+spopoopopocpocnpocopsossonpo (以降、略)
 >5
-ooosposonospposoononopocososoponocsnop
+ooosposonospposoononopocososoponocsnop (以降、略)
+ (以降、略)
 ```
 
 アルファベットを拡張した際にnon-printable-characterを含む場合の扱いは、[MAFFT の Non-biological sequences の扱い](https://mafft.cbrc.jp/alignment/software/textcomparison.html)にならう。未確認。
 
 ```text
 >sequence1
-01 02 03 4e 6f 72 74 68 65 72 6e 5f 70 61 ...
+01 02 03 4e 6f 72 74 68 65 72 6e 5f 70 61 ... (以降、略)
 >sequence2
-01 02 03 4e 6f 72 74 68 65 72 6e 5f 70 61 ...
+01 02 03 4e 6f 72 74 68 65 72 6e 5f 70 61 ... (以降、略)
 >sequence3
-a3 6f 5f 47 6f 6d 65 73 ...
+a3 6f 5f 47 6f 6d 65 73 ... (以降、略)
 >sequence4
-01 02 03 46 c3 b3 67 6f 3a 5f 6e 6f 72 74 68 65 72 6e 5f 70 61 ...
+01 02 03 46 c3 b3 67 6f 3a 5f 6e 6f 72 74 68 65 72 6e 5f 70 61 ... (以降、略)
+ (以降、略)
 ```
 
 ```bash
 $ /usr/local/libexec/mafft/hex2maffttext input.hex > input.ASCII
 $ alfm alphabet_matrix input.ASCII > ouput.ASCII
-$ (出力成形がおそらく必要... 場合によってはalfmの出力オプションを付与)
+$ (出力成形がおそらく必要... おそらく下記のように)
 $ /usr/local/libexec/mafft/maffttext2hex output.ASCII > output.hex
 ```
+
+
+### 出力
+
+出力のうち、アライメント部分はCLUSTALフォーマットか。後処理のためにこの部分だけ抽出するには、次のようにするとよい。
+
+```bash
+alfm alphabetexample.txt sequencesexample | grep -A 2000 "Number of sequnces=" | tail -n +2 | sort -g | sed '/^[[:blank:]]*$/d'
+```
+
+結果: 
+```
+1          ------------pp-po---s-no-no--ccsno-p-o--o-so---o-no------no---s-cspo-- (以降、略)
+2          -----os---s-po--o-oos--os-o----s-o-p-o-s---o------p-------o-------po-- (以降、略)
+3          ---n-os-----poc-o----c-o--o------osp-o-----o--s---p---o-sno-------poss (以降、略)
+4          ------s-----p---o------------------p-o-----o------p-------o-------p--- (以降、略)
+5          -----o-------o--o---s--------------p-o-son-o--s---p---------------po-- (以降、略)
+ (以降、略)
+```
+
 
 ## 参考
 
