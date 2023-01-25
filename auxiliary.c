@@ -1,5 +1,5 @@
 /*************************************************************************/
-// File: auxiliar.c
+// File: auxiliary.c
 // Author: Xavier Sol Acha
 // Modified: Xavier Messeguer  07-01-03
 // Description: Utility functions for the application
@@ -12,8 +12,8 @@
 #include <time.h>
 #include "align.h"
 #include "const.h"
-#include "auxiliar.h"
-#include "parells.h"
+#include "auxiliary.h"
+#include "pairs.h"
 
 // Implementation of functions
 

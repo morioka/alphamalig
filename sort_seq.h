@@ -5,7 +5,7 @@
 // program output to a file.
 /*************************************************************************/
 
-#include "parells.h"
+#include "pairs.h"
 
 #ifndef _SORT_SEQ_H_
 #define _SORT_SEQ_H_

@@ -1,7 +1,7 @@
 
 
-#ifndef _COMPROBACIONS_H_
-#define _COMPROBACIONS_H_
+#ifndef _CHECKS_H_
+#define _CHECKS_H_
 
 void check_temp_file();
 void check_reading_alphabet();

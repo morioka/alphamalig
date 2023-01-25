@@ -8,7 +8,7 @@
 #include <stdio.h>
 #include "sort_seq.h"
 #include "align.h"
-#include "auxiliar.h"
+#include "auxiliary.h"
 #include "ent_seq.h"
 #include "const.h"
 #include "multiple.h"

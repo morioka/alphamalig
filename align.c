@@ -5,16 +5,16 @@
 /*************************************************************************/
 
 #include "align.h"
-#include "auxiliar.h"
+#include "auxiliary.h"
 #include "ent_seq.h"
-#include "parells.h"
+#include "pairs.h"
 #include "const.h"
 #include "multiple.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <fcntl.h>
 #include <ctype.h>
-#include "comprobacions.h"
+#include "checks.h"
 #include <assert.h>
 
 FILE *input_file;  // file of entry of the sequencies

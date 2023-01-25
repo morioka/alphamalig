@@ -1,5 +1,5 @@
 /*************************************************************************/
-// File: parells.c
+// File: pairs.c
 // Author: Xavier Sol Acha
 // Description: Here are the functions to align pairs of sequences
 /*************************************************************************/
@@ -10,8 +10,8 @@
 #include "align.h"
 #include "ent_seq.h"
 #include "const.h"
-#include "auxiliar.h"
-#include "parells.h"
+#include "auxiliary.h"
+#include "pairs.h"
 #include "malloc.h"
 
 /* similarity *************************************************************/

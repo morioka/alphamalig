@@ -12,7 +12,7 @@
 #include "align.h"
 #include "ent_seq.h"
 #include "const.h"
-#include "auxiliar.h"
+#include "auxiliary.h"
 
 // Implementation of the functions
 

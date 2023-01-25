@@ -1,6 +1,6 @@
-OBJECTS = align.o ent_seq.o auxiliar.o parells.o sort_seq.o multiple.o seqs_util.o comprobacions.o
+OBJECTS = align.o ent_seq.o auxiliary.o pairs.o sort_seq.o multiple.o seqs_util.o checks.o
 
-SOURCES = align.c ent_seq.c auxiliar.c parells.c sort_seq.c multiple.c seqs_util.c comprobacions.c
+SOURCES = align.c ent_seq.c auxiliary.c pairs.c sort_seq.c multiple.c seqs_util.c checks.c
 
 CFLAGS  = -c -ggdb
 
