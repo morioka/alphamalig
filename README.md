@@ -197,7 +197,7 @@ a3 6f 5f 47 6f 6d 65 73 ... (以降、略)
 non-printable-characterを含むアルファベットとシーケンスに対する作業パイプラインのイメージは次のとおり。
 ```bash
 $ /usr/local/libexec/mafft/hex2maffttext input.hex > input.ASCII
-$ alfm alphabet_matrix input.ASCII | grep -A 2000 "Number of sequnces=" | tail -n +2 | sed '/^[[:blank:]]*$/d' > output.ASCII
+$ alfm alphabet_matrix input.ASCII | grep -A 2000 "Number of sequences=" | tail -n +2 | sed '/^[[:blank:]]*$/d' > output.ASCII
 $ /usr/local/libexec/mafft/maffttext2hex output.ASCII > output.hex
 ```
 
@@ -224,7 +224,7 @@ o p s c n -
 [2,3]=570.000000,[2,4]=491.000000,[2,5]=718.000000, (以下略)
 [3,4]=493.000000,[3,5]=563.000000,[3,6]=352.000000, (以下略)
 (以下略)
-................Number of sequnces=17  Alignment length=826  Alignment score=55724
+................Number of sequences=17  Alignment length=826  Alignment score=55724
 1          ------------pp-po---s-no-no--ccsno-p-o--o-so- (以下略)
 15         -----------cpo--o---scnos-ons--s-osp-o----so- (以下略)
 2          -----os---s-po--o-oos--os-o----s-o-p-o-s---o- (以下略)
@@ -239,7 +239,7 @@ o p s c n -
 出力のうち、アライメント部分はCLUSTAL形式。後処理のために当該部分を抽出するには、次のようにするとよい。
 
 ```bash
-$ alfm alphabetexample.txt sequencesexample | grep -A 2000 "Number of sequnces=" | tail -n +2 | sort -g | sed '/^[[:blank:]]*$/d'
+$ alfm alphabetexample.txt sequencesexample | grep -A 2000 "Number of sequences=" | tail -n +2 | sort -g | sed '/^[[:blank:]]*$/d'
 1          ------------pp-po---s-no-no--ccsno-p-o--o-so---o-no------no---s-cspo-- (以降、略)
 2          -----os---s-po--o-oos--os-o----s-o-p-o-s---o------p-------o-------po-- (以降、略)
 3          ---n-os-----poc-o----c-o--o------osp-o-----o--s---p---o-sno-------poss (以降、略)
