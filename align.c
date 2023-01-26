@@ -71,7 +71,7 @@ void check_alphabet()
         assert(alphabet[i] != 0x3d);    // # = (0x3d)
         assert(alphabet[i] != 0x3c);    // # < (0x3c)
         assert(alphabet[i] != 0x20);    // # Space (0x20)
-        assert(alphabet[i] != 0x0d);    // # Carriage Return (0x0d) 
+        assert(alphabet[i] != 0x0d);    // # Carriage Return (0x0d)
         assert(alphabet[i] != 0x0a);    // # Line Feed (0x0a)
     }
 
@@ -174,8 +174,8 @@ int main(int argc, char *argv[])
     fclose(temp_file);
     temp_file = fopen(temp_file_name, "w");
     if (read_sequences_file() == -1)
-    // have the sequences in the temporary file in a special format
-    // number, name, length, sequence (numeroseq,name,longitud,sequencia)
+        // have the sequences in the temporary file in a special format
+        // number, name, length, sequence (numeroseq,name,longitud,sequencia)
     {
         printf("Too many (>%d) or too few (<2) input sequences\n", MAXSEQ);
         remove(clusters_filename);
@@ -195,22 +195,6 @@ int main(int argc, char *argv[])
         matrix = (float **)malloc(MAXLENALIGN * sizeof(float *));
         if (matrix == NULL)
         {
-          estat = -1;
-          printf("Out of memory\n");
-          remove(clusters_filename);
-          remove(cluster_filename_1);
-          remove(cluster_filename_2);
-          remove(temp_file_name);
-          exit(-1);
-        }
-        // there is enough memory for 2000 items
-        i = 0;
-        estat = 0;
-        while ((i < MAXLENALIGN) && (estat == 0))
-        {
-          matrix[i] = (float *)malloc(MAXLENALIGN * sizeof(float));
-          if (matrix[i] == NULL)
-          {
             estat = -1;
             printf("Out of memory\n");
             remove(clusters_filename);
@@ -218,8 +202,24 @@ int main(int argc, char *argv[])
             remove(cluster_filename_2);
             remove(temp_file_name);
             exit(-1);
-          }
-          i++;
+        }
+        // there is enough memory for 2000 items
+        i = 0;
+        estat = 0;
+        while ((i < MAXLENALIGN) && (estat == 0))
+        {
+            matrix[i] = (float *)malloc(MAXLENALIGN * sizeof(float));
+            if (matrix[i] == NULL)
+            {
+                estat = -1;
+                printf("Out of memory\n");
+                remove(clusters_filename);
+                remove(cluster_filename_1);
+                remove(cluster_filename_2);
+                remove(temp_file_name);
+                exit(-1);
+            }
+            i++;
         }
         // there is enough memory for a 2000x2000 matrix
 
@@ -227,21 +227,6 @@ int main(int argc, char *argv[])
         path_matrix = (char **)malloc(MAXLENALIGN * sizeof(char *));
         if (path_matrix == NULL)
         {
-          estat = -1;
-          printf("Out of memory\n");
-          remove(clusters_filename);
-          remove(cluster_filename_1);
-          remove(cluster_filename_2);
-          remove(temp_file_name);
-          exit(-1);
-        }
-        i = 0;
-        estat = 0;
-        while ((i < MAXLENALIGN) && (estat == 0))
-        {
-          path_matrix[i] = (char *)malloc(MAXLENALIGN * sizeof(char));
-          if (path_matrix[i] == NULL)
-          {
             estat = -1;
             printf("Out of memory\n");
             remove(clusters_filename);
@@ -249,14 +234,29 @@ int main(int argc, char *argv[])
             remove(cluster_filename_2);
             remove(temp_file_name);
             exit(-1);
-          }
-          i++;
+        }
+        i = 0;
+        estat = 0;
+        while ((i < MAXLENALIGN) && (estat == 0))
+        {
+            path_matrix[i] = (char *)malloc(MAXLENALIGN * sizeof(char));
+            if (path_matrix[i] == NULL)
+            {
+                estat = -1;
+                printf("Out of memory\n");
+                remove(clusters_filename);
+                remove(cluster_filename_1);
+                remove(cluster_filename_2);
+                remove(temp_file_name);
+                exit(-1);
+            }
+            i++;
         }
 
         score_matrix = (float **)malloc(num_seqs * sizeof(float *));
         if (score_matrix == NULL)
         {
-          estat = -1;
+            estat = -1;
         }
         i = 0;
         estat = 0;
@@ -265,13 +265,13 @@ int main(int argc, char *argv[])
             score_matrix[i] = (float *)malloc(num_seqs * sizeof(float));
             if (score_matrix[i] == NULL)
             {
-              estat = -1;
-              printf("Out of memory\n");
-              remove(clusters_filename);
-              remove(cluster_filename_1);
-              remove(cluster_filename_2);
-              remove(temp_file_name);
-              exit(-1);
+                estat = -1;
+                printf("Out of memory\n");
+                remove(clusters_filename);
+                remove(cluster_filename_1);
+                remove(cluster_filename_2);
+                remove(temp_file_name);
+                exit(-1);
             }
             i++;
         }

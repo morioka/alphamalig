@@ -15,7 +15,7 @@
 #include "malloc.h"
 
 /* similarity *************************************************************/
-// It calculates the similarity between the sequencies "seq1" and "seq2". 
+// It calculates the similarity between the sequencies "seq1" and "seq2".
 // In the matrix "matrix" there are the similarities between every prefix of the two sequences.
 float similarity(float **a, char *seq1, char *seq2, long lenseq1, long lenseq2)
 {
@@ -56,6 +56,6 @@ float similarity(float **a, char *seq1, char *seq2, long lenseq1, long lenseq2)
 }
 
 /* alineament_optim
-It returns the optimal alignment between the sequencies "seq1" and "seq2". 
-It reserves the space in memory to make the alignment and the one that makes the call 
+It returns the optimal alignment between the sequencies "seq1" and "seq2".
+It reserves the space in memory to make the alignment and the one that makes the call
 initial to recursive function.*/

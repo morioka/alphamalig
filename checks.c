@@ -9,26 +9,28 @@ void check_reading_alphabet()
     printf("\nNum of symbols =%d\n", num_symbols);
 
     int printable = 1;                  // printable-only alphabet?
-    for (i = 1; i <= num_symbols; i++)
+    for (i = 1; i <= num_symbols; i++) {
         if (alphabet[i] < 0x21)
             printable = 0;
         if (alphabet[i] == 0xff)
             printable = 0;
+    }
 
-    for (i = 1; i <= num_symbols; i++)
+    for (i = 1; i <= num_symbols; i++) {
         if (printable == 1) // printable?
         {
             printf("%c ", alphabet[i]);
         } else {
             printf("%02x ", alphabet[i]);
         }
+    }
     printf("\n");
 
     for (i = 1; i <= num_symbols; i++)
     {
         for (j = 1; j <= i; j++)
         {
-          printf("(%d,%d)=%f", i, j, matpenal[i][j]);
+            printf("(%d,%d)=%f", i, j, matpenal[i][j]);
         }
         printf("\n");
     }

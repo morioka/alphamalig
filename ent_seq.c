@@ -1,7 +1,7 @@
 /*************************************************************************/
 // File: ent_seq.c
 // Author: Xavier Sol Acha
-// Description: Here are the functions that will read 
+// Description: Here are the functions that will read
 // and process the DNA strings found in the input file
 /*************************************************************************/
 
@@ -17,188 +17,188 @@
 // Implementation of the functions
 
 /* read_sequences_file **********************************************/
-// This function makes as many calls to load_sequence as there are 
+// This function makes as many calls to load_sequence as there are
 // sequences in the original file. Returns the number of sequences in the file.
 int read_sequences_file(void)
 {
-        int i, estat = 1;
+    int i, estat = 1;
 
-        num_seqs = count_sequences(); // Leave the pointer at the beginning of the file
-        if ((num_seqs <= MAXSEQ) && (num_seqs > 1))
+    num_seqs = count_sequences(); // Leave the pointer at the beginning of the file
+    if ((num_seqs <= MAXSEQ) && (num_seqs > 1))
+    {
+        i = 0;
+        while ((i < num_seqs) && (estat == 1))
         {
-                i = 0;
-                while ((i < num_seqs) && (estat == 1))
-                {
-                        estat = write_sequence_tmp(i);
+            estat = write_sequence_tmp(i);
 
-                        i++;
-                }
+            i++;
         }
-        else
-        {
-                num_seqs = -1;
-        }
-        return (num_seqs);
+    }
+    else
+    {
+        num_seqs = -1;
+    }
+    return (num_seqs);
 }
 
 /* write_sequence_tmp ******************************************************/
-// It reads the following sequence that appears in the file 
+// It reads the following sequence that appears in the file
 // and writes it to the temporary file in my format
 int write_sequence_tmp(int num_seq)
 {
-        static char line[MAXLENSEQ + 1];
-        static char seq_nucl[MAXLENSEQ + 1];
-        static char name[MAXLENNAME + 1];
-        char c;
-        int i, len_seq = 0, len_name = 0, estat = 1;
+    static char line[MAXLENSEQ + 1];
+    static char seq_nucl[MAXLENSEQ + 1];
+    static char name[MAXLENNAME + 1];
+    char c;
+    int i, len_seq = 0, len_name = 0, estat = 1;
 
-        while (((*line) != '>') && !(feof(input_file)))
+    while (((*line) != '>') && !(feof(input_file)))
+    {
+        fgets(line, MAXLINE, input_file);
+    }
+
+    strncpy(name, line + 1, MAXLENNAME);
+    name[MAXLENNAME] = EOS;
+
+    while (fgets(line, MAXLINE + 1, input_file) && (len_seq < MAXLENSEQ) && (*line != '>'))
+    {
+        i = 0;
+        c = line[i];
+        while ((i <= MAXLINE) && (c != '\n') && (c != EOS) && (c != '>'))
         {
-                fgets(line, MAXLINE, input_file);
-        }
-
-        strncpy(name, line + 1, MAXLENNAME);
-        name[MAXLENNAME] = EOS;
-
-        while (fgets(line, MAXLINE + 1, input_file) && (len_seq < MAXLENSEQ) && (*line != '>'))
-        {
-                i = 0;
-                c = line[i];
-                while ((i <= MAXLINE) && (c != '\n') && (c != EOS) && (c != '>'))
-                {
 //                        c = toupper(line[i]);
-                        c = line[i];
-                        if (belong_alphabet(c))
-                        {
+            c = line[i];
+            if (belong_alphabet(c))
+            {
 //                                seq_nucl[len_seq] = toupper(c);
-                                seq_nucl[len_seq] = c;
-                                len_seq++;
-                        }
-                        i++;
-                }
+                seq_nucl[len_seq] = c;
+                len_seq++;
+            }
+            i++;
         }
-        if (len_seq == MAXLENSEQ)
-        {
-                printf("WARNING: Sequence %s may have been cut up to %d nucleotides\n", name, MAXLENSEQ);
-        }
-        seq_nucl[len_seq] = EOS;
+    }
+    if (len_seq == MAXLENSEQ)
+    {
+        printf("WARNING: Sequence %s may have been cut up to %d nucleotides\n", name, MAXLENSEQ);
+    }
+    seq_nucl[len_seq] = EOS;
 
-        fprintf(temp_file, ">%d\n", num_seq);
-        fprintf(temp_file, "%s\n", name);
-        fprintf(temp_file, "@%d\n", len_seq);
-        fprintf(temp_file, "#%s\n", seq_nucl);
+    fprintf(temp_file, ">%d\n", num_seq);
+    fprintf(temp_file, "%s\n", name);
+    fprintf(temp_file, "@%d\n", len_seq);
+    fprintf(temp_file, "#%s\n", seq_nucl);
 
-        return (estat);
+    return (estat);
 }
 
 /* get_sequence_length ******************************************************/
 // Returns the length of the sequence "num_seq", reading it from the temporary file
 long get_sequence_length(int num_seq)
 {
-        static char line[MAXLINE + 1];
-        static char aux[10];
-        int i = 1, trobat = FALSE;
+    static char line[MAXLINE + 1];
+    static char aux[10];
+    int i = 1, trobat = FALSE;
 
-        fseek(temp_file, 0, SEEK_SET);
-        while (trobat == FALSE)
+    fseek(temp_file, 0, SEEK_SET);
+    while (trobat == FALSE)
+    {
+        while ((*line) != '>')
         {
-                while ((*line) != '>')
-                {
-                        fgets(line, MAXLINE, temp_file);
-                }
-                strcpy(aux, line + 1);
-                if (atoi(aux) == num_seq)
-                {
-                        trobat = TRUE;
-                }
-                else
-                {
-                        fgets(line, MAXLINE, temp_file);
-                }
-        }
-        while ((*line) != '@')
-        {
-                fgets(line, MAXLINE, temp_file);
+            fgets(line, MAXLINE, temp_file);
         }
         strcpy(aux, line + 1);
+        if (atoi(aux) == num_seq)
+        {
+            trobat = TRUE;
+        }
+        else
+        {
+            fgets(line, MAXLINE, temp_file);
+        }
+    }
+    while ((*line) != '@')
+    {
+        fgets(line, MAXLINE, temp_file);
+    }
+    strcpy(aux, line + 1);
 
-        return (atol(aux));
+    return (atol(aux));
 }
 
 /* load_sequence ******************************************************/
 // Returns the encoding of the sequence "num_seq" in the array "seq"
 void load_sequence(char *seq, int num_seq)
 {
-        static char line[MAXLENSEQ + 1];
-        static char aux[10];
-        int i = 1, trobat = FALSE;
+    static char line[MAXLENSEQ + 1];
+    static char aux[10];
+    int i = 1, trobat = FALSE;
 
-        fseek(temp_file, 0, SEEK_SET);
-        while (trobat == FALSE)
+    fseek(temp_file, 0, SEEK_SET);
+    while (trobat == FALSE)
+    {
+        while ((*line) != '>')
         {
-                while ((*line) != '>')
-                {
-                        fgets(line, MAXLENSEQ, temp_file);
-                }
-                strcpy(aux, line + 1);
-                if (atoi(aux) == num_seq)
-                {
-                        trobat = TRUE;
-                }
-                else
-                {
-                        fgets(line, MAXLENSEQ, temp_file);
-                }
+            fgets(line, MAXLENSEQ, temp_file);
         }
-        while ((*line) != '#')
+        strcpy(aux, line + 1);
+        if (atoi(aux) == num_seq)
         {
-                fgets(line, MAXLENSEQ, temp_file);
+            trobat = TRUE;
         }
-        strcpy(seq, line + 1);
+        else
+        {
+            fgets(line, MAXLENSEQ, temp_file);
+        }
+    }
+    while ((*line) != '#')
+    {
+        fgets(line, MAXLENSEQ, temp_file);
+    }
+    strcpy(seq, line + 1);
 }
 
 /* load_sequence_exact_position ***************************************/
-// Returns the encoding of the sequence pointed to by the read pointer. 
+// Returns the encoding of the sequence pointed to by the read pointer.
 // This pointer must point to the line before the encoding of the sequence
 void load_sequence_exact_position(char *seq)
 {
-        static char line[MAXLENSEQ + 1];
+    static char line[MAXLENSEQ + 1];
 
-        fgets(line, MAXLINE, temp_file);
-        strcpy(seq, line + 1);
+    fgets(line, MAXLINE, temp_file);
+    strcpy(seq, line + 1);
 }
 
 /* load_sequence_name ******************************************************/
 // Return the first 10 characters of the name "num_seq" to the array "name"
 void load_sequence_name(char *name, int num_seq)
 {
-        static char line[MAXLINE + 1];
-        static char aux[10];
-        int i = 0, trobat = FALSE;
+    static char line[MAXLINE + 1];
+    static char aux[10];
+    int i = 0, trobat = FALSE;
 
-        fseek(temp_file, 0, SEEK_SET);
-        while (trobat == FALSE)
+    fseek(temp_file, 0, SEEK_SET);
+    while (trobat == FALSE)
+    {
+        while ((*line) != '>')
         {
-                while ((*line) != '>')
-                {
-                        fgets(line, MAXLINE, temp_file);
-                }
-                strcpy(aux, line + 1);
-                if (atoi(aux) == num_seq)
-                {
-                        trobat = TRUE;
-                }
-                else
-                {
-                        fgets(line, MAXLINE, temp_file);
-                }
+            fgets(line, MAXLINE, temp_file);
         }
+        strcpy(aux, line + 1);
+        if (atoi(aux) == num_seq)
+        {
+            trobat = TRUE;
+        }
+        else
+        {
+            fgets(line, MAXLINE, temp_file);
+        }
+    }
 
-        fgets(line, MAXLINE, temp_file);
-        while ((i < 10) && (line[i] != EOS))
-        {
-                name[i] = line[i];
-                i++;
-        }
-        name[i] = EOS;
+    fgets(line, MAXLINE, temp_file);
+    while ((i < 10) && (line[i] != EOS))
+    {
+        name[i] = line[i];
+        i++;
+    }
+    name[i] = EOS;
 }

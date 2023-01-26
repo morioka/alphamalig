@@ -21,9 +21,9 @@ extern int **seqs; // Modify to fix the bug
 
 typedef struct
 {
-        int num_seqs;   // Number of cluster sequences
-        long len_seqs; // Length of cluster sequences
-        long score; // Score of cluster
+    int num_seqs;   // Number of cluster sequences
+    long len_seqs; // Length of cluster sequences
+    long score; // Score of cluster
 } cluster;
 
 extern cluster **clusters;            // Cluster vector
@@ -44,11 +44,11 @@ void alignment_clusters(float **matrix, int i, int j, float **info1, float **inf
 long add_sequence_cluster(FILE *fitxer, int num_seq);
 void create_cluster_files(int i, int j);
 void similarity_clusters(float **matrix, long long_cluster1, long long_cluster2, float **info1, float **info2, long *score,
-                        int, int);
+                         int, int);
 void build_info_cluster(int num_cluster, float **info, FILE *f);
 void align_clusters(int i, int j, char *res1, char *res2, int *len);
 void rebuild_new_cluster(char *line_orig, char *line_dest, char *result_cluster1, char *result_cluster2, int i, int j,
-                             int len);
+                         int len);
 void recalculate_matrix(int i, int j);
 
 #endif

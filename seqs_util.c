@@ -26,54 +26,54 @@
 
 int seqs_getInitialGaps(char *sequence)
 {
-        int i = 0;
+    int i = 0;
 
-        while (sequence[i] == '-')
-                i++;
-        return i;
+    while (sequence[i] == '-')
+        i++;
+    return i;
 }
 
 int seqs_getFinalGaps(char *sequence)
 {
-        int l = strlen(sequence);
-        int i = l - 1;
+    int l = strlen(sequence);
+    int i = l - 1;
 
-        while (sequence[i] == '-')
-                i--;
-        return l - i - 1;
+    while (sequence[i] == '-')
+        i--;
+    return l - i - 1;
 }
 
 char *
 seqs_insertInitialGaps(char *sequence, int n)
 {
-        int l, new_size;
-        char *result;
+    int l, new_size;
+    char *result;
 
-        if (!n)
-                return sequence;
-        l = strlen(sequence);
-        new_size = l + n + 1;
-        result = malloc(new_size);
-        memcpy(result + n, sequence, l + 1);
-        memset(result, '-', n);
-        FREE(sequence);
-        return result;
+    if (!n)
+        return sequence;
+    l = strlen(sequence);
+    new_size = l + n + 1;
+    result = malloc(new_size);
+    memcpy(result + n, sequence, l + 1);
+    memset(result, '-', n);
+    FREE(sequence);
+    return result;
 }
 
 char *
 seqs_insertFinalGaps(char *sequence, int n)
 {
-        int l, new_size;
-        char *result;
+    int l, new_size;
+    char *result;
 
-        if (!n)
-                return sequence;
-        l = strlen(sequence);
-        new_size = l + n + 1;
-        result = malloc(new_size);
-        memcpy(result, sequence, l);
-        memset(result + l, '-', n);
-        result[l + n] = '\0';
-        FREE(sequence);
-        return result;
+    if (!n)
+        return sequence;
+    l = strlen(sequence);
+    new_size = l + n + 1;
+    result = malloc(new_size);
+    memcpy(result, sequence, l);
+    memset(result + l, '-', n);
+    result[l + n] = '\0';
+    FREE(sequence);
+    return result;
 }
