@@ -13,9 +13,9 @@ extern FILE *clusters_file;
 extern FILE *cluster_file_1;
 extern FILE *cluster_file_2;
 
-extern char clusters_filename[13];
-extern char cluster_filename_1[13];
-extern char cluster_filename_2[13];
+extern unsigned char clusters_filename[13];
+extern unsigned char cluster_filename_1[13];
+extern unsigned char cluster_filename_2[13];
 
 extern int **seqs; // Modify to fix the bug
 
@@ -40,14 +40,14 @@ float intercluster(float *freq1, float *freq2);
 // Definition of prototypes
 void multiple_alignment(float **matrix, int output_format);
 void find_nearest_clusters(int *i, int *j);
-void alignment_clusters(float **matrix, int i, int j, float **info1, float **info2, char *line_orig, char *line_dest, char *result_cluster1, char *result_cluster2, long *score);
+void alignment_clusters(float **matrix, int i, int j, float **info1, float **info2, unsigned char *line_orig, unsigned char *line_dest, unsigned char *result_cluster1, unsigned char *result_cluster2, long *score);
 long add_sequence_cluster(FILE *fitxer, int num_seq);
 void create_cluster_files(int i, int j);
 void similarity_clusters(float **matrix, long long_cluster1, long long_cluster2, float **info1, float **info2, long *score,
                          int, int);
 void build_info_cluster(int num_cluster, float **info, FILE *f);
-void align_clusters(int i, int j, char *res1, char *res2, int *len);
-void rebuild_new_cluster(char *line_orig, char *line_dest, char *result_cluster1, char *result_cluster2, int i, int j,
+void align_clusters(int i, int j, unsigned char *res1, unsigned char *res2, int *len);
+void rebuild_new_cluster(unsigned char *line_orig, unsigned char *line_dest, unsigned char *result_cluster1, unsigned char *result_cluster2, int i, int j,
                          int len);
 void recalculate_matrix(int i, int j);
 

@@ -14,8 +14,8 @@
 int read_sequences_file(void);
 int write_sequence_tmp(int num_seq);
 long get_sequence_length(int num_seq);
-void load_sequence(char *seq, int num_seq);
-void load_sequence_exact_position(char *seq);
-void load_sequence_name(char *name, int num_seq);
+void load_sequence(unsigned char *seq, int num_seq);
+void load_sequence_exact_position(unsigned char *seq);
+void load_sequence_name(unsigned char *name, int num_seq);
 
 #endif

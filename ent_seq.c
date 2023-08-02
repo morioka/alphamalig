@@ -46,12 +46,12 @@ int read_sequences_file(void)
 // and writes it to the temporary file in my format
 int write_sequence_tmp(int num_seq)
 {
-    static char line[MAXLENSEQ + 1];
-    static char seq_nucl[MAXLENSEQ + 1];
+    static unsigned char line[MAXLENSEQ + 1];
+    static unsigned char seq_nucl[MAXLENSEQ + 1];
     static char name[MAXLENNAME + 1];
-    char c;
+    unsigned char c;
     int i, len_seq = 0, len_name = 0, estat = 1;
-    char c0, c1;
+    unsigned char c0, c1;
 
     while (((*line) != '>') && !(feof(input_file)))
     {
@@ -112,7 +112,7 @@ int write_sequence_tmp(int num_seq)
 		    c0= c0 - 0x30;	// 0-9
 		}
 
-		c = (c << 4) + c0;
+		c = (char)((c << 4) + c0);
 	    }
 
             if (belong_alphabet(c))
@@ -149,8 +149,8 @@ int write_sequence_tmp(int num_seq)
 // Returns the length of the sequence "num_seq", reading it from the temporary file
 long get_sequence_length(int num_seq)
 {
-    static char line[MAXLINE + 1];
-    static char aux[10];
+    static unsigned char line[MAXLINE + 1];
+    static unsigned char aux[10];
     int i = 1, trobat = FALSE;
 
     fseek(temp_file, 0, SEEK_SET);
@@ -181,10 +181,10 @@ long get_sequence_length(int num_seq)
 
 /* load_sequence ******************************************************/
 // Returns the encoding of the sequence "num_seq" in the array "seq"
-void load_sequence(char *seq, int num_seq)
+void load_sequence(unsigned char *seq, int num_seq)
 {
-    static char line[MAXLENSEQ + 1];
-    static char aux[10];
+    static unsigned char line[MAXLENSEQ + 1];
+    static unsigned char aux[10];
     int i = 1, trobat = FALSE;
 
     fseek(temp_file, 0, SEEK_SET);
@@ -214,9 +214,9 @@ void load_sequence(char *seq, int num_seq)
 /* load_sequence_exact_position ***************************************/
 // Returns the encoding of the sequence pointed to by the read pointer.
 // This pointer must point to the line before the encoding of the sequence
-void load_sequence_exact_position(char *seq)
+void load_sequence_exact_position(unsigned char *seq)
 {
-    static char line[MAXLENSEQ + 1];
+    static unsigned char line[MAXLENSEQ + 1];
 
     fgets(line, MAXLINE, temp_file);
     strcpy(seq, line + 1);
@@ -224,10 +224,10 @@ void load_sequence_exact_position(char *seq)
 
 /* load_sequence_name ******************************************************/
 // Return the first 10 characters of the name "num_seq" to the array "name"
-void load_sequence_name(char *name, int num_seq)
+void load_sequence_name(unsigned char *name, int num_seq)
 {
-    static char line[MAXLINE + 1];
-    static char aux[10];
+    static unsigned char line[MAXLINE + 1];
+    static unsigned char aux[10];
     int i = 0, trobat = FALSE;
 
     fseek(temp_file, 0, SEEK_SET);

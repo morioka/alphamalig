@@ -18,7 +18,7 @@
 // Implementation of functions
 
 // look at which position in the penalty matrix. there goes the symbol
-int symbol_index(char c)
+int symbol_index(unsigned char c)
 {
     int i = 1;
 //        while ((alphabet[i] != toupper(c)) && (i < num_symbols))
@@ -38,7 +38,7 @@ int symbol_index(char c)
 
 /* belong_alphabet **********************************************************/
 // It tells us if the character we pass to it as a parameter corresponds to some of the symbols of the alphabet
-int belong_alphabet(char c)
+int belong_alphabet(unsigned char c)
 {
     int i = 1;
 
@@ -50,7 +50,7 @@ int belong_alphabet(char c)
 
 /* real_max *****************************************************************/
 // Returns at most three real numbers.
-float real_max(float x, float y, float z, char *c)
+float real_max(float x, float y, float z, unsigned char *c)
 {
     float num_max;
 
@@ -76,7 +76,7 @@ float real_max(float x, float y, float z, char *c)
 // Counts the number of sequences in the file.
 int count_sequences(void)
 {
-    char line[MAXLINE + 1];
+    unsigned char line[MAXLINE + 1];
     int n_seqs = 0;
 
     while (fgets(line, MAXLINE + 1, input_file) != NULL)

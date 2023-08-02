@@ -17,14 +17,14 @@
 /* similarity *************************************************************/
 // It calculates the similarity between the sequencies "seq1" and "seq2".
 // In the matrix "matrix" there are the similarities between every prefix of the two sequences.
-float similarity(float **a, char *seq1, char *seq2, long lenseq1, long lenseq2)
+float similarity(float **a, unsigned char *seq1, unsigned char *seq2, long lenseq1, long lenseq2)
 {
     // use the global variables matpenal,alphabet,num_symbols
     // SEQ1 and SEQ2 go from 0 to lenseq-1
 
     float sum1, sum2, sum3, sum;
     int i, j;
-    char c;
+    unsigned char c;
 
     a[0][0] = 0;
 

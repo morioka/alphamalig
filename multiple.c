@@ -23,9 +23,9 @@ FILE *clusters_file;
 FILE *cluster_file_1;
 FILE *cluster_file_2;
 
-char clusters_filename[13];
-char cluster_filename_1[13];
-char cluster_filename_2[13];
+unsigned char clusters_filename[13];
+unsigned char cluster_filename_1[13];
+unsigned char cluster_filename_2[13];
 
 int **seqs;			// Modification to fix the bug
 
@@ -42,13 +42,13 @@ void
 multiple_alignment (float **matrix, int output_format)
 {
     int i = 0, j = 0, num_clusters = 0, l = 0, mem_ok = 1;
-    char *line_orig, *line_dest;
-    char *result_cluster1, *result_cluster2;
+    unsigned char *line_orig, *line_dest;
+    unsigned char *result_cluster1, *result_cluster2;
     float **info1, **info2;
 
     // Initializations
-    line_orig = (char *) malloc ((MAXLENSEQ + 1) * sizeof (char));
-    line_dest = (char *) malloc ((MAXLENSEQ + 1) * sizeof (char));
+    line_orig = (unsigned char *) malloc ((MAXLENSEQ + 1) * sizeof (unsigned char));
+    line_dest = (unsigned char *) malloc ((MAXLENSEQ + 1) * sizeof (unsigned char));
 
     // Vector that contains which sequences belong to each cluster
     seqs = (int **) malloc (num_seqs * sizeof (int *));
@@ -138,12 +138,12 @@ multiple_alignment (float **matrix, int output_format)
         }
     }
 
-    result_cluster1 = (char *) malloc (MAXLENSEQ * sizeof (char));
+    result_cluster1 = (unsigned char *) malloc (MAXLENSEQ * sizeof (unsigned char));
     if (result_cluster1 == NULL)
     {
         mem_ok = 0;
     }
-    result_cluster2 = (char *) malloc (MAXLENSEQ * sizeof (char));
+    result_cluster2 = (unsigned char *) malloc (MAXLENSEQ * sizeof (unsigned char));
     if (result_cluster2 == NULL)
     {
         mem_ok = 0;
@@ -240,7 +240,7 @@ multiple_alignment (float **matrix, int output_format)
 void
 build_info_cluster (int num_cluster, float **info, FILE * f)
 {
-    char line[MAXLENSEQ + 1];
+    unsigned char line[MAXLENSEQ + 1];
     int i, j, k;
 
     // Initialize the structures
@@ -380,7 +380,7 @@ similarity_clusters (float **matrix, long len_cluster1, long len_cluster2,
 {
     int i = 0, j = 0;
     float p_diag = 0, p_esq = 0, p_amunt = 0, max = 0;	// Scores for the three possible options to fill a box in the matrix
-    char cami;
+    unsigned char cami;
 
     // i->cluster1, j->cluster2
 
@@ -502,8 +502,8 @@ intracluster (float *freq)
 /*Align clusters i, j*/
 void
 alignment_clusters (float **matrix, int i, int j, float **info1,
-                    float **info2, char *line_orig, char *line_dest,
-                    char *result_cluster1, char *result_cluster2, long *score)
+                    float **info2, unsigned char *line_orig, unsigned char *line_dest,
+                    unsigned char *result_cluster1, unsigned char *result_cluster2, long *score)
 {
     int k = 0, mem_ok = 1;
     long res = 0;
@@ -529,8 +529,8 @@ alignment_clusters (float **matrix, int i, int j, float **info1,
 // With a vector of ones and twos, and given the previous sequences, it gives the
 // resulting cluster
 void
-rebuild_new_cluster (char *line_orig, char *line_dest, char *result_cluster1,
-                     char *result_cluster2, int i, int j, int len)
+rebuild_new_cluster (unsigned char *line_orig, unsigned char *line_dest, unsigned char *result_cluster1,
+                     unsigned char *result_cluster2, int i, int j, int len)
 {
     // char *line_orig, *line_dest;
     int k = 0, l = 0, m = 0, n = 0;
@@ -632,7 +632,7 @@ rebuild_new_cluster (char *line_orig, char *line_dest, char *result_cluster1,
 // where 1 indicates symbol and 2 gap
 
 void
-align_clusters (int i, int j, char *res1, char *res2, int *len)
+align_clusters (int i, int j, unsigned char *res1, unsigned char *res2, int *len)
 {
     if ((i == 0) && (j == 0))
     {
@@ -671,7 +671,7 @@ long
 add_sequence_cluster (FILE * fitxer, int num_seq)
 {
     long l = 0, pos_fitxer = 0;
-    char seq[MAXLENSEQ];
+    unsigned char seq[MAXLENSEQ];
 
     if (pos_seq[num_seq] == -1)
     {

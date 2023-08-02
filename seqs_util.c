@@ -24,7 +24,7 @@
 #include "seqs_util.h"
 #include "util.h"
 
-int seqs_getInitialGaps(char *sequence)
+int seqs_getInitialGaps(unsigned char *sequence)
 {
     int i = 0;
 
@@ -33,7 +33,7 @@ int seqs_getInitialGaps(char *sequence)
     return i;
 }
 
-int seqs_getFinalGaps(char *sequence)
+int seqs_getFinalGaps(unsigned char *sequence)
 {
     int l = strlen(sequence);
     int i = l - 1;
@@ -43,11 +43,11 @@ int seqs_getFinalGaps(char *sequence)
     return l - i - 1;
 }
 
-char *
-seqs_insertInitialGaps(char *sequence, int n)
+unsigned char *
+seqs_insertInitialGaps(unsigned char *sequence, int n)
 {
     int l, new_size;
-    char *result;
+    unsigned char *result;
 
     if (!n)
         return sequence;
@@ -60,11 +60,11 @@ seqs_insertInitialGaps(char *sequence, int n)
     return result;
 }
 
-char *
-seqs_insertFinalGaps(char *sequence, int n)
+unsigned char *
+seqs_insertFinalGaps(unsigned char *sequence, int n)
 {
     int l, new_size;
-    char *result;
+    unsigned char *result;
 
     if (!n)
         return sequence;

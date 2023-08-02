@@ -138,7 +138,7 @@ int main(int argc, char *argv[])
 {
     int i = 0, j, k, l, estat;
     long len_seq, len_seq2;
-    char *seq, *seq2;
+    unsigned char *seq, *seq2;
     float **matrix, res;
     char pref[6];
     int num_pref;
@@ -277,8 +277,8 @@ int main(int argc, char *argv[])
         }
 
         j = 0;
-        seq = (char *)malloc(MAXLENSEQ * sizeof(char));
-        seq2 = (char *)malloc(MAXLENSEQ * sizeof(char));
+        seq = (unsigned char *)malloc(MAXLENSEQ * sizeof(unsigned char));
+        seq2 = (unsigned char *)malloc(MAXLENSEQ * sizeof(unsigned char));
 
         // there is enough memory for all variables
         // printf("\n 1");

@@ -10,6 +10,6 @@
 #define _PAIRS_H_
 
 // Definition of prototypes
-float similarity(float **matrix, char *seq1, char *seq2, long len_seq1, long len_seq2);
+float similarity(float **matrix, unsigned char *seq1, unsigned char *seq2, long len_seq1, long len_seq2);
 
 #endif

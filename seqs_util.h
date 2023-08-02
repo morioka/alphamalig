@@ -22,9 +22,9 @@
 #ifndef ESSEM_SEQS_UTIL_H
 #define ESSEM_SEQS_UTIL_H
 
-extern int seqs_getInitialGaps(char * /*dna*/);
-extern int seqs_getFinalGaps(char * /*dna */);
-extern char *seqs_insertInitialGaps(char * /*dna*/, int /*number*/);
-extern char *seqs_insertFinalGaps(char * /*dna*/, int /*number*/);
+extern int seqs_getInitialGaps(unsigned char * /*dna*/);
+extern int seqs_getFinalGaps(unsigned char * /*dna */);
+extern unsigned char *seqs_insertInitialGaps(unsigned char * /*dna*/, int /*number*/);
+extern unsigned char *seqs_insertFinalGaps(unsigned char * /*dna*/, int /*number*/);
 
 #endif
