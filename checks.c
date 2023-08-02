@@ -14,6 +14,8 @@ void check_reading_alphabet()
             printable = 0;
         if (alphabet[i] == 0xff)
             printable = 0;
+        if (alphabet[i] > 0x7e)
+            printable = 0;
     }
 
     for (i = 1; i <= num_symbols; i++) {

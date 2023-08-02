@@ -17,7 +17,7 @@ extern FILE *alphabet_file;  // File that stores the alphabet in the appropriate
 extern char temp_file_name[13]; // Temporary file name
 
 extern int num_symbols;              // number of alphabet symbols
-extern char alphabet[MAXLENALPHABET]; // alphabet in positions 1,2,..,num_symbols
+extern unsigned char alphabet[MAXLENALPHABET]; // alphabet in positions 1,2,..,num_symbols
 extern int num_seqs;             // Number of sequences in the file
 
 extern float matpenal[MAXLENALPHABET][MAXLENALPHABET]; // SCORE match,mismatch and gap...

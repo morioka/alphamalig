@@ -24,7 +24,7 @@ FILE *alphabet_file;  // File that stores the alphabet in the appropriate format
 char temp_file_name[13]; // Temporary file name
 
 int num_symbols;              // number of alphabet symbols
-char alphabet[MAXLENALPHABET]; // alphabet in positions 1,2,..,num_symbols
+unsigned char alphabet[MAXLENALPHABET]; // alphabet in positions 1,2,..,num_symbols
 int num_seqs;             // Number of sequences in the file
 
 float matpenal[MAXLENALPHABET][MAXLENALPHABET]; // SCORE match,mismatch and gap...
@@ -112,7 +112,7 @@ void read_alphabet(FILE *fd)
         {
             int c;
             fscanf(fd, "%x ", &c);
-            alphabet[i] = (char)c;
+            alphabet[i] = (unsigned char)c;
 
         } else {
             fscanf(fd, "%c ", &alphabet[i]);
