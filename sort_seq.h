@@ -11,7 +11,7 @@
 #define _SORT_SEQ_H_
 
 void write_align_output_file(int output_format);
-void write_sequence_cluster(int num_seq, char *asteriscs);
-void write_cut_cluster_sequence(int num_seq, char *asteriscs, int pos);
+void write_sequence_cluster(int num_seq, unsigned char *asteriscs);
+void write_cut_cluster_sequence(int num_seq, unsigned char *asteriscs, int pos);
 
 #endif

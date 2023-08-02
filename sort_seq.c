@@ -16,8 +16,8 @@
 void write_align_output_file(int output_format)
 {
     int k = 0, i, j, l;
-    char asteriscs[MAXLENSEQ];
-    char seq_out[MAXLENSEQ];
+    unsigned char asteriscs[MAXLENSEQ];
+    unsigned char seq_out[MAXLENSEQ];
 //    output_format = 1;      // cut sequences
     output_format = 0;      // do not cut sequences
     if (output_format == 0) /* do not cut sequences */
@@ -106,9 +106,9 @@ void write_align_output_file(int output_format)
     }
 }
 
-void write_cut_cluster_sequence(int num_seq, char *asteriscs, int pos)
+void write_cut_cluster_sequence(int num_seq, unsigned char *asteriscs, int pos)
 {
-    char seq[MAXLENSEQ + 1], name[15], seq_out[MAXLENSEQ + 1];
+    unsigned char seq[MAXLENSEQ + 1], name[15], seq_out[MAXLENSEQ + 1];
     int i = 0, j = 0, k = 0, trobat_fi = 0;
 
     // First we copy the name
@@ -159,12 +159,14 @@ void write_cut_cluster_sequence(int num_seq, char *asteriscs, int pos)
     printf("%s\n", seq_out);
 }
 
-void write_sequence_cluster(int num_seq, char *asteriscs)
+void write_sequence_cluster(int num_seq, unsigned char *asteriscs)
 {
-    char seq[MAXLENSEQ + 1], name[15], seq_out[MAXLENSEQ + 1];
+    unsigned char seq[MAXLENSEQ + 1], name[15], seq_out[MAXLENSEQ + 1];
     int i = 0, j = 0, trobat_fi = 0;
 
-    // Primer copiem el name
+    int hex_mode = 1;
+
+    // first, copy the name
     fseek(clusters_file, pos_seq[num_seq], SEEK_SET);
     load_sequence_name(name, num_seq);
     i = 0;
@@ -191,6 +193,33 @@ void write_sequence_cluster(int num_seq, char *asteriscs)
         if (asteriscs[j] == '*')
         {
             asteriscs[j] = seq[j];
+	    if (hex_mode) {
+                unsigned char c, c0, c1;
+		c = seq_out[i];
+		c0 = c % 16;
+		c1 = c / 16;
+		if (c0 > 9)
+		{
+		    c0 = c0 - 10  + 'a';
+	        } else {
+		    c0 = c0 + '0';
+		}
+		if (c1 > 9)
+		{
+		    c1 = c1 - 10  + 'a';
+	        } else {
+		    c1 = c1 + '0';
+		}
+		if (c == 0x2d)
+		{
+		    c0 = '-';
+		    c1 = '-';
+		}
+		seq_out[i] = c1;
+		seq_out[i+1] = c0;
+		seq_out[i+2] = ' ';
+                i++; i++;
+            }
         }
         else
         {
@@ -200,6 +229,33 @@ void write_sequence_cluster(int num_seq, char *asteriscs)
                 {
                     asteriscs[j] = '-';
                 }
+            }
+	    if (hex_mode) {
+                unsigned char c, c0, c1;
+		c = seq_out[i];
+		c0 = c % 16;
+		c1 = c / 16;
+		if (c0 > 9)
+		{
+		    c0 = c0 - 10  + 'a';
+	        } else {
+		    c0 = c0 + '0';
+		}
+		if (c1 > 9)
+		{
+		    c1 = c1 - 10  + 'a';
+	        } else {
+		    c1 = c1 + '0';
+		}
+		if (c == 0x2d)
+		{
+		    c0 = '-';
+		    c1 = '-';
+		}
+		seq_out[i] = c1;
+		seq_out[i+1] = c0;
+		seq_out[i+2] = ' ';
+                i++; i++;
             }
         }
         i++;
