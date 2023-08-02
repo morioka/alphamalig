@@ -51,6 +51,7 @@ int write_sequence_tmp(int num_seq)
     static char name[MAXLENNAME + 1];
     char c;
     int i, len_seq = 0, len_name = 0, estat = 1;
+    char c0, c1;
 
     while (((*line) != '>') && !(feof(input_file)))
     {
@@ -62,19 +63,72 @@ int write_sequence_tmp(int num_seq)
 
     while (fgets(line, MAXLINE + 1, input_file) && (len_seq < MAXLENSEQ) && (*line != '>'))
     {
+	int hex_mode = 0;
         i = 0;
         c = line[i];
+	c0= line[i+1];	// dummy
+	c1= line[i+2];	// if hex_mode, this value is 0x20.
+	hex_mode = (c1 == 0x20) ? 1 : 0;
+
+	if (hex_mode)
+	{
+	    printf("hex_mode\n");
+	}
+
         while ((i <= MAXLINE) && (c != '\n') && (c != EOS) && (c != '>'))
         {
-//                        c = toupper(line[i]);
+            //c = toupper(line[i]);
             c = line[i];
+	    if (hex_mode)
+            {
+                c0 = line[i+1];
+		c1 = line[i+2]; // dummy
+		
+		if (c > 0x61)		// a,b,c,d,e,f
+		{
+		    c -= 0x20;
+		}
+
+		if (c > 0x41)
+	        {
+	            c = c - 0x41 + 10;	// A,B,C,D,E,F
+		}
+	        else
+		{
+		    c = c - 0x30;	// 0-9
+		}
+					//
+		if (c0> 0x61)		// a,b,c,d,e,f
+		{
+	            c0 -= 0x20;
+		}
+
+		if (c0> 0x41)
+	        {
+	            c0= c0 - 0x41 + 10;	// A,B,C,D,E,F
+		}
+	        else
+		{
+		    c0= c0 - 0x30;	// 0-9
+		}
+
+		c = (c << 4) + c0;
+	    }
+
             if (belong_alphabet(c))
             {
-//                                seq_nucl[len_seq] = toupper(c);
+                //seq_nucl[len_seq] = toupper(c);
                 seq_nucl[len_seq] = c;
                 len_seq++;
             }
             i++;
+	    if (hex_mode)
+            {
+                c = c1;
+                i++;
+                i++;
+	    }
+	     
         }
     }
     if (len_seq == MAXLENSEQ)
