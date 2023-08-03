@@ -70,11 +70,6 @@ int write_sequence_tmp(int num_seq)
 	c1= line[i+2];	// if hex_mode, this value is 0x20.
 	hex_mode = (c1 == 0x20) ? 1 : 0;
 
-	if (hex_mode)
-	{
-	    printf("hex_mode\n");
-	}
-
         while ((i <= MAXLINE) && (c != '\n') && (c != EOS) && (c != '>'))
         {
             //c = toupper(line[i]);
