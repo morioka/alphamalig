@@ -13,6 +13,12 @@
 #include "const.h"
 #include "multiple.h"
 
+#ifdef	HEX_ONLY_MODE
+int hex_mode = 1;
+#else
+int hex_mode = 0;
+#endif
+
 void write_align_output_file(int output_format)
 {
     int k = 0, i, j, l;
@@ -164,7 +170,7 @@ void write_sequence_cluster(int num_seq, unsigned char *asteriscs)
     unsigned char seq[MAXLENSEQ + 1], name[15], seq_out[MAXLENSEQ + 1];
     int i = 0, j = 0, trobat_fi = 0;
 
-    int hex_mode = 1;
+//    int hex_mode = 1;
 
     // first, copy the name
     fseek(clusters_file, pos_seq[num_seq], SEEK_SET);
