@@ -16,6 +16,7 @@
 #include <ctype.h>
 #include "checks.h"
 #include <assert.h>
+#include <string.h>
 
 FILE *input_file;  // file of entry of the sequencies
 FILE *temp_file; // temporary file that stores the sequencies
@@ -30,6 +31,9 @@ int num_seqs;             // Number of sequences in the file
 float matpenal[MAXLENALPHABET][MAXLENALPHABET]; // SCORE match,mismatch and gap...
 float **score_matrix;             // Matrix containing the score of the ptim alignment between all the sequences
 char **path_matrix;                     // Count where each position of the matrix has been filled ('e': left, 'a':up, 'd': diagonal)
+
+int hex_output_mode;
+
 
 int args(int argc, char **argv)
 {
@@ -157,6 +161,14 @@ int main(int argc, char *argv[])
     {
         printf("Error reading the sequence file\n");
         exit(1);
+    }
+
+    hex_output_mode = 0;	// global
+    if (argc > 3){
+        if (strcmp(argv[3], "nonprintable") == 0)
+	{
+            hex_output_mode = 1;	// global
+	}
     }
 
     // We delete temporary files. We close the ones we don't need at the moment

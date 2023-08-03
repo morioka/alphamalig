@@ -27,4 +27,6 @@ extern char **path_matrix;               // Count where each position of the mat
 extern int args(int argc, char **argv);
 extern void read_alphabet(FILE *fd);
 
+extern int hex_output_mode;
+
 #endif

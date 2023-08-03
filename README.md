@@ -253,7 +253,8 @@ $ alfm alphabetexample.txt sequencesexample | grep -A 2000 "Number of sequences=
 ※ 上記処理は、出力のうちCLUSTALフォーマットのアライメント部分を切り出して、シーケンス番号順に並べ替え、空行を削除している。クラスタの維持を優先するならば、シーケンス番号順の並び替え (`sort -g`)は不要だろう。
 
 
-※ アルファベット定義と入力FASTAは hex 形式の入力を受け付ける。出力は `-DHEX_ONLY_MODE` を設定してビルドした際、 hex形式で出力する。
+※ (修正)アルファベット定義と入力FASTAは hex 形式の入力を受け付ける。出力は `-DHEX_ONLY_MODE` を設定してビルドした際、 hex形式で出力する。
+※ (さらに修正)アルファベット定義、入力ファイルに続く3番目のコマンドライン引数として `nonprintable` を指定すると hex形式で出力する。
 
 
 ## 参考

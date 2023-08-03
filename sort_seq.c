@@ -171,6 +171,8 @@ void write_sequence_cluster(int num_seq, unsigned char *asteriscs)
     int i = 0, j = 0, trobat_fi = 0;
 
 //    int hex_mode = 1;
+    int hex_mode = 0;
+    hex_mode = hex_output_mode;
 
     // first, copy the name
     fseek(clusters_file, pos_seq[num_seq], SEEK_SET);
